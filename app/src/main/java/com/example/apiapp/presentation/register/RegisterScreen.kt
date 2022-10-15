@@ -2,16 +2,15 @@ package com.example.apiapp.presentation.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +27,7 @@ import com.example.apiapp.R
 import com.example.apiapp.common.MyButton
 import com.squaredem.composecalendar.ComposeCalendar
 import java.time.LocalDate
+import java.util.Date
 
 @Composable
 fun RegisterScreen(navHostController: NavHostController) {
@@ -67,27 +67,43 @@ fun StepOneScreen(){
             singleLine = true,
             leadingIcon = { Icon(Icons.Filled.AccountBox, contentDescription = "Email") },
         )
-
-// first declare a variable that holds the dialog visibility state
-        val showDialog = rememberSaveable { mutableStateOf(false) }
-
-// then show the dialog based on the state
-        if (showDialog.value) {
-            ComposeCalendar(
-                onDone = { it: LocalDate ->
-                    // Hide dialog
-                    showDialog.value = false
-                    // Do something with the date
-                },
-                onDismiss = {
-                    // Hide dialog
-                    showDialog.value = false
-                }
-            )
-        }
+        DatePicker()
     }
 }
 
+@Composable
+fun DatePicker(){
+    val showDialog = rememberSaveable { mutableStateOf(false) }
+
+    if (showDialog.value) {
+        ComposeCalendar(
+            onDone = {
+                showDialog.value = false
+
+            },
+            onDismiss = {
+                showDialog.value = false
+            }
+        )
+    }
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed: Boolean by interactionSource.collectIsPressedAsState()
+
+    if (isPressed) {
+        showDialog.value = true
+    }
+
+    TextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = "",
+        label = { Text("Data urodzenia") },
+        readOnly = true,
+        onValueChange = {},
+        interactionSource = interactionSource,
+        leadingIcon = { Icon(Icons.Filled.DateRange, contentDescription = "date") }
+    )
+}
 @Composable
 fun StepTwoScreen(){
     WelcomeText("Krok drugi","Aby przejść do następnego kroku wypełnij poprawnie poniższe pola.\"")
