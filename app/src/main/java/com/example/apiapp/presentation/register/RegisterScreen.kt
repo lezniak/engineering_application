@@ -1,5 +1,6 @@
 package com.example.apiapp.presentation.register
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -73,16 +74,16 @@ fun StepOneScreen(){
 
 @Composable
 fun DatePicker(){
-    val showDialog = rememberSaveable { mutableStateOf(false) }
-
-    if (showDialog.value) {
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+    var birthDate by rememberSaveable { mutableStateOf("") }
+    if (showDialog) {
         ComposeCalendar(
             onDone = {
-                showDialog.value = false
-
+                showDialog = false
+                birthDate = it.toString()
             },
             onDismiss = {
-                showDialog.value = false
+                showDialog = false
             }
         )
     }
@@ -91,15 +92,15 @@ fun DatePicker(){
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()
 
     if (isPressed) {
-        showDialog.value = true
+        showDialog = true
     }
 
     TextField(
         modifier = Modifier.fillMaxWidth(),
-        value = "",
+        value = birthDate,
         label = { Text("Data urodzenia") },
         readOnly = true,
-        onValueChange = {},
+        onValueChange = { birthDate = it},
         interactionSource = interactionSource,
         leadingIcon = { Icon(Icons.Filled.DateRange, contentDescription = "date") }
     )
