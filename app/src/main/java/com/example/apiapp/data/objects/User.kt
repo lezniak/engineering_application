@@ -1,11 +1,13 @@
 package com.example.apiapp.data.objects
 
+import java.time.LocalDate
+
 data class User(
-    val birthdate: String,
-    val city: String,
-    val email: String,
-    val matchingPassword: String,
-    val name: String,
-    val password: String,
-    val phoneNumber: String
+    var birthdate: LocalDate,
+    var city: String,
+    var email: String,
+    var matchingPassword: String,
+    var name: String,
+    var password: String,
+    var phoneNumber: String
 )

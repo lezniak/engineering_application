@@ -23,15 +23,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
 import com.example.apiapp.common.MyButton
+import com.example.apiapp.presentation.home.HomeViewModel
 import com.squaredem.composecalendar.ComposeCalendar
 import java.time.LocalDate
 import java.util.Date
 
 @Composable
-fun RegisterScreen(navHostController: NavHostController) {
+fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewModel = hiltViewModel()) {
     var stepFlag by rememberSaveable() { mutableStateOf(0) }
     BackButton(navHostController)
     Column(modifier = Modifier
@@ -42,6 +44,7 @@ fun RegisterScreen(navHostController: NavHostController) {
             0 -> StepOneScreen()
             1 -> StepTwoScreen()
             2 -> StepThreeScreen()
+            3 -> viewModel.finishRegister()
         }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             MyButton(onClick = { stepFlag++ }) {
@@ -52,18 +55,32 @@ fun RegisterScreen(navHostController: NavHostController) {
 
 }
 @Composable
-fun StepThreeScreen(){
-    WelcomeText(header = "Ostatni krok!", body = "Aby zakonczyć rejestracje podaj ")
+fun StepThreeScreen(viewModel: RegisterViewModel = hiltViewModel()){
+    WelcomeText(header = "Ostatni krok!", body = "Aby zakonczyć rejestracje podaj numer telefonu.")
+    var number by rememberSaveable { mutableStateOf("") }
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = number,
+            onValueChange = { number = it
+                            viewModel.setPhone(it)},
+            label = { Text("Numer telefonu") },
+            singleLine = true,
+            leadingIcon = { Icon(Icons.Filled.Call, contentDescription = "Tel Nr") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+        )
+    }
 }
 @Composable
-fun StepOneScreen(){
+fun StepOneScreen(viewModel: RegisterViewModel = hiltViewModel()){
     WelcomeText(header = "Krok pierwszy", body = "Wprowadź swoje imię, abyśmy wiedzieli jak mamy do Ciebie sie zwracać! No i oczywiście ile masz lat.")
     var name by rememberSaveable { mutableStateOf("") }
     Column(verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = name,
-            onValueChange = { name = it },
+            onValueChange = { name = it
+                            viewModel.setName(it)},
             label = { Text("Imie") },
             singleLine = true,
             leadingIcon = { Icon(Icons.Filled.AccountBox, contentDescription = "Email") },
@@ -73,7 +90,7 @@ fun StepOneScreen(){
 }
 
 @Composable
-fun DatePicker(){
+fun DatePicker(viewModel: RegisterViewModel = hiltViewModel()){
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var birthDate by rememberSaveable { mutableStateOf("") }
     if (showDialog) {
@@ -81,6 +98,7 @@ fun DatePicker(){
             onDone = {
                 showDialog = false
                 birthDate = it.toString()
+                viewModel.setBirthDate(it)
             },
             onDismiss = {
                 showDialog = false
@@ -116,13 +134,14 @@ fun WelcomeText(header : String,body: String){
     Text(text = body,color = Color(128,128,128), fontSize = 12.sp )
 }
 @Composable
-fun PasswordEmailInputs() {
+fun PasswordEmailInputs(viewModel: RegisterViewModel = hiltViewModel()) {
     var email by rememberSaveable { mutableStateOf("") }
     Column(verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { email = it
+                            viewModel.setEmail(it)},
             label = { Text("E-mail") },
             singleLine = true,
             leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Email") },
@@ -134,7 +153,8 @@ fun PasswordEmailInputs() {
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { password = it
+                            viewModel.setPassword(it)},
             singleLine = true,
             label = { Text("Hasło") },
             leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Email") },
