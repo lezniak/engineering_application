@@ -9,5 +9,5 @@ interface RegisterRepository {
 
     suspend fun test(): Call<String>
 
-   //suspend fun getCharacters(): CharacterDTO
+   suspend fun registerUser(): Call<>
 }

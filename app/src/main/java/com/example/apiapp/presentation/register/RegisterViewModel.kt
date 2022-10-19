@@ -38,16 +38,16 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
 
     fun finishRegister(){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.test().enqueue(object: Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d("DZIALA",response.body()!!)
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d("NDZIALA",t.toString())
-                }
-
-            });
+//            repository.test().enqueue(object: Callback<String> {
+//                override fun onResponse(call: Call<String>, response: Response<String>) {
+//                    Log.d("DZIALA",response.body()!!)
+//                }
+//
+//                override fun onFailure(call: Call<String>, t: Throwable) {
+//                    Log.d("NDZIALA",t.toString())
+//                }
+//
+//            });
         }
     }
 }
