@@ -2,10 +2,13 @@ package com.example.apiapp.presentation.register
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,17 +17,27 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.example.apiapp.R
 import com.example.apiapp.common.MyButton
 import com.example.apiapp.presentation.home.HomeViewModel
@@ -36,16 +49,17 @@ import java.util.Date
 fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewModel = hiltViewModel()) {
     var stepFlag by rememberSaveable() { mutableStateOf(0) }
     BackButton(navHostController)
+
     Column(modifier = Modifier
         .padding(40.dp)
         .fillMaxSize(),verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
-
-        when(stepFlag){
-            0 -> StepOneScreen()
-            1 -> StepTwoScreen()
-            2 -> StepThreeScreen()
-            3 -> viewModel.finishRegister()
-        }
+        StepOneV2()
+//        when(stepFlag){
+//            0 -> StepOneScreen()
+//            1 -> StepTwoScreen()
+//            2 -> StepThreeScreen()
+//            3 -> viewModel.finishRegister()
+//        }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             MyButton(onClick = { stepFlag++ }) {
                 Text(text = "Dalej", color = Color.White)
@@ -54,7 +68,42 @@ fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewM
     }
 
 }
+@Preview(showBackground = true)
 @Composable
+fun StepOneV2(){
+    val painter = painterResource(id = R.drawable.missing_avatar)
+    var name by rememberSaveable() { mutableStateOf("Twoje imię") }
+    Column(verticalArrangement = Arrangement.spacedBy(25.dp, Alignment.CenterVertically), modifier = Modifier.height(80.dp)) {
+        Row(
+            Modifier
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(20.dp))
+                .fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(25.dp)
+        ) {
+            Image(
+                painter = painter, contentDescription = "1", modifier = Modifier
+                    .size(75.dp, 75.dp)
+                    .clip(CircleShape)
+            )
+
+            Column(verticalArrangement = Arrangement.Center, modifier = Modifier
+                .padding(0.dp)
+                .fillMaxHeight()) {
+                Text(text = name, fontWeight = FontWeight.Bold)
+                Text(text = "email", color = Color.Gray)
+            }
+
+        }
+    }
+    Column() {
+        OutlinedTextField(value = name,
+            onValueChange = {name = it},
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color(0xFFF5F5F5)),
+            modifier = Modifier.fillMaxWidth().background(Color(0xFFF5F5F5),shape = RoundedCornerShape(10.dp)))
+    }
+}
+@Composable
+
 fun StepThreeScreen(viewModel: RegisterViewModel = hiltViewModel()){
     WelcomeText(header = "Ostatni krok!", body = "Aby zakonczyć rejestracje podaj numer telefonu.")
     var number by rememberSaveable { mutableStateOf("") }

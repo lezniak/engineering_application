@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -85,7 +87,7 @@ fun LoginInputs(){
     Column(
         Modifier
             .padding(0.dp, 32.dp, 0.dp, 0.dp)
-            .fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
+            .fillMaxWidth().verticalScroll(rememberScrollState(), reverseScrolling = true), verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = email,
