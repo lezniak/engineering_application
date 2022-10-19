@@ -1,4 +1,4 @@
-package com.example.apiapp.activities
+package com.example.apiapp.di.activities
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

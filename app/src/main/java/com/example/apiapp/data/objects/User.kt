@@ -3,7 +3,7 @@ package com.example.apiapp.data.objects
 import java.time.LocalDate
 
 data class User(
-    var birthdate: LocalDate,
+    var birthdate: String,
     var city: String,
     var email: String,
     var matchingPassword: String,
