@@ -21,32 +21,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.apiapp.R
 import com.example.apiapp.Screen
 import com.example.apiapp.common.MyButton
-import com.example.apiapp.presentation.home.HomeViewModel
 import com.squaredem.composecalendar.ComposeCalendar
 import java.time.LocalDate
-import java.util.Date
 
 @Composable
 fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewModel = hiltViewModel()) {
@@ -79,23 +68,27 @@ fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewM
 @Composable
 fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
     val painter = painterResource(id = R.drawable.missing_avatar)
-    var name by rememberSaveable() { mutableStateOf("Imie") }
+
+    var name by rememberSaveable() { mutableStateOf(viewModel.nameDV.data) }
     var email by rememberSaveable() { mutableStateOf("E-mail") }
     var password by rememberSaveable() { mutableStateOf("Hasło321123") }
+
+    viewModel.nameDV.isError = viewModel.validateName(name)
+
     Column(verticalArrangement = Arrangement.spacedBy(25.dp, Alignment.CenterVertically), modifier = Modifier.height(80.dp)) {
         Row(
             Modifier
                 .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
-                .fillMaxWidth()
-                .clickable {
-                    Log.d("PhotoClick", "Photoclick")
-                },
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(25.dp)
         ) {
             Image(
                 painter = painter, contentDescription = "1", modifier = Modifier
                     .size(75.dp, 75.dp)
                     .clip(CircleShape)
+                    .clickable {
+                        Log.d("PhotoClick", "Photoclick")
+                    }
             )
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp,Alignment.CenterVertically), modifier = Modifier
@@ -132,6 +125,7 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color(0xFFF5F5F5)),
             interactionSource = nameClick,
+            isError = viewModel.nameDV.isError,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))

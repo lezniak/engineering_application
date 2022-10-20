@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apiapp.data.objects.LoginUser
+import com.example.apiapp.common.errorList
+import com.example.apiapp.data.objects.DataValidation
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.User
 import com.example.apiapp.data.repository.implementation.RegisterRepository
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val repository: RegisterRepository) : ViewModel() {
     private val newUser: User = User("1999.11.11","Katowice","","","","","+48000000000")
-
+    val nameDV = DataValidation<String>("Imie")
     fun setBirthDate(arg: LocalDate){
         newUser.birthdate = arg.toString().replace("-",".")
     }
@@ -50,17 +51,12 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
                 ) {
                     val res = response.body()
                     if (res != null) {
-                        if (res.errList.isNotEmpty()){
-                            res.errList.forEach {
-                                Log.e("Errors",it.key)
-                            }
-                        }
-                    }
+                        res.errList.errorList()
 
                     _result.value = response.body()!!.status
                     call.cancel()
 
-                }
+                } }
 
                 override fun onFailure(call: Call<ServiceReturn<User>>, t: Throwable) {
                     Log.e("VIEWMODEL","NIE UDALO SIE WYSSLAC"+t.toString())
@@ -69,5 +65,12 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
 
             })
         }
+    }
+
+    fun validateName(name: String): Boolean{
+        if (name.length<3 || name.length>15)
+            return true
+        else
+            return false
     }
 }
