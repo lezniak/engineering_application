@@ -29,9 +29,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.Screen
 import com.example.apiapp.common.MyButton
+import com.example.apiapp.presentation.register.RegisterViewModel
 
 
 @Composable
@@ -73,15 +75,17 @@ fun EndText(navHostController: NavHostController) {
 }
 
 @Composable
-fun Button(){
+fun Button(viewModel: LoginViewModel = hiltViewModel()){
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-        MyButton(onClick = { /*TODO*/ }) {
+        MyButton(onClick = {
+            viewModel.loginToService()
+        }) {
             Text(text = "Zaloguj!", color = Color.White)
         }
     }
 }
 @Composable
-fun LoginInputs(){
+fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
     var email by rememberSaveable { mutableStateOf("") }
 
     Column(
@@ -91,7 +95,8 @@ fun LoginInputs(){
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { email = it
+                            viewModel.loginUser.email = it},
             label = { Text("E-mail") },
             singleLine = true,
             leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Email") },
@@ -103,7 +108,8 @@ fun LoginInputs(){
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { password = it
+                            viewModel.loginUser.password = it},
             singleLine = true,
             label = { Text("Hasło") },
             leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Email") },

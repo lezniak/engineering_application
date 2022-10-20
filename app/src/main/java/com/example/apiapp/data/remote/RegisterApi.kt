@@ -1,5 +1,6 @@
 package com.example.apiapp.data.remote
 
+import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.User
 import retrofit2.Call
@@ -13,6 +14,9 @@ interface RegisterApi {
     @Headers("Accept: application/json")
     @POST("user")
     fun addUser(@Body user: User): Call<ServiceReturn<User>>
+
+    @POST("user/login")
+    fun loginUser(@Body user: LoginUser): Call<ServiceReturn<LoginUser>>
 
     @GET("event-api")
     fun test() : Call<String>

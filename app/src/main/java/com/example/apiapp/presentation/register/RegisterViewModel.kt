@@ -1,12 +1,11 @@
 package com.example.apiapp.presentation.register
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.User
 import com.example.apiapp.data.repository.implementation.RegisterRepository
@@ -49,6 +48,14 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
                     call: Call<ServiceReturn<User>>,
                     response: Response<ServiceReturn<User>>
                 ) {
+                    val res = response.body()
+                    if (res != null) {
+                        if (res.errList.isNotEmpty()){
+                            res.errList.forEach {
+                                Log.e("Errors",it.key)
+                            }
+                        }
+                    }
 
                     _result.value = response.body()!!.status
                     call.cancel()

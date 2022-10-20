@@ -107,15 +107,37 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
 
         }
     }
+    val nameClick = remember {
+        MutableInteractionSource()
+    }
+    val emailClick = remember {
+        MutableInteractionSource()
+    }
+    val passwordClick = remember {
+        MutableInteractionSource()
+    }
+    if ( nameClick.collectIsPressedAsState().value)
+        name = ""
+
+    if ( emailClick.collectIsPressedAsState().value)
+        email = ""
+
+    if ( passwordClick.collectIsPressedAsState().value)
+        password = ""
+
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         OutlinedTextField(value = name,
             onValueChange = {name = it
                             viewModel.setName(it)},
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color(0xFFF5F5F5)),
+            interactionSource = nameClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp)))
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
+                .clickable {
+                    name = ""
+                })
 
         OutlinedTextField(value = email,
             onValueChange = {email = it
@@ -123,9 +145,13 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
             singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color(0xFFF5F5F5)),
+            interactionSource = emailClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp)))
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
+                .clickable {
+                    email= ""
+                })
 
         OutlinedTextField(value = password,
             onValueChange = {password = it
@@ -134,9 +160,11 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color(0xFFF5F5F5)),
             visualTransformation = PasswordVisualTransformation(),
+            interactionSource = passwordClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp)),
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
+                .clickable { password = "" },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
     }
 }

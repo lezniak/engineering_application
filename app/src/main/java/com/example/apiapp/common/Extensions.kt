@@ -1,5 +1,6 @@
 package com.example.apiapp.common
 
+import android.util.Log
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -21,4 +22,14 @@ fun MyButton(
         modifier = modifier,
         content = content
     )
+}
+
+fun Map<String,String>.errorList() : Map<String,String>{
+    if(this.isNotEmpty()){
+        this.forEach {
+            Log.e("ERROR_LIST",it.value)
+        }
+    }
+
+    return this
 }
