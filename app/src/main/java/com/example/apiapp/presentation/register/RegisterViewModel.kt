@@ -1,7 +1,10 @@
 package com.example.apiapp.presentation.register
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apiapp.data.objects.ServiceReturn
@@ -18,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val repository: RegisterRepository) : ViewModel() {
-    private val newUser: User = User("1999.11.11","Katowice","test@o2.pl","daniel1","daniel","daniel1","+48111111111")
+    private val newUser: User = User("1999.11.11","Katowice","","","","","+48000000000")
 
     fun setBirthDate(arg: LocalDate){
         newUser.birthdate = arg.toString().replace("-",".")
@@ -36,6 +39,8 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
     fun setName(arg:String){
         newUser.name = arg
     }
+    private var _result = MutableLiveData<Int>(0)
+    var result: LiveData<Int> = _result
 
     fun finishRegister(){
         viewModelScope.launch(Dispatchers.IO) {
@@ -44,9 +49,10 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
                     call: Call<ServiceReturn<User>>,
                     response: Response<ServiceReturn<User>>
                 ) {
-                    Log.e("UDALO SIE","wyslac")
-                    val test = response.isSuccessful
-                    val test2 = response.body()
+
+                    _result.value = response.body()!!.status
+                    call.cancel()
+
                 }
 
                 override fun onFailure(call: Call<ServiceReturn<User>>, t: Throwable) {

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.apiapp.presentation.confirmEmail.ConfirmScreen
 import com.example.apiapp.presentation.login.LoginScreen
 import com.example.apiapp.presentation.register.RegisterScreen
 
@@ -17,6 +18,10 @@ fun SetupNavGraph(navHostController: NavHostController){
 
         composable(route = Screen.Register.route){
             RegisterScreen(navHostController)
+        }
+
+        composable(route = Screen.ConfirmEmail.route){
+            ConfirmScreen(navHostController)
         }
     }
 }

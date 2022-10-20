@@ -14,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,6 +41,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.apiapp.R
+import com.example.apiapp.Screen
 import com.example.apiapp.common.MyButton
 import com.example.apiapp.presentation.home.HomeViewModel
 import com.squaredem.composecalendar.ComposeCalendar
@@ -53,31 +56,41 @@ fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewM
     Column(modifier = Modifier
         .padding(40.dp)
         .fillMaxSize(),verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
-        StepOneV2()
-//        when(stepFlag){
-//            0 -> StepOneScreen()
-//            1 -> StepTwoScreen()
-//            2 -> StepThreeScreen()
-//            3 -> viewModel.finishRegister()
-//        }
+
+        when(stepFlag){
+            0 -> StepOneV2()
+            1 -> StepTwoV2()
+            2 -> viewModel.finishRegister()
+        }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             MyButton(onClick = { stepFlag++ }) {
                 Text(text = "Dalej", color = Color.White)
             }
+        }
+        val list  = viewModel.result.observeAsState().value
+
+        if (list == 1){
+            navHostController.navigate(Screen.ConfirmEmail.route)
         }
     }
 
 }
 @Preview(showBackground = true)
 @Composable
-fun StepOneV2(){
+fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
     val painter = painterResource(id = R.drawable.missing_avatar)
-    var name by rememberSaveable() { mutableStateOf("Twoje imię") }
+    var name by rememberSaveable() { mutableStateOf("Imie") }
+    var email by rememberSaveable() { mutableStateOf("E-mail") }
+    var password by rememberSaveable() { mutableStateOf("Hasło321123") }
     Column(verticalArrangement = Arrangement.spacedBy(25.dp, Alignment.CenterVertically), modifier = Modifier.height(80.dp)) {
         Row(
             Modifier
-                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(20.dp))
-                .fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(25.dp)
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
+                .fillMaxWidth()
+                .clickable {
+                    Log.d("PhotoClick", "Photoclick")
+                },
+            horizontalArrangement = Arrangement.spacedBy(25.dp)
         ) {
             Image(
                 painter = painter, contentDescription = "1", modifier = Modifier
@@ -85,25 +98,53 @@ fun StepOneV2(){
                     .clip(CircleShape)
             )
 
-            Column(verticalArrangement = Arrangement.Center, modifier = Modifier
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp,Alignment.CenterVertically), modifier = Modifier
                 .padding(0.dp)
                 .fillMaxHeight()) {
-                Text(text = name, fontWeight = FontWeight.Bold)
-                Text(text = "email", color = Color.Gray)
+                Text(text = name, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                Text(text = email, color = Color.Gray, fontSize = 12.sp)
             }
 
         }
     }
-    Column() {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         OutlinedTextField(value = name,
-            onValueChange = {name = it},
+            onValueChange = {name = it
+                            viewModel.setName(it)},
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color(0xFFF5F5F5)),
-            modifier = Modifier.fillMaxWidth().background(Color(0xFFF5F5F5),shape = RoundedCornerShape(10.dp)))
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp)))
+
+        OutlinedTextField(value = email,
+            onValueChange = {email = it
+                            viewModel.setEmail(it)},
+            singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color(0xFFF5F5F5)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp)))
+
+        OutlinedTextField(value = password,
+            onValueChange = {password = it
+                viewModel.setPassword(it)},
+            singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color(0xFFF5F5F5)),
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp)),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
     }
 }
 @Composable
-
+fun StepTwoV2(){
+    DatePicker()
+}
+@Composable
 fun StepThreeScreen(viewModel: RegisterViewModel = hiltViewModel()){
     WelcomeText(header = "Ostatni krok!", body = "Aby zakonczyć rejestracje podaj numer telefonu.")
     var number by rememberSaveable { mutableStateOf("") }
@@ -120,23 +161,7 @@ fun StepThreeScreen(viewModel: RegisterViewModel = hiltViewModel()){
         )
     }
 }
-@Composable
-fun StepOneScreen(viewModel: RegisterViewModel = hiltViewModel()){
-    WelcomeText(header = "Krok pierwszy", body = "Wprowadź swoje imię, abyśmy wiedzieli jak mamy do Ciebie sie zwracać! No i oczywiście ile masz lat.")
-    var name by rememberSaveable { mutableStateOf("") }
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = name,
-            onValueChange = { name = it
-                            viewModel.setName(it)},
-            label = { Text("Imie") },
-            singleLine = true,
-            leadingIcon = { Icon(Icons.Filled.AccountBox, contentDescription = "Email") },
-        )
-        DatePicker()
-    }
-}
+
 
 @Composable
 fun DatePicker(viewModel: RegisterViewModel = hiltViewModel()){
@@ -149,6 +174,8 @@ fun DatePicker(viewModel: RegisterViewModel = hiltViewModel()){
                 birthDate = it.toString()
                 viewModel.setBirthDate(it)
             },
+            maxDate = LocalDate.now(),
+            minDate = LocalDate.ofYearDay(1950,1),
             onDismiss = {
                 showDialog = false
             }
@@ -163,13 +190,17 @@ fun DatePicker(viewModel: RegisterViewModel = hiltViewModel()){
     }
 
     TextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp)),
         value = birthDate,
         label = { Text("Data urodzenia") },
         readOnly = true,
         onValueChange = { birthDate = it},
         interactionSource = interactionSource,
-        leadingIcon = { Icon(Icons.Filled.DateRange, contentDescription = "date") }
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = Color(0xFFF5F5F5)),
+        leadingIcon = { Icon(Icons.Filled.DateRange, contentDescription = "date")}
     )
 }
 @Composable
@@ -222,18 +253,23 @@ fun PasswordEmailInputs(viewModel: RegisterViewModel = hiltViewModel()) {
 
 @Composable
 fun BackButton(navHostController: NavHostController) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        val painter = painterResource(id = R.drawable.ic_backarr)
-        Row() {
-            Image(
-                modifier = Modifier
-                    .clickable { navHostController.popBackStack() }
-                    .padding(16.dp),
-                painter = painter,
-                contentDescription = "",
-                alignment = Alignment.Center,
-                colorFilter = ColorFilter.tint(color = MaterialTheme.colors.secondary)
-            )
+    val painter = painterResource(id = R.drawable.ic_backarr)
+    Row() {
+        Image(
+            modifier = Modifier
+                .clickable { navHostController.popBackStack() }
+                .padding(16.dp),
+            painter = painter,
+            contentDescription = "",
+            alignment = Alignment.Center,
+            colorFilter = ColorFilter.tint(color = MaterialTheme.colors.secondary)
+        )
+    }
+
+
+    Row() {
+            Column(modifier = Modifier.fillMaxWidth(),verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Stwórz własny profil", modifier = Modifier.padding(16.dp))
         }
     }
 }
