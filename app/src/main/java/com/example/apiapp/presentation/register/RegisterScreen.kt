@@ -70,10 +70,12 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
     val painter = painterResource(id = R.drawable.missing_avatar)
 
     var name by rememberSaveable() { mutableStateOf(viewModel.nameDV.data) }
-    var email by rememberSaveable() { mutableStateOf("E-mail") }
-    var password by rememberSaveable() { mutableStateOf("Hasło321123") }
+    var email by rememberSaveable() { mutableStateOf(viewModel.emailDV.data) }
+    var password by rememberSaveable() { mutableStateOf(viewModel.passwordDV.data) }
 
     viewModel.nameDV.isError = viewModel.validateName(name)
+    viewModel.emailDV.isError = viewModel.validationEmail(email)
+    viewModel.passwordDV.isError = viewModel.validationPassword(password)
 
     Column(verticalArrangement = Arrangement.spacedBy(25.dp, Alignment.CenterVertically), modifier = Modifier.height(80.dp)) {
         Row(
@@ -140,6 +142,7 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Color(0xFFF5F5F5)),
             interactionSource = emailClick,
+            isError = viewModel.emailDV.isError,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
@@ -155,6 +158,7 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
                 unfocusedBorderColor = Color(0xFFF5F5F5)),
             visualTransformation = PasswordVisualTransformation(),
             interactionSource = passwordClick,
+            isError = viewModel.passwordDV.isError,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))

@@ -1,5 +1,6 @@
 package com.example.apiapp.presentation.register
 
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,12 +18,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val repository: RegisterRepository) : ViewModel() {
     private val newUser: User = User("1999.11.11","Katowice","","","","","+48000000000")
     val nameDV = DataValidation<String>("Imie")
+    val emailDV = DataValidation<String>("Email")
+    val passwordDV = DataValidation<String>("PASSWO@1asd")
     fun setBirthDate(arg: LocalDate){
         newUser.birthdate = arg.toString().replace("-",".")
     }
@@ -72,5 +77,24 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
             return true
         else
             return false
+    }
+
+    fun validationEmail(email: String): Boolean{
+        if (TextUtils.isEmpty(email) || email.length>50) {
+            return true
+        } else {
+            return !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        }
+    }
+
+
+    fun validationPassword(password: String): Boolean {
+        val pattern: Pattern
+        val matcher: Matcher
+        val specialCharacters = "-@%\\[\\}+'!/#$^?:;,\\(\"\\)~`.*=&\\{>\\]<_"
+        val PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[$specialCharacters])(?=\\S+$).{8,20}$"
+        pattern = Pattern.compile(PASSWORD_REGEX)
+        matcher = pattern.matcher(password)
+        return !matcher.matches()
     }
 }
