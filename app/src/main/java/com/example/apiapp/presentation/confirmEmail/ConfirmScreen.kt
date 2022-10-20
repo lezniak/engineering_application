@@ -21,11 +21,18 @@ import com.example.apiapp.Screen
 fun ConfirmScreen(navHostController: NavHostController) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp,Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
-    modifier = Modifier.padding(12.dp).fillMaxSize()) {
+    modifier = Modifier
+        .padding(12.dp)
+        .fillMaxSize()) {
         Text(text = "Gratulacje!", fontSize = 22.sp, fontWeight = FontWeight.Bold)
         Text("Twoje konto zostało założone prawidłowo. Ostatnim krokiem, aby korzystać z portalu" +
                 " należy potwierdzić konto za pomocą linku aktywacyjnego który został wysłany na Twój" +
-                " adres email.", textAlign = TextAlign.Center)
+                " adres email.", textAlign = TextAlign.Center, fontSize = 12.sp)
+    }
+
+    Column(verticalArrangement =  Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize().padding(12.dp)) {
         Button(onClick = { navHostController.navigate(Screen.Login.route) }) {
             Text(text = "Przejdz do logowania")
         }
