@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.apiapp.presentation.afterLogin.HomeScreen.HomeScreen
 import com.example.apiapp.presentation.confirmEmail.ConfirmScreen
 import com.example.apiapp.presentation.login.LoginScreen
 import com.example.apiapp.presentation.register.RegisterScreen
@@ -30,7 +31,7 @@ fun SetupNavGraph(navHostController: NavHostController){
 fun SetupNavGraphAfterLogin(navHostController: NavHostController){
     NavHost(navController = navHostController, startDestination = Screen.homePage.route){
         composable(route = Screen.homePage.route){
-            LoginScreen(navHostController)
+            HomeScreen(navHostController)
         }
     }
 }

@@ -18,6 +18,7 @@
         <activity
             android:name=".presentation.activity.MainActivity"
             android:exported="true"
+            android:noHistory = "true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ApiApp">
             <intent-filter>
@@ -26,6 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.activity.AfterLoginActivity"
+            android:label="Home"
+            android:noHistory = "true"></activity>
         <activity android:name=".presentation.activity.MapsActivity"/>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

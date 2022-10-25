@@ -73,7 +73,9 @@ fun start(navHostController: NavHostController,viewModel: LoginViewModel = hiltV
         }
         val context = LocalContext.current
         if (resultSuccess != null){
-            context.startActivity(Intent(context, AfterLoginActivity::class.java))
+            val intent = Intent(context, AfterLoginActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            context.startActivity(intent)
         }
     }
 }
