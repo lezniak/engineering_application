@@ -1,7 +1,10 @@
 package com.example.apiapp.data.objects
 
 data class LoginUser(
+    var id: Long,
     var password: String,
     var email : String?,
-    val phone: String?
+    var phone: String?,
+    var token: String?,
+    var refreshToken: String
 )

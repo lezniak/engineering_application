@@ -26,7 +26,7 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(private val repository: RegisterRepository) : ViewModel() {
     private val newUser: User = User("1999.11.11","Katowice","","","","","+48000000000")
     val nameDV = DataValidation<String>("Imie")
-    val emailDV = DataValidation<String>("Email")
+    val emailDV = DataValidation<String>("E-mail@a.b")
     val passwordDV = DataValidation<String>("PASSWO@1asd")
     fun setBirthDate(arg: LocalDate){
         newUser.birthdate = arg.toString().replace("-",".")

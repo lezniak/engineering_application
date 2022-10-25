@@ -1,6 +1,7 @@
 package com.example.apiapp.presentation.login
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,11 +14,9 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,11 +28,17 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.Screen
 import com.example.apiapp.common.MyButton
+import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.example.apiapp.presentation.register.RegisterViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -42,21 +47,34 @@ fun LoginScreen(navHostController: NavHostController) {
 }
 
 @Composable
-fun start(navHostController: NavHostController) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(40.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
-        WelcomeText()
-        LoginInputs()
-        Button()
-    }
-    Column(
-        Modifier
+fun start(navHostController: NavHostController,viewModel: LoginViewModel = hiltViewModel()) {
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    Scaffold(scaffoldState = scaffoldState) {
+        Column(modifier = Modifier
             .fillMaxSize()
-            .padding(40.dp)) {
-        Spacer(modifier = Modifier.weight(1f))
-        EndText(navHostController)
+            .padding(40.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
+            WelcomeText()
+            LoginInputs()
+            Button()
+        }
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(40.dp)) {
+            Spacer(modifier = Modifier.weight(1f))
+            EndText(navHostController)
+        }
+
+        val resultLogin = viewModel.loginResult.observeAsState().value
+        val resultSuccess = viewModel.loginSuccess.observeAsState().value
+        if(resultLogin != ""){
+            ShowDialog(mess = resultLogin!!,scaffoldState)
+        }
+        val context = LocalContext.current
+        if (resultSuccess != null){
+            context.startActivity(Intent(context, AfterLoginActivity::class.java))
+        }
     }
 }
 
@@ -91,7 +109,8 @@ fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
     Column(
         Modifier
             .padding(0.dp, 32.dp, 0.dp, 0.dp)
-            .fillMaxWidth().verticalScroll(rememberScrollState(), reverseScrolling = true), verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState(), reverseScrolling = true), verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = email,
@@ -131,4 +150,17 @@ fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
 fun WelcomeText(){
     Text(text = "Zaloguj", fontWeight = FontWeight.Bold, fontSize = 26.sp)
     Text(text = "Aby kontynuowac proszę się zalogować.",color = Color(128,128,128), fontSize = 12.sp )
+}
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun ShowDialog(mess: String,scaffoldState: ScaffoldState,viewModel: LoginViewModel = hiltViewModel()){
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+        coroutineScope.launch {
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = mess,
+                actionLabel = "Ok!"
+            )
+            viewModel.setLoginResult("")
+        }
 }

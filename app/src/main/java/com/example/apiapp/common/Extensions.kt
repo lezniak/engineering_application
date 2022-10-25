@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 fun MyButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
     Button(
@@ -20,7 +21,8 @@ fun MyButton(
         ),
         onClick = onClick,
         modifier = modifier,
-        content = content
+        content = content,
+        enabled = enabled
     )
 }
 

@@ -52,9 +52,11 @@ fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewM
             2 -> viewModel.finishRegister()
         }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            MyButton(onClick = { stepFlag++ }) {
+            MyButton(onClick = { stepFlag++ }, enabled = false) {
                 Text(text = "Dalej", color = Color.White)
             }
+
+
         }
         val list  = viewModel.result.observeAsState().value
 

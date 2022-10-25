@@ -25,3 +25,12 @@ fun SetupNavGraph(navHostController: NavHostController){
         }
     }
 }
+
+@Composable
+fun SetupNavGraphAfterLogin(navHostController: NavHostController){
+    NavHost(navController = navHostController, startDestination = Screen.homePage.route){
+        composable(route = Screen.homePage.route){
+            LoginScreen(navHostController)
+        }
+    }
+}

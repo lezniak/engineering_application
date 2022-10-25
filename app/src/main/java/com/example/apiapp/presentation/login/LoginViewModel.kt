@@ -1,6 +1,8 @@
 package com.example.apiapp.presentation.login
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apiapp.common.errorList
@@ -15,8 +17,16 @@ import retrofit2.Response
 import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repository: RegisterRepository) : ViewModel() {
-    val loginUser : LoginUser = LoginUser("","","")
+    val loginUser : LoginUser = LoginUser(0,"","","","","")
+    private var _loginResult = MutableLiveData<String>("")
+    var loginResult: LiveData<String> = _loginResult
 
+    private var _loginSuccess = MutableLiveData<LoginUser>()
+    var loginSuccess: LiveData<LoginUser> = _loginSuccess
+
+    fun setLoginResult(arg: String){
+        _loginResult.value = arg
+    }
     fun loginToService(){
         viewModelScope.launch {
             repository.loginUser(loginUser).enqueue(object : Callback<ServiceReturn<LoginUser>> {
@@ -24,10 +34,16 @@ class LoginViewModel @Inject constructor(private val repository: RegisterReposit
                     call: Call<ServiceReturn<LoginUser>>,
                     response: Response<ServiceReturn<LoginUser>>
                 ) {
-                    Log.d("Login_reposnse", response.body()?.status.toString())
-                    if (response.body() != null)
+                    if (response.body()?.status == 1){
+                        _loginSuccess.value = response.body()?.value!!
+                    }
+                    if (response.body() != null){
                         response.body()?.errList?.errorList()
 
+                        response.body()?.errList?.forEach {
+                            _loginResult.value = it.value
+                        }
+                    }
                 }
 
                 override fun onFailure(call: Call<ServiceReturn<LoginUser>>, t: Throwable) {
