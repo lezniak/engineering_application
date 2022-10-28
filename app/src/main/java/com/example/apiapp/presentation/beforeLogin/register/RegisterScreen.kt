@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.register
+package com.example.apiapp.presentation.beforeLogin.register
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -52,7 +52,7 @@ fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewM
             2 -> viewModel.finishRegister()
         }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            MyButton(onClick = { stepFlag++ }, enabled = false) {
+            MyButton(onClick = { stepFlag++ }, enabled = true) {
                 Text(text = "Dalej", color = Color.White)
             }
 

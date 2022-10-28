@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.login
+package com.example.apiapp.presentation.beforeLogin.login
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -34,7 +34,7 @@ import androidx.navigation.NavHostController
 import com.example.apiapp.Screen
 import com.example.apiapp.common.MyButton
 import com.example.apiapp.presentation.activity.AfterLoginActivity
-import com.example.apiapp.presentation.register.RegisterViewModel
+import com.example.apiapp.presentation.beforeLogin.register.RegisterViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -74,6 +74,7 @@ fun start(navHostController: NavHostController,viewModel: LoginViewModel = hiltV
         val context = LocalContext.current
         if (resultSuccess != null){
             val intent = Intent(context, AfterLoginActivity::class.java)
+            intent.putExtra("user",viewModel.loginSuccess.value)
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             context.startActivity(intent)
         }

@@ -4,12 +4,13 @@ import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.User
 import com.example.apiapp.data.remote.RegisterApi
+import com.example.apiapp.data.repository.RegisterRepository
 import retrofit2.Call
 import javax.inject.Inject
 
 class RegisterRepositoryImpl @Inject constructor(
     private val api: RegisterApi
-): RegisterRepository{
+): RegisterRepository {
     override suspend fun test(): Call<String> {
         return api.test()
     }

@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.home
+package com.example.apiapp.presentation.beforeLogin.home
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

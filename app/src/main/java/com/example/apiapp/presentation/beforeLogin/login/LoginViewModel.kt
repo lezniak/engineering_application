@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.login
+package com.example.apiapp.presentation.beforeLogin.login
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.apiapp.common.errorList
 import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.data.objects.ServiceReturn
-import com.example.apiapp.data.repository.implementation.RegisterRepository
+import com.example.apiapp.data.repository.RegisterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Call

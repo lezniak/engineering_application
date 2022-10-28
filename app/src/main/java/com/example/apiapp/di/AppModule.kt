@@ -1,9 +1,13 @@
 package com.example.apiapp.di
 
 import com.example.apiapp.common.Constants
+import com.example.apiapp.data.remote.MainApi
 import com.example.apiapp.data.remote.RegisterApi
-import com.example.apiapp.data.repository.implementation.RegisterRepository
+import com.example.apiapp.data.repository.MainRepository
+import com.example.apiapp.data.repository.RegisterRepository
+import com.example.apiapp.data.repository.implementation.MainRepositoryImpl
 import com.example.apiapp.data.repository.implementation.RegisterRepositoryImpl
+import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -44,7 +48,34 @@ class AppModule {
     }
 
     @Provides
-    fun provideLotrRepository(api: RegisterApi): RegisterRepository{
+    @Singleton
+    @Headers("Content-Type: application/json")
+    fun mainApi(): MainApi {
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+        val request = Retrofit.Builder()
+            .client(OkHttpClient.Builder().addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                 .addHeader("Authorization", "Bearer ${AfterLoginActivity.requestToken}").build()
+                chain.proceed(request)
+            }.build())
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            //.addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .build()
+            .create(MainApi::class.java)
+        return request
+    }
+
+    @Provides
+    fun provideLotrRepository(api: RegisterApi): RegisterRepository {
         return RegisterRepositoryImpl(api)
+    }
+
+    @Provides
+    fun provideMainRepository(api: MainApi): MainRepository {
+        return MainRepositoryImpl(api)
     }
 }

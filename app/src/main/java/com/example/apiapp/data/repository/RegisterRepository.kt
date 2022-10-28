@@ -1,4 +1,4 @@
-package com.example.apiapp.data.repository.implementation
+package com.example.apiapp.data.repository
 
 import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.data.objects.ServiceReturn

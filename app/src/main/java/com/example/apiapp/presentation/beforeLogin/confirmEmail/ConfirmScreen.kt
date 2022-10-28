@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.confirmEmail
+package com.example.apiapp.presentation.beforeLogin.confirmEmail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

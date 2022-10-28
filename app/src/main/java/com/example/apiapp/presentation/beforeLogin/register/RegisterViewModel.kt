@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.register
+package com.example.apiapp.presentation.beforeLogin.register
 
 import android.text.TextUtils
 import android.util.Log
@@ -10,7 +10,7 @@ import com.example.apiapp.common.errorList
 import com.example.apiapp.data.objects.DataValidation
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.User
-import com.example.apiapp.data.repository.implementation.RegisterRepository
+import com.example.apiapp.data.repository.RegisterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

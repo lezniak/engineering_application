@@ -1,10 +1,9 @@
-package com.example.apiapp.presentation.home
+package com.example.apiapp.presentation.afterLogin.map
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
-
+class MapViewModel @Inject constructor() :  ViewModel()  {
 }

@@ -5,9 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.apiapp.presentation.afterLogin.HomeScreen.HomeScreen
-import com.example.apiapp.presentation.confirmEmail.ConfirmScreen
-import com.example.apiapp.presentation.login.LoginScreen
-import com.example.apiapp.presentation.register.RegisterScreen
+import com.example.apiapp.presentation.beforeLogin.confirmEmail.ConfirmScreen
+import com.example.apiapp.presentation.beforeLogin.login.LoginScreen
+import com.example.apiapp.presentation.beforeLogin.register.RegisterScreen
 
 
 @Composable

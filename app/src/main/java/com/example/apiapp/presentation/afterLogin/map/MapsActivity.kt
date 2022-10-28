@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.activity
+package com.example.apiapp.presentation.afterLogin.map
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
