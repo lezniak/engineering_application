@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -18,10 +19,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -105,10 +111,11 @@ fun Button(viewModel: LoginViewModel = hiltViewModel()){
         }
     }
 }
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
     var email by rememberSaveable { mutableStateOf("") }
-
+    val focusManager = LocalFocusManager.current
     Column(
         Modifier
             .padding(0.dp, 32.dp, 0.dp, 0.dp)
@@ -122,11 +129,16 @@ fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
             label = { Text("E-mail") },
             singleLine = true,
             leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email,imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            )
         )
 
         var password by rememberSaveable { mutableStateOf("") }
         var passwordHidden by rememberSaveable { mutableStateOf(true) }
+        val keyboardController = LocalSoftwareKeyboardController.current
+
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = password,
@@ -137,7 +149,10 @@ fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
             leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Email") },
             visualTransformation =
             if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password,imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = {
+                keyboardController?.hide()
+            }),
             trailingIcon = {
                 IconButton(onClick = { passwordHidden = !passwordHidden }) {
                     val visibilityIcon =

@@ -17,7 +17,7 @@ import retrofit2.Response
 import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repository: RegisterRepository) : ViewModel() {
-    val loginUser : LoginUser = LoginUser(0,"","","","","")
+    val loginUser : LoginUser = LoginUser(0,"","","","","","","")
     private var _loginResult = MutableLiveData<String>("")
     var loginResult: LiveData<String> = _loginResult
 
