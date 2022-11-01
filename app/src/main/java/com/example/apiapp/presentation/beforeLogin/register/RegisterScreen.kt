@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,12 +18,17 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -66,10 +72,13 @@ fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewM
     }
 
 }
+@OptIn(ExperimentalComposeUiApi::class)
 @Preview(showBackground = true)
 @Composable
 fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
     val painter = painterResource(id = R.drawable.missing_avatar)
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     var name by rememberSaveable() { mutableStateOf(viewModel.nameDV.data) }
     var email by rememberSaveable() { mutableStateOf(viewModel.emailDV.data) }
@@ -135,7 +144,12 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
                 .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
                 .clickable {
                     name = ""
-                })
+                },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            )
+        )
 
         OutlinedTextField(value = email,
             onValueChange = {email = it
@@ -150,7 +164,11 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
                 .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
                 .clickable {
                     email= ""
-                })
+                },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email,imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            ))
 
         OutlinedTextField(value = password,
             onValueChange = {password = it
@@ -165,7 +183,10 @@ fun StepOneV2(viewModel: RegisterViewModel = hiltViewModel()){
                 .fillMaxWidth()
                 .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
                 .clickable { password = "" },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password,imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = {
+                keyboardController?.hide()
+            }))
     }
 }
 @Composable
