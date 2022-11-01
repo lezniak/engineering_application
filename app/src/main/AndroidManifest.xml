@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
@@ -30,7 +31,6 @@
         <activity android:name=".presentation.activity.AfterLoginActivity"
             android:label="Home"
             android:noHistory = "true"></activity>
-        <activity android:name=".presentation.afterLogin.map.MapsActivity"/>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyApmkpcBcBPNeYS7025QWRsva4ZWaJBU00"/>
