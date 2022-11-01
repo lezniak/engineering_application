@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
-import com.example.apiapp.Screen
+import com.example.apiapp.navigation.Screen
 import com.example.apiapp.common.MyButton
 import com.squaredem.composecalendar.ComposeCalendar
 import java.time.LocalDate

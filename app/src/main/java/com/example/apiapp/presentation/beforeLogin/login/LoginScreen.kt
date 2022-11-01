@@ -2,7 +2,6 @@ package com.example.apiapp.presentation.beforeLogin.login
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -31,19 +30,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.apiapp.Screen
+import com.example.apiapp.navigation.Screen
 import com.example.apiapp.common.MyButton
 import com.example.apiapp.presentation.activity.AfterLoginActivity
-import com.example.apiapp.presentation.beforeLogin.register.RegisterViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -170,7 +164,7 @@ fun WelcomeText(){
     Text(text = "Aby kontynuowac proszę się zalogować.",color = Color(128,128,128), fontSize = 12.sp )
 }
 
-@SuppressLint("CoroutineCreationDuringComposition")
+@SuppressLint("CoroutineCreationDuringComposition", "SuspiciousIndentation")
 @Composable
 fun ShowDialog(mess: String,scaffoldState: ScaffoldState,viewModel: LoginViewModel = hiltViewModel()){
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
