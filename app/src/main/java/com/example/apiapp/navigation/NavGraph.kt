@@ -7,7 +7,9 @@ import androidx.navigation.compose.composable
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.navigation.Screen
 import com.example.apiapp.presentation.afterLogin.HomeScreen.HomeScreen
+import com.example.apiapp.presentation.afterLogin.events.EventsScreen
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
+import com.example.apiapp.presentation.afterLogin.profile.ProfileScreen
 import com.example.apiapp.presentation.beforeLogin.confirmEmail.ConfirmScreen
 import com.example.apiapp.presentation.beforeLogin.login.LoginScreen
 import com.example.apiapp.presentation.beforeLogin.register.RegisterScreen
@@ -38,6 +40,12 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController){
         }
         composable(BottomNavItem.Map.screen_route){
             GoogMap()
+        }
+        composable(BottomNavItem.Profile.screen_route){
+            ProfileScreen()
+        }
+        composable(BottomNavItem.Events.screen_route){
+            EventsScreen()
         }
     }
 }
