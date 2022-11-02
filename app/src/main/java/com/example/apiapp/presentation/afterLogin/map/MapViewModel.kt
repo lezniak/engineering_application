@@ -6,5 +6,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor() :  ViewModel()  {
-    var range = 0f
+    var range = 50f
+
+
 }
