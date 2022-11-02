@@ -1,4 +1,7 @@
 package com.example.apiapp.presentation.afterLogin.events
 
-class EventsViewModel {
+import androidx.lifecycle.ViewModel
+import javax.inject.Inject
+
+class EventsViewModel @Inject constructor(): ViewModel() {
 }

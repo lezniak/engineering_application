@@ -1,4 +1,7 @@
 package com.example.apiapp.presentation.afterLogin.profile
 
-class ProfileViewModel {
+import androidx.lifecycle.ViewModel
+import javax.inject.Inject
+
+class ProfileViewModel @Inject constructor(): ViewModel() {
 }
