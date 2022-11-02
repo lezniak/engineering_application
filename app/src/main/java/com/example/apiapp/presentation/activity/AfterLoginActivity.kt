@@ -77,6 +77,8 @@ fun BottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Map,
+        BottomNavItem.Events,
+        BottomNavItem.Profile
     )
     BottomNavigation(
         backgroundColor = colorResource(id = R.color.prim700),
