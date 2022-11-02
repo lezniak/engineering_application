@@ -28,6 +28,7 @@ class LoginViewModel @Inject constructor(private val repository: RegisterReposit
         _loginResult.value = arg
     }
     fun loginToService(){
+        loginUser.email = loginUser.email?.filter { !it.isWhitespace() }
         viewModelScope.launch {
             repository.loginUser(loginUser).enqueue(object : Callback<ServiceReturn<LoginUser>> {
                 override fun onResponse(

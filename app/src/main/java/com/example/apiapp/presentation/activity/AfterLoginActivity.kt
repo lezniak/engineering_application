@@ -23,7 +23,9 @@ import com.example.apiapp.R
 import com.example.apiapp.SetupNavGraphAfterLogin
 import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.navigation.BottomNavItem
+import com.example.apiapp.presentation.activity.AfterLoginActivity.Companion.lastLocation
 import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider
+import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider.GPSCoordinates
 import com.example.apiapp.presentation.ui.theme.ApiAppTheme
 import com.google.android.gms.location.LocationCallback
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,30 +35,29 @@ class AfterLoginActivity: ComponentActivity() {
     companion object{
         val requestToken = ""
         lateinit var userData: LoginUser
+        lateinit var lastLocation: GPSCoordinates
     }
     lateinit var navController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userData = intent.getParcelableExtra<LoginUser>("user")!!
-
+        getLastLocation(this)
 
         setContent {
             ApiAppTheme {
             }
-                foo(this)
                 MainScreenView()
             }
         }
     }
-fun foo(context: Context?) {
+
+fun getLastLocation(context: Context?) {
     // when you need location
     // if inside activity context = this;
     SingleShotLocationProvider.requestSingleUpdate(context
     ) { location ->
-        Log.e(
-            "test",
-            location?.latitude.toString() + " " + location?.longitude.toString()
-        )
+        lastLocation = location
     }
 
 }
@@ -78,7 +79,7 @@ fun BottomNavigation(navController: NavController) {
         BottomNavItem.Map,
     )
     BottomNavigation(
-        backgroundColor = colorResource(id = R.color.teal_200),
+        backgroundColor = colorResource(id = R.color.prim700),
         contentColor = Color.Black
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()

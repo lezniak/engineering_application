@@ -36,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.navigation.Screen
 import com.example.apiapp.common.MyButton
+import com.example.apiapp.data.Preferences
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -48,6 +49,7 @@ fun LoginScreen(navHostController: NavHostController) {
 
 @Composable
 fun start(navHostController: NavHostController,viewModel: LoginViewModel = hiltViewModel()) {
+    var pref = Preferences(LocalContext.current)
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(scaffoldState = scaffoldState) {
         Column(modifier = Modifier
@@ -55,7 +57,7 @@ fun start(navHostController: NavHostController,viewModel: LoginViewModel = hiltV
             .padding(40.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
             WelcomeText()
-            LoginInputs()
+            LoginInputs(defaultEmail = pref.getEmail())
             Button()
         }
         Column(
@@ -73,6 +75,7 @@ fun start(navHostController: NavHostController,viewModel: LoginViewModel = hiltV
         }
         val context = LocalContext.current
         if (resultSuccess != null){
+            pref.setEmail(viewModel.loginSuccess.value!!.email!!)
             val intent = Intent(context, AfterLoginActivity::class.java)
             intent.putExtra("user",viewModel.loginSuccess.value)
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -107,8 +110,9 @@ fun Button(viewModel: LoginViewModel = hiltViewModel()){
 }
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
-    var email by rememberSaveable { mutableStateOf("") }
+fun LoginInputs(viewModel: LoginViewModel = hiltViewModel(),defaultEmail : String){
+    var email by rememberSaveable { mutableStateOf(defaultEmail) }
+    viewModel.loginUser.email = defaultEmail
     val focusManager = LocalFocusManager.current
     Column(
         Modifier
