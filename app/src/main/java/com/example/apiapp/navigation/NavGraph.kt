@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.navigation.Screen
-import com.example.apiapp.presentation.afterLogin.HomeScreen.HomeScreen
+import com.example.apiapp.presentation.afterLogin.home.HomeScreen
 import com.example.apiapp.presentation.afterLogin.events.EventsScreen
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
 import com.example.apiapp.presentation.afterLogin.profile.ProfileScreen

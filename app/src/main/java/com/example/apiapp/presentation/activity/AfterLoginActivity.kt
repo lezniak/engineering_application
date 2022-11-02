@@ -46,7 +46,6 @@ class AfterLoginActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
         userData = intent.getParcelableExtra<LoginUser>("user")!!
         getLastLocation(this)
-
         setContent {
             ApiAppTheme {
             }

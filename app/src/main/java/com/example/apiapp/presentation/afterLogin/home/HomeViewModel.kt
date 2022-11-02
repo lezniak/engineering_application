@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.afterLogin.HomeScreen
+package com.example.apiapp.presentation.afterLogin.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
