@@ -12,4 +12,9 @@ import retrofit2.http.Query
 interface MainApi {
     @GET("event")
     fun getEvent(@Query("eventId") eventId: Int): Call<ServiceReturn<Event>>
+
+    @GET("event/range")
+    fun getEventByRange(@Query("range") range: String,
+                        @Query("userLat") userLat : String,
+                        @Query("userLng") userLng: String) : Call<ServiceReturn<List<Event>>>
 }

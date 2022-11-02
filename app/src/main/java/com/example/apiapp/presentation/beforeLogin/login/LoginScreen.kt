@@ -111,8 +111,8 @@ fun Button(viewModel: LoginViewModel = hiltViewModel()){
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginInputs(viewModel: LoginViewModel = hiltViewModel(),defaultEmail : String){
-    var email by rememberSaveable { mutableStateOf(defaultEmail) }
-    viewModel.loginUser.email = defaultEmail
+    //viewModel.loginUser.email = defaultEmail
+    var email by rememberSaveable { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
     Column(
         Modifier

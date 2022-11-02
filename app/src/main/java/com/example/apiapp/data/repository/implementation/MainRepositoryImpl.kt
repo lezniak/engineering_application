@@ -14,4 +14,12 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getEvent(eventId: Int): Call<ServiceReturn<Event>> {
         return api.getEvent(eventId)
     }
+
+    override suspend fun getEventsByRange(
+        range: Int,
+        LatUser: String,
+        LonUser: String
+    ): Call<ServiceReturn<List<Event>>> {
+        return api.getEventByRange(range.toString(),LatUser.toString(),LonUser.toString())
+    }
 }
