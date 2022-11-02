@@ -82,7 +82,7 @@ fun alert(showDialog: Boolean,
     if (showDialog) {
         AlertDialog(
             title = {
-                var sliderPosition by remember { mutableStateOf(0f) }
+                var sliderPosition by remember { mutableStateOf(viewModel.range.toFloat()) }
                 Column(verticalArrangement = Arrangement.Center) {
                     Text(text = "Wybierz zakres wyszukiwania wydarzeń.")
 
