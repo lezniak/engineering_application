@@ -100,6 +100,7 @@ fun alert(showDialog: Boolean,
                 TextButton(onClick = onDismiss ) {
                     Text("Akceptuj")
                     viewModel.saveRangeMap()
+                    viewModel.getEventsByRange()
                     //todo funkcja wyszukujaca i odswiezajaca mape
                 }
             },

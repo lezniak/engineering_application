@@ -57,7 +57,7 @@ fun start(navHostController: NavHostController,viewModel: LoginViewModel = hiltV
             .padding(40.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
             WelcomeText()
-            LoginInputs(defaultEmail = pref.getEmail())
+            LoginInputs()
             Button()
         }
         Column(
@@ -110,9 +110,11 @@ fun Button(viewModel: LoginViewModel = hiltViewModel()){
 }
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginInputs(viewModel: LoginViewModel = hiltViewModel(),defaultEmail : String){
-    //viewModel.loginUser.email = defaultEmail
-    var email by rememberSaveable { mutableStateOf("") }
+fun LoginInputs(viewModel: LoginViewModel = hiltViewModel()){
+    var pref = Preferences(LocalContext.current)
+
+    var email by rememberSaveable { mutableStateOf(pref.getEmail()) }
+    viewModel.loginUser.email = email
     val focusManager = LocalFocusManager.current
     Column(
         Modifier

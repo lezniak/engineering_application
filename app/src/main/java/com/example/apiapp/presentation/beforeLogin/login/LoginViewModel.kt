@@ -1,5 +1,6 @@
 package com.example.apiapp.presentation.beforeLogin.login
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,17 +10,28 @@ import com.example.apiapp.common.errorList
 import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.repository.RegisterRepository
+import com.example.apiapp.presentation.activity.AfterLoginActivity
+import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository: RegisterRepository) : ViewModel() {
-    val loginUser : LoginUser = LoginUser(0,"","","","","","","")
+class LoginViewModel @Inject constructor(private val repository: RegisterRepository,private val application: Application) : ViewModel() {
+    val loginUser : LoginUser = LoginUser(0,"","","","","","","",0.0,0.0)
     private var _loginResult = MutableLiveData<String>("")
     var loginResult: LiveData<String> = _loginResult
+
+    init {
+        SingleShotLocationProvider.requestSingleUpdate(application
+        ) { location ->
+            loginUser.lat = location.latitude.toDouble()
+            loginUser.lng = location.longitude.toDouble()
+        }
+    }
 
     private var _loginSuccess = MutableLiveData<LoginUser>()
     var loginSuccess: LiveData<LoginUser> = _loginSuccess
@@ -29,7 +41,8 @@ class LoginViewModel @Inject constructor(private val repository: RegisterReposit
     }
     fun loginToService(){
         loginUser.email = loginUser.email?.filter { !it.isWhitespace() }
-        viewModelScope.launch {
+
+        viewModelScope.launch(Dispatchers.IO) {
             repository.loginUser(loginUser).enqueue(object : Callback<ServiceReturn<LoginUser>> {
                 override fun onResponse(
                     call: Call<ServiceReturn<LoginUser>>,

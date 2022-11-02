@@ -8,7 +8,7 @@ class Preferences(val context: Context) {
     private val preferences = context.getSharedPreferences("Preferences", MODE_PRIVATE)
 
     fun getEmail():String{
-        return preferences.getString(EMAIL_PREF," ")!!
+        return preferences.getString(EMAIL_PREF,"")!!
     }
 
     fun setEmail(arg: String){

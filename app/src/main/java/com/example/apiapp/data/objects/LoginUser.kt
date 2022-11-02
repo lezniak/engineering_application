@@ -12,5 +12,7 @@ data class LoginUser(
     var locked: String?,
     var name: String?,
     var token: String?,
-    var refreshToken: String
+    var refreshToken: String,
+    var lng : Double,
+    var lat : Double
 ) : Parcelable
