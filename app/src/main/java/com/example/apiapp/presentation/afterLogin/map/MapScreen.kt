@@ -14,10 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.apiapp.R
 import com.example.apiapp.presentation.activity.AfterLoginActivity
-
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -25,8 +23,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun GoogMap(viewModel: MapViewModel = hiltViewModel()){
-    val location = AfterLoginActivity.lastLocation
-    val  cincinati = LatLng(location.latitude.toDouble(),location.longitude.toDouble())
+    val  cincinati = LatLng(viewModel.lat.toDouble(),viewModel.long.toDouble())
     val cameraPosition = rememberCameraPositionState{
         position = CameraPosition.fromLatLngZoom(cincinati,10f)
     }

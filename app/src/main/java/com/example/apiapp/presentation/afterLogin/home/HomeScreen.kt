@@ -1,12 +1,17 @@
 package com.example.apiapp.presentation.afterLogin.home
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import com.example.apiapp.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,7 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.apiapp.navigation.BottomNavItem
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(navHostController: NavHostController,viewModel: HomeViewModel = hiltViewModel()) {
@@ -28,7 +37,7 @@ fun HomeScreen(navHostController: NavHostController,viewModel: HomeViewModel = h
 }
 
 @Composable
-private fun InformationLineFirst(){
+private fun InformationLineFirst(viewModel: HomeViewModel = hiltViewModel()){
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)
@@ -57,7 +66,7 @@ private fun InformationLineFirst(){
                     ),
                 contentAlignment = Alignment.Center
             ){
-                Text(text = "5", color = Color.White, fontSize = 24.sp)
+                Text(text = "${viewModel.state.value.events?.size?:0}", color = Color.White, fontSize = 24.sp)
             }
         }
 
@@ -75,7 +84,7 @@ private fun InformationLineSecond(navHostController: NavHostController) {
             .fillMaxWidth()
             .height(125.dp)
             .clickable {
-                Log.d("test","test")
+                Log.d("test", "test")
             }
             .weight(1f)
             .padding(horizontal = 5.dp)
@@ -98,12 +107,17 @@ private fun InformationLineSecond(navHostController: NavHostController) {
             .height(125.dp)
             .weight(1f)
             .clickable {
-                Log.d("test","test")
+                Log.d("test", "test")
             }
             .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))){
                 Text(text = "Edytuj swoje wydarzenia",modifier = Modifier.align(Alignment.Center), textAlign = TextAlign.Center)
         }
     }
+}
+@Composable
+fun Loader() {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_lottie))
+    LottieAnimation(composition)
 }
 
 

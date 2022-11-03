@@ -1,10 +1,7 @@
 package com.example.apiapp.presentation.activity
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -17,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -26,11 +22,7 @@ import com.example.apiapp.R
 import com.example.apiapp.SetupNavGraphAfterLogin
 import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.navigation.BottomNavItem
-import com.example.apiapp.presentation.activity.AfterLoginActivity.Companion.lastLocation
-import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider
-import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider.GPSCoordinates
 import com.example.apiapp.presentation.ui.theme.ApiAppTheme
-import com.google.android.gms.location.LocationCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,14 +30,13 @@ class AfterLoginActivity: ComponentActivity() {
     companion object{
         val requestToken = ""
         lateinit var userData: LoginUser
-        lateinit var lastLocation: GPSCoordinates
+//        lateinit var lastLocation: GPSCoordinates
     }
     lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userData = intent.getParcelableExtra<LoginUser>("user")!!
-        getLastLocation(this)
         setContent {
             ApiAppTheme {
             }
@@ -54,15 +45,7 @@ class AfterLoginActivity: ComponentActivity() {
         }
     }
 
-fun getLastLocation(context: Context?) {
-    // when you need location
-    // if inside activity context = this;
-    SingleShotLocationProvider.requestSingleUpdate(context
-    ) { location ->
-        lastLocation = location
-    }
 
-}
 @Composable
 fun MainScreenView(){
     val navController = rememberNavController()

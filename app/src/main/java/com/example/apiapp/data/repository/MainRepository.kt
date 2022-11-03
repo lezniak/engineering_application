@@ -8,5 +8,5 @@ interface MainRepository {
 
     suspend fun getEvent(eventId : Int) : Call<ServiceReturn<Event>>
 
-    suspend fun getEventsByRange(range: Int,LatUser : String,LonUser: String) : Call<ServiceReturn<List<Event>>>
+    suspend fun getEventsByRange(range: Int,LatUser : String,LonUser: String) : ServiceReturn<List<Event>>
 }

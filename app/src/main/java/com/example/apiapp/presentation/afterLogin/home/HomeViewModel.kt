@@ -1,38 +1,57 @@
 package com.example.apiapp.presentation.afterLogin.home
 
+import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apiapp.common.errorList
-import com.example.apiapp.data.objects.Event
-import com.example.apiapp.data.objects.ServiceReturn
-import com.example.apiapp.data.repository.MainRepository
+import com.example.apiapp.data.Preferences
+
+import com.example.apiapp.data.useCase.EventsState
+import com.example.apiapp.data.useCase.GetEventsUseCase
+import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 private const val TAG = "Home_View_Model"
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val mainRepository: MainRepository) :ViewModel(){
-    fun getById(){
-        viewModelScope.launch(Dispatchers.IO) {
-            mainRepository.getEvent(2).enqueue(object : Callback<ServiceReturn<Event>>{
-                override fun onResponse(
-                    call: Call<ServiceReturn<Event>>,
-                    response: Response<ServiceReturn<Event>>
-                ) {
-                    Log.d(TAG,"Udalo sie")
-                    response.body()?.errList?.errorList()
-                }
+class HomeViewModel @Inject constructor(private val getEventsUseCase: GetEventsUseCase, val application: Application) :ViewModel(){
+    private var preferences = Preferences(application)
+    init {
+        getEvents()
+    }
 
-                override fun onFailure(call: Call<ServiceReturn<Event>>, t: Throwable) {
-                    Log.d(TAG,"Nie udalo sie")
-                }
+    private val _state = mutableStateOf<EventsState>(EventsState())
+    val state: State<EventsState> = _state
 
-            })
-        }
+    private val _loader = mutableStateOf<Boolean>(true)
+    val loader: State<Boolean> = _loader
+
+    fun hideLoader(){
+        _loader.value = false
+    }
+     fun getEvents(){
+         var range : Int = Preferences(application).getRange()
+             SingleShotLocationProvider.requestSingleUpdate(application) { location ->
+                 saveLocation(location)
+                 viewModelScope.launch(Dispatchers.IO) {
+                 getEventsUseCase(range, location.latitude.toString(), location.longitude.toString()).collect {
+                     try {
+                         _state.value = EventsState(it.value, "correct")
+                         Log.e("HOME", "Test")
+                     } catch (ex: Exception) {
+                         Log.e("HOME", ex.stackTraceToString())
+                         _state.value = EventsState(null, "false " + ex.toString())
+                     }
+                 }
+                 }
+             }
+     }
+    private fun saveLocation(location: SingleShotLocationProvider.GPSCoordinates) {
+        preferences.setLat(location.latitude.toString())
+        preferences.setLong(location.longitude.toString())
     }
 }

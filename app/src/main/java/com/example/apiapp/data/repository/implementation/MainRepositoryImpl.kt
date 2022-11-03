@@ -19,7 +19,7 @@ class MainRepositoryImpl @Inject constructor(
         range: Int,
         LatUser: String,
         LonUser: String
-    ): Call<ServiceReturn<List<Event>>> {
+    ): ServiceReturn<List<Event>> {
         return api.getEventByRange(range.toString(),LatUser.toString(),LonUser.toString())
     }
 }

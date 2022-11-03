@@ -14,7 +14,7 @@ interface MainApi {
     fun getEvent(@Query("eventId") eventId: Int): Call<ServiceReturn<Event>>
 
     @GET("event/range")
-    fun getEventByRange(@Query("range") range: String,
+    suspend fun getEventByRange(@Query("range") range: String,
                         @Query("userLat") userLat : String,
-                        @Query("userLng") userLng: String) : Call<ServiceReturn<List<Event>>>
+                        @Query("userLng") userLng: String) : ServiceReturn<List<Event>>
 }

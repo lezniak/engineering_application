@@ -53,7 +53,6 @@ dependencies {
     //Pager for tablayouts
     implementation "com.google.accompanist:accompanist-pager:0.22.0-rc"
     //maps and google services
-
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation "com.google.maps.android:maps-compose:1.0.0"
     implementation("com.google.android.libraries.maps:maps:3.1.0-beta")
@@ -97,10 +96,16 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
     // Retrofit
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
+    implementation("com.squareup.retrofit2:retrofit-converters:2.5.0")
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
     implementation "com.google.android.gms:play-services-location:18.0.0"
     implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta07'
+
+    //lottie
+    implementation "com.airbnb.android:lottie-compose:5.2.0"
+    implementation("com.airbnb.android:lottie:3.7.1-SNAPSHOT")
 }
