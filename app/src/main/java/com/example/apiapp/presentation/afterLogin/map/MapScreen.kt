@@ -23,6 +23,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun GoogMap(viewModel: MapViewModel = hiltViewModel()){
+    val state = viewModel.state.value
     val  cincinati = LatLng(viewModel.lat.toDouble(),viewModel.long.toDouble())
     val cameraPosition = rememberCameraPositionState{
         position = CameraPosition.fromLatLngZoom(cincinati,10f)
@@ -38,9 +39,9 @@ fun GoogMap(viewModel: MapViewModel = hiltViewModel()){
             snippet = "Testowy marker")
         val events = viewModel.events.observeAsState().value
 
-        if (events?.isNotEmpty() == true){
-            Log.d("Map_size",events.size.toString())
-            events.forEach {
+        if (state.events?.isNotEmpty() == true){
+            Log.d("Map_size",state.events?.size.toString())
+            state.events?.forEach {
                 val info = it.eventAddressInformation
                 val eventPosition = LatLng(info.lat.toDouble(),info.lng.toDouble())
                 Marker(

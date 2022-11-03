@@ -2,6 +2,8 @@ package com.example.apiapp.presentation.afterLogin.map
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +13,8 @@ import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.repository.MainRepository
 import com.example.apiapp.data.repository.RegisterRepository
+import com.example.apiapp.data.useCase.EventsState
+import com.example.apiapp.data.useCase.GetEventsUseCase
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
@@ -23,36 +27,37 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class MapViewModel @Inject constructor(private var application: Application,private val repository: MainRepository) :  ViewModel()  {
+class MapViewModel @Inject constructor(private var application: Application,private val getEventsUseCase: GetEventsUseCase) :  ViewModel()  {
     var range : Int = Preferences(application).getRange()
+    private var preferences = Preferences(application)
     private var _events = MutableLiveData<List<Event>>()
     var events: LiveData<List<Event>> = _events
     var lat = Preferences(application).getLat()
     var long = Preferences(application).getLong()
 
+    private val _state = mutableStateOf<EventsState>(EventsState())
+    val state: State<EventsState> = _state
 
     fun saveRangeMap(){
         AfterLoginActivity.ifNeedRefresh = true
         Preferences(application).setRange(range)
     }
 
+    init {
+        getEventsByRange()
+    }
+
     fun getEventsByRange(){
-//        viewModelScope.async(Dispatchers.IO) {
-//            val locationUser = AfterLoginActivity.lastLocation
-//            repository.getEventsByRange(range,locationUser.latitude.toString(),locationUser.longitude.toString()).enqueue(object : Callback<ServiceReturn<List<Event>>>{
-//                override fun onResponse(
-//                    call: Call<ServiceReturn<List<Event>>>,
-//                    response: Response<ServiceReturn<List<Event>>>
-//                ) {
-//                    if (response.body()?.value != null)
-//                        _events.value = response.body()!!.value
-//                }
-//
-//                override fun onFailure(call: Call<ServiceReturn<List<Event>>>, t: Throwable) {
-//                    Log.d("test","Blad")
-//                }
-//
-//            })
-//        }
+        viewModelScope.launch(Dispatchers.IO) {
+            getEventsUseCase(range, preferences.getLat(), preferences.getLong()).collect {
+                try {
+                    _state.value = EventsState(it.value, "correct")
+                    Log.e("HOME", "Test")
+                } catch (ex: Exception) {
+                    Log.e("HOME", ex.stackTraceToString())
+                    _state.value = EventsState(null, "false " + ex.toString())
+                }
+            }
+        }
     }
 }
