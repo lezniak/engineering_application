@@ -32,6 +32,7 @@ class MapViewModel @Inject constructor(private var application: Application,priv
 
 
     fun saveRangeMap(){
+        AfterLoginActivity.ifNeedRefresh = true
         Preferences(application).setRange(range)
     }
 

@@ -94,10 +94,13 @@ fun alert(showDialog: Boolean,
             },
             onDismissRequest = onDismiss,
             confirmButton = {
-                TextButton(onClick = onDismiss ) {
-                    Text("Akceptuj")
+                TextButton(onClick = {
                     viewModel.saveRangeMap()
                     viewModel.getEventsByRange()
+                    onDismiss()
+                } ) {
+                    Text("Akceptuj")
+
                     //todo funkcja wyszukujaca i odswiezajaca mape
                 }
             },

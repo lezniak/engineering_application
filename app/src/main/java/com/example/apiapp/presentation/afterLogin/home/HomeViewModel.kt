@@ -1,5 +1,6 @@
 package com.example.apiapp.presentation.afterLogin.home
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.State
@@ -27,12 +28,7 @@ class HomeViewModel @Inject constructor(private val getEventsUseCase: GetEventsU
     private val _state = mutableStateOf<EventsState>(EventsState())
     val state: State<EventsState> = _state
 
-    private val _loader = mutableStateOf<Boolean>(true)
-    val loader: State<Boolean> = _loader
-
-    fun hideLoader(){
-        _loader.value = false
-    }
+     @SuppressLint("SuspiciousIndentation")
      fun getEvents(){
          var range : Int = Preferences(application).getRange()
              SingleShotLocationProvider.requestSingleUpdate(application) { location ->

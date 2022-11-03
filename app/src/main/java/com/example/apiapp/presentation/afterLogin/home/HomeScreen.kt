@@ -26,10 +26,17 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.apiapp.navigation.BottomNavItem
+import com.example.apiapp.presentation.activity.AfterLoginActivity
 import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(navHostController: NavHostController,viewModel: HomeViewModel = hiltViewModel()) {
+
+    if (AfterLoginActivity.ifNeedRefresh){
+        viewModel.getEvents()
+        AfterLoginActivity.ifNeedRefresh = false
+    }
+
     Column {
         InformationLineFirst()
         InformationLineSecond(navHostController)

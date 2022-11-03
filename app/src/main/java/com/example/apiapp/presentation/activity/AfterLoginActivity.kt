@@ -20,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.apiapp.R
 import com.example.apiapp.SetupNavGraphAfterLogin
+import com.example.apiapp.data.Preferences
 import com.example.apiapp.data.objects.LoginUser
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.ui.theme.ApiAppTheme
@@ -28,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AfterLoginActivity: ComponentActivity() {
     companion object{
+        var ifNeedRefresh = false
         val requestToken = ""
         lateinit var userData: LoginUser
 //        lateinit var lastLocation: GPSCoordinates
