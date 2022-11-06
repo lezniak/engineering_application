@@ -27,7 +27,11 @@ import com.example.apiapp.presentation.activity.AfterLoginActivity
 fun ProfileScreen(){
     val settings = listOf(
         Setting("Zakupione bilety","Zobacz swoje zakupione bilety"),
-        Setting("Ustaw odległość","Ustaw interesującą dla Ciebie ogległość do wydarzeń"))
+        Setting("Wydarzenia","Zobacz wydarzenia w których uczestnicznysz"),
+        Setting("Archiwum wydarzeń","Zobacz wydarzenia które już się skonczyły"),
+        Setting("Ustaw odległość","Ustaw interesującą dla Ciebie ogległość do wydarzeń"),
+        Setting("Wyloguj się",""))
+
     Column(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxWidth().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             val painter = painterResource(id = R.drawable.missing_avatar)
@@ -57,7 +61,7 @@ fun settingCard(setting: Setting){
             .fillMaxWidth()
             .padding(8.dp, 2.dp, 8.dp, 2.dp)
             .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))) {
-        Column() {
+        Column(modifier = Modifier.padding(4.dp)) {
             Text(text = setting.title)
             Text(text = setting.desc,color = Color(128,128,128), fontSize = 12.sp )
         }

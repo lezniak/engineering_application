@@ -40,9 +40,19 @@ fun HomeScreen(navHostController: NavHostController,viewModel: HomeViewModel = h
     Column {
         InformationLineFirst()
         InformationLineSecond(navHostController)
+        MyEvent()
     }
 }
-
+@Composable
+private fun MyEvent(){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
+    ) {
+        Text(text = "Twoje przyszłe wydarzenie:")
+    }
+}
 @Composable
 private fun InformationLineFirst(viewModel: HomeViewModel = hiltViewModel()){
     Row(modifier = Modifier
