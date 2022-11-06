@@ -5,6 +5,7 @@ data class Event(
     val eventDescription: String,
     val id: Int,
     val name: String,
+    val maxMembers : Int,
     val ownerId: Int,
     val ownerName: String,
     val startDate: String
