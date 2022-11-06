@@ -3,6 +3,7 @@ package com.example.apiapp.presentation.afterLogin.events
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -31,10 +32,24 @@ fun EventsScreen(viewModel: EventsViewModel = hiltViewModel()){
 fun list(list : List<Event>){
     LazyColumn() {
         itemsIndexed(list) { index, item ->
-            Text(text = item.eventAddressInformation.city)
+            CardEvent(item)
         }
     }
 }
+@Composable
+fun CardEvent(item:Event){
+    Row(modifier = Modifier.fillMaxSize()) {
+        Column() {
+            Text(text = item.name)
+            Text(text = item.eventDescription)
+        }
+        Column() {
+            Text(text = item.eventAddressInformation.city)
+            Text(text = item.startDate.substring(0,10))
+        }
+    }    
+}
+
 @Composable
 fun SimpleCircularProgressIndicator() {
     CircularProgressIndicator()
