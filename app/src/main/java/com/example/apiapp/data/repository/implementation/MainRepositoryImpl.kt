@@ -1,5 +1,6 @@
 package com.example.apiapp.data.repository.implementation
 
+import com.example.apiapp.data.objects.Dao.EventDao
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.remote.MainApi
@@ -21,5 +22,17 @@ class MainRepositoryImpl @Inject constructor(
         LonUser: String
     ): ServiceReturn<List<Event>> {
         return api.getEventByRange(range.toString(),LatUser.toString(),LonUser.toString())
+    }
+
+    override suspend fun putEvent(newEvent: EventDao): ServiceReturn<EventDao> {
+        return api.putEvent(newEvent)
+    }
+
+    override suspend fun getMyEvents(): ServiceReturn<List<Event>> {
+        return api.getMyEvents()
+    }
+
+    override suspend fun getMyEventsOLld(): ServiceReturn<List<Event>> {
+        return api.getMyEventsOld()
     }
 }

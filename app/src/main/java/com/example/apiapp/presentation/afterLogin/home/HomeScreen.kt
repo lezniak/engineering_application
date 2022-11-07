@@ -50,7 +50,11 @@ private fun MyEvent(){
         .padding(16.dp)
         .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
     ) {
-        Text(text = "Twoje przyszłe wydarzenie:")
+        Column(modifier = Modifier.padding(8.dp)) {
+            Text(text = "Twoje przyszłe wydarzenie:")
+
+        }
+
     }
 }
 @Composable
