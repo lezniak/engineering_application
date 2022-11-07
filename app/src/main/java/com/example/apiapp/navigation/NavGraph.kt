@@ -8,6 +8,7 @@ import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.navigation.Screen
 import com.example.apiapp.presentation.afterLogin.home.HomeScreen
 import com.example.apiapp.presentation.afterLogin.events.EventsScreen
+import com.example.apiapp.presentation.afterLogin.events.addEvent.AddEvent
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
 import com.example.apiapp.presentation.afterLogin.profile.ProfileScreen
 import com.example.apiapp.presentation.beforeLogin.confirmEmail.ConfirmScreen
@@ -46,6 +47,9 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController){
         }
         composable(BottomNavItem.Events.screen_route){
             EventsScreen()
+        }
+        composable(BottomNavItem.AddEvent.screen_route){
+            AddEvent(navHostController)
         }
     }
 }

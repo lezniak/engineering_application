@@ -2,6 +2,7 @@ package com.example.apiapp.presentation.activity
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -41,8 +45,8 @@ class AfterLoginActivity: ComponentActivity() {
         userData = intent.getParcelableExtra<LoginUser>("user")!!
         setContent {
             ApiAppTheme {
-            }
                 MainScreenView()
+            }
             }
         }
     }
@@ -51,8 +55,19 @@ class AfterLoginActivity: ComponentActivity() {
 @Composable
 fun MainScreenView(){
     val navController = rememberNavController()
+    var showBottomBar by rememberSaveable { mutableStateOf(true) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    showBottomBar = when (navBackStackEntry?.destination?.route) {
+        "home" -> true // on this screen bottom bar should be hidden
+        "map" -> true
+        "events" -> true
+        "profile" -> true// here too
+        else -> false // in all other cases show bottom bar
+    }
+
     Scaffold(
-        bottomBar = { BottomNavigation(navController = navController) }
+        bottomBar = { if (showBottomBar) BottomNavigation(navController = navController) }
     ) {
         Column(
             modifier = Modifier.padding(it)

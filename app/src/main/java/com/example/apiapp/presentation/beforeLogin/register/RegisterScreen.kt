@@ -46,7 +46,7 @@ import java.time.LocalDate
 @Composable
 fun RegisterScreen(navHostController: NavHostController,viewModel: RegisterViewModel = hiltViewModel()) {
     var stepFlag by rememberSaveable() { mutableStateOf(0) }
-    BackButton(navHostController)
+    BackButton(navHostController,"Stwórz własny profil")
 
     Column(modifier = Modifier
         .padding(40.dp)
@@ -301,7 +301,7 @@ fun PasswordEmailInputs(viewModel: RegisterViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun BackButton(navHostController: NavHostController) {
+fun BackButton(navHostController: NavHostController, text : String) {
     val painter = painterResource(id = R.drawable.ic_backarr)
     Row() {
         Image(
@@ -318,7 +318,7 @@ fun BackButton(navHostController: NavHostController) {
 
     Row() {
             Column(modifier = Modifier.fillMaxWidth(),verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Stwórz własny profil", modifier = Modifier.padding(16.dp))
+            Text(text = text, modifier = Modifier.padding(16.dp))
         }
     }
 }

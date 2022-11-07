@@ -105,7 +105,7 @@ private fun InformationLineSecond(navHostController: NavHostController) {
             .fillMaxWidth()
             .height(125.dp)
             .clickable {
-                Log.d("test", "test")
+                navHostController.navigate(BottomNavItem.AddEvent.screen_route)
             }
             .weight(1f)
             .padding(horizontal = 5.dp)
@@ -117,7 +117,7 @@ private fun InformationLineSecond(navHostController: NavHostController) {
             .height(125.dp)
             .weight(1f)
             .clickable {
-                //navHostController.navigate(BottomNavItem.Events.screen_route)
+                navHostController.navigate(BottomNavItem.Events.screen_route)
             }
             .padding(horizontal = 5.dp)
             .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))){
