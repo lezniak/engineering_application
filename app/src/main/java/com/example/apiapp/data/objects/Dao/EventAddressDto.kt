@@ -1,7 +1,7 @@
 package com.example.apiapp.data.objects.Dao
 
-data class EventAddressDto(val city: String,
-                           val address: String,
-                           val lng: Double,
-                           val lat: Double)
+data class EventAddressDto(var city: String = "",
+                           var address: String = "",
+                           var lng: Double = 0.0,
+                           var lat: Double = 0.0)
 
