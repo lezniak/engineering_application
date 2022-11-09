@@ -62,7 +62,6 @@ fun AddEvent(navHostController: NavHostController,viewModel: AddEventViewModel =
                 .height(200.dp),
             cameraPositionState  = cameraPosition,
             onMapClick = {
-                Log.d("Lat_Lng",it.latitude.toString()+" "+it.longitude.toString())
                 val locationData = viewModel.getCompleteAddressString(it.latitude,it.longitude,context)
                 viewModel.setCity(locationData[1])
                 viewModel.setStreet(locationData[0])
