@@ -20,7 +20,8 @@ import com.example.apiapp.presentation.beforeLogin.register.RegisterScreen
 fun SetupNavGraph(navHostController: NavHostController){
     NavHost(navController = navHostController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route){
-            LoginScreen(navHostController)
+            //LoginScreen(navHostController)
+            AddEvent(navHostController = navHostController)
         }
 
         composable(route = Screen.Register.route){

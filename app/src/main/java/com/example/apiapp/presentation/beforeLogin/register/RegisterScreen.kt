@@ -213,7 +213,7 @@ fun StepThreeScreen(viewModel: RegisterViewModel = hiltViewModel()){
 
 
 @Composable
-fun DatePicker(viewModel: RegisterViewModel = hiltViewModel()){
+private fun DatePicker(viewModel: RegisterViewModel = hiltViewModel()){
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var birthDate by rememberSaveable { mutableStateOf("") }
     if (showDialog) {
@@ -303,7 +303,7 @@ fun PasswordEmailInputs(viewModel: RegisterViewModel = hiltViewModel()) {
 @Composable
 fun BackButton(navHostController: NavHostController, text : String) {
     val painter = painterResource(id = R.drawable.ic_backarr)
-    Row() {
+    Row(Modifier.fillMaxWidth()) {
         Image(
             modifier = Modifier
                 .clickable { navHostController.popBackStack() }

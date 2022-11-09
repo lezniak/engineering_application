@@ -1,6 +1,9 @@
 package com.example.apiapp.presentation.afterLogin.map
 
 import android.app.Application
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,21 +13,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apiapp.data.Preferences
 import com.example.apiapp.data.objects.Event
-import com.example.apiapp.data.objects.ServiceReturn
-import com.example.apiapp.data.repository.MainRepository
-import com.example.apiapp.data.repository.RegisterRepository
 import com.example.apiapp.data.useCase.EventsState
 import com.example.apiapp.data.useCase.GetEventsUseCase
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.util.*
 import javax.inject.Inject
+
 
 @HiltViewModel
 class MapViewModel @Inject constructor(private var application: Application,private val getEventsUseCase: GetEventsUseCase) :  ViewModel()  {

@@ -33,6 +33,7 @@ fun GoogMap(viewModel: MapViewModel = hiltViewModel()){
         modifier = Modifier.fillMaxSize(),
         cameraPositionState  = cameraPosition)
     {
+
         Marker(
             position = cincinati,
             title = "Test",
