@@ -57,7 +57,7 @@ class AppModule {
         val request = Retrofit.Builder()
             .client(OkHttpClient.Builder().addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                 .addHeader("Authorization", "Bearer ${AfterLoginActivity.requestToken}").build()
+                 .addHeader("Authorization", "Bearer ${AfterLoginActivity.userData.token}").build()
                 chain.proceed(request)
             }.build())
             .baseUrl(Constants.BASE_URL)

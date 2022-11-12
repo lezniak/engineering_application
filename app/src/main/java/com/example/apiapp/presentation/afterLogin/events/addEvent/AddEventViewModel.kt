@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -118,17 +119,20 @@ class AddEventViewModel @Inject constructor(application: Application,val useCase
             val eventAddress = EventAddressDto(
                 _city.value,
                 _street.value,
-                eventPosition.longitude,
-                eventPosition.latitude
+                15.000,
+                20.000
             )
+            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+            val currentDate = sdf.format(Date())
             val newEvent = EventDao(
                 AfterLoginActivity.userData.id,
                 _name.value,
                 _descripton.value,
-                _startDate.value,
+                currentDate,
                 eventAddress,
                 2,
-                1L
+                1L,
+                true
             )
 
             useCase.invoke(newEvent).collect {

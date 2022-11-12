@@ -23,10 +23,10 @@ import com.example.apiapp.presentation.beforeLogin.register.RegisterScreen
 fun SetupNavGraph(navHostController: NavHostController){
     NavHost(navController = navHostController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route){
-           //LoginScreen(navHostController)
-            val address = EventAddressInformation("Krzywa 28","Rybnik",0.0f,0.0f)
-            var event = Event(address,"Grill u Daniela",0,"Grill u mne!",5,2,"Daniel","20.11.2022")
-            EventDetail(navHostController = navHostController,event)
+           LoginScreen(navHostController)
+//            val address = EventAddressInformation("Krzywa 28","Rybnik",0.0f,0.0f)
+//            var event = Event(address,"Grill u Daniela",0,"Grill u mne!",5,2,"Daniel","20.11.2022")
+//            EventDetail(navHostController = navHostController,event)
         }
 
         composable(route = Screen.Register.route){

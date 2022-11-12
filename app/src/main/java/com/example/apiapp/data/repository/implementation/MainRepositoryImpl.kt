@@ -12,8 +12,9 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val api: MainApi
 ) : MainRepository {
-    override suspend fun getEvent(eventId: Int): Call<ServiceReturn<Event>> {
-        return api.getEvent(eventId)
+    override suspend fun getEvent(newEvent: EventDao): Call<ServiceReturn<EventDao>> {
+        return api.getEvent(newEvent)
+    //return api.getEvent(newEvent.eventAddress,newEvent.eventDescription,newEvent.eventType,newEvent.genarateQrCode,newEvent.maxMembers,newEvent.name,newEvent.ownerId,newEvent.startDate)
     }
 
     override suspend fun getEventsByRange(
