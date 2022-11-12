@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.apiapp.data.objects.Event
+import com.example.apiapp.data.objects.EventAddressInformation
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.navigation.Screen
 import com.example.apiapp.presentation.afterLogin.home.HomeScreen
@@ -21,7 +23,10 @@ import com.example.apiapp.presentation.beforeLogin.register.RegisterScreen
 fun SetupNavGraph(navHostController: NavHostController){
     NavHost(navController = navHostController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route){
-           LoginScreen(navHostController)
+           //LoginScreen(navHostController)
+            val address = EventAddressInformation("Krzywa 28","Rybnik",0.0f,0.0f)
+            var event = Event(address,"Grill u Daniela",0,"Grill u mne!",5,2,"Daniel","20.11.2022")
+            EventDetail(navHostController = navHostController,event)
         }
 
         composable(route = Screen.Register.route){
@@ -53,7 +58,9 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController){
             AddEvent(navHostController = navHostController)
         }
         composable(BottomNavItem.Event.screen_route){
-            //EventDetail(navHostController = navHostController)
+            val address = EventAddressInformation("Krzywa 28","Rybnik",0.0f,0.0f)
+            var event = Event(address,"Grill u Daniela",0,"Grill u mne!",5,2,"Daniel","20.11.2022")
+            EventDetail(navHostController = navHostController,event)
         }
     }
 }
