@@ -13,6 +13,7 @@ import com.example.apiapp.presentation.afterLogin.events.details.EventDetail
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
 import com.example.apiapp.presentation.afterLogin.profile.ProfileScreen
 import com.example.apiapp.presentation.beforeLogin.confirmEmail.ConfirmScreen
+import com.example.apiapp.presentation.beforeLogin.login.LoginScreen
 import com.example.apiapp.presentation.beforeLogin.register.RegisterScreen
 
 
@@ -20,8 +21,7 @@ import com.example.apiapp.presentation.beforeLogin.register.RegisterScreen
 fun SetupNavGraph(navHostController: NavHostController){
     NavHost(navController = navHostController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route){
-           // LoginScreen(navHostController)
-            EventDetail(navHostController = navHostController)
+           LoginScreen(navHostController)
         }
 
         composable(route = Screen.Register.route){
@@ -51,6 +51,9 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController){
         }
         composable(BottomNavItem.AddEvent.screen_route){
             AddEvent(navHostController = navHostController)
+        }
+        composable(BottomNavItem.Event.screen_route){
+            //EventDetail(navHostController = navHostController)
         }
     }
 }

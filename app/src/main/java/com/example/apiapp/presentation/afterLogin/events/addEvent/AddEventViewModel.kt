@@ -10,20 +10,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.apiapp.data.Preferences
 import com.example.apiapp.data.objects.Dao.EventAddressDto
 import com.example.apiapp.data.objects.Dao.EventDao
+import com.example.apiapp.data.useCase.AddEventUseCase
 import com.example.apiapp.data.useCase.EventsState
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEventViewModel @Inject constructor(application: Application) : ViewModel() {
+class AddEventViewModel @Inject constructor(application: Application,val useCase: AddEventUseCase) : ViewModel() {
     var lati = Preferences(application).getLat()
     var long = Preferences(application).getLong()
     var eventPosition = LatLng(0.0,0.0)
@@ -105,5 +111,29 @@ class AddEventViewModel @Inject constructor(application: Application) : ViewMode
 
     fun setGenerateTicket(isGenerateTicket: Boolean){
         _forAll.value = isGenerateTicket
+    }
+
+    fun addEvent() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val eventAddress = EventAddressDto(
+                _city.value,
+                _street.value,
+                eventPosition.longitude,
+                eventPosition.latitude
+            )
+            val newEvent = EventDao(
+                AfterLoginActivity.userData.id,
+                _name.value,
+                _descripton.value,
+                _startDate.value,
+                eventAddress,
+                2,
+                1L
+            )
+
+            useCase.invoke(newEvent).collect {
+                it.value
+            }
+        }
     }
 }

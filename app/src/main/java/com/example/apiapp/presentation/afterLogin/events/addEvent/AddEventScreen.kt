@@ -90,12 +90,12 @@ fun AddEvent(navHostController: NavHostController,viewModel: AddEventViewModel =
 }
 
 @Composable
-fun EndSection(navHostController: NavHostController) {
+fun EndSection(navHostController: NavHostController,viewModel: AddEventViewModel = hiltViewModel()) {
     Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(16.dp,Alignment.CenterHorizontally)) {
         MyButton(onClick = { navHostController.popBackStack()  }) {
             Text(text = "Anuluj",color = Color.White)
         }
-       MyButton(onClick = { }) {
+       MyButton(onClick = { viewModel.addEvent() }) {
             Text(text = "Utwórz",color = Color.White)
         }
     }
@@ -149,7 +149,7 @@ private fun EventSection(viewModel: AddEventViewModel = hiltViewModel(), focusMa
         ),
         leadingIcon = { Icon(painterResource(id = R.drawable.ic_baseline_event_24),"Event") })
 
-    TextField(value = viewModel.descripton.value, onValueChange = { viewModel.setName(it) },
+    TextField(value = viewModel.descripton.value, onValueChange = { viewModel.setDesc(it) },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text),
         label = { Text(text = "Opis wydarzenia" )},
         modifier = Modifier
