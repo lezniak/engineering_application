@@ -7,8 +7,6 @@ import retrofit2.Call
 
 interface MainRepository {
 
-    suspend fun getEvent(newEvent: EventDao) : Call<ServiceReturn<EventDao>>
-
     suspend fun getEventsByRange(range: Int,LatUser : String,LonUser: String) : ServiceReturn<List<Event>>
 
     suspend fun putEvent(newEvent : EventDao) : ServiceReturn<EventDao>

@@ -35,41 +35,6 @@ class HomeViewModel @Inject constructor(private val getEventsUseCase: GetEventsU
     private var preferences = Preferences(application)
     init {
         getEvents()
-        viewModelScope.launch(Dispatchers.IO) {
-            val eventAddress = EventAddressDto(
-                "tbk",
-                "krzy",
-                15.000,
-                20.000
-            )
-            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-            val currentDate = sdf.format(Date())
-            val newEvent = EventDao(
-                AfterLoginActivity.userData.id,
-                "chuj",
-                "wuj",
-                "2022-11-13 19:30",
-                eventAddress,
-                2,
-                1L,
-                true
-            )
-            Log.w("response", GsonBuilder().setPrettyPrinting().create().toJson(newEvent))
-            repository.getEvent(newEvent).enqueue(object : Callback<ServiceReturn<EventDao>>{
-                override fun onResponse(
-                    call: Call<ServiceReturn<EventDao>>,
-                    response: Response<ServiceReturn<EventDao>>
-                ) {
-                    Log.d("NIE00","tak"+response.isSuccessful+" ??????????? "+AfterLoginActivity.requestToken)
-                }
-
-                override fun onFailure(call: Call<ServiceReturn<EventDao>>, t: Throwable) {
-                    Log.d("NIE00","nie")
-                }
-
-            })
-        }
-
     }
 
     private val _state = mutableStateOf<EventsState>(EventsState())

@@ -136,7 +136,7 @@ class AddEventViewModel @Inject constructor(application: Application,val useCase
             )
 
             useCase.invoke(newEvent).collect {
-                it.value
+                Log.i("ADD_EVENT_VIEW_MODEL",it.message!!)
             }
         }
     }
