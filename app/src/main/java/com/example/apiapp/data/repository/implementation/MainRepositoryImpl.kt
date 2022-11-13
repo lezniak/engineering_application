@@ -12,6 +12,10 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val api: MainApi
 ) : MainRepository {
+    override suspend fun getUsersToAccept(eventId: Int) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getEvent(eventId: Int): ServiceReturn<Event> {
         return api.getEvent(eventId)
     }
