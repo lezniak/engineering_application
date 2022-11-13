@@ -23,12 +23,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.apiapp.R
 import com.example.apiapp.data.objects.Event
+import com.example.apiapp.navigation.BottomNavItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventsScreen(viewModel: EventsViewModel = hiltViewModel()){
+fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(),navController: NavController){
     val state = viewModel.state.value
     var filterShow by remember {mutableStateOf(false)}
     if (state.msg !=""){
@@ -55,7 +57,7 @@ fun EventsScreen(viewModel: EventsViewModel = hiltViewModel()){
             if (filterShow){
                 FilterList()
             }
-            list(list = state.events!!)
+            list(list = state.events!!, navController = navController)
         }
     }else{
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
@@ -64,19 +66,21 @@ fun EventsScreen(viewModel: EventsViewModel = hiltViewModel()){
     }
 }
 @Composable
-fun list(list : List<Event>){
+fun list(list : List<Event>,navController: NavController){
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         itemsIndexed(list) { index, item ->
-            CardEvent(item)
+            CardEvent(item,navController)
         }
     }
 }
 @Composable
-fun CardEvent(item:Event){
+fun CardEvent(item:Event,navController: NavController){
     Row(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
-        .padding(8.dp)) {
+        .padding(8.dp).clickable {
+            navController.navigate(BottomNavItem.Event.screen_route+"?eventId=${item.id}")
+        }) {
         Column() {
             Text(text = item.name, fontWeight = FontWeight.Bold, fontSize = 14.sp)
             Text(text = item.eventDescription,color = Color(128,128,128), fontSize = 12.sp )

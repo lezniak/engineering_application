@@ -2,8 +2,10 @@ package com.example.apiapp
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.EventAddressInformation
 import com.example.apiapp.navigation.BottomNavItem
@@ -52,15 +54,23 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController){
             ProfileScreen()
         }
         composable(BottomNavItem.Events.screen_route){
-            EventsScreen()
+            EventsScreen(navController = navHostController)
         }
         composable(BottomNavItem.AddEvent.screen_route){
             AddEvent(navHostController = navHostController)
         }
-        composable(BottomNavItem.Event.screen_route){
-            val address = EventAddressInformation("Krzywa 28","Rybnik",0.0f,0.0f)
-            var event = Event(address,"Grill u Daniela",0,"Grill u mne!",5,2,"Daniel","20.11.2022")
-            EventDetail(navHostController = navHostController,event)
+        composable(BottomNavItem.Event.screen_route+"?eventId={eventId}",
+            arguments = listOf(
+            navArgument("eventId") {
+                defaultValue = 0
+                type = NavType.IntType
+            })){
+            val eventId = it.arguments?.getInt("eventId")
+
+            eventId?.let { event ->
+                EventDetail(navHostController = navHostController)
+            }
+
         }
     }
 }

@@ -9,6 +9,8 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface MainApi {
+    @GET("event")
+    suspend fun getEvent(@Query("eventId") eventId : Int) : ServiceReturn<Event>
 
     @GET("event/range")
     suspend fun getEventByRange(@Query("range") range: String,
