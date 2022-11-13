@@ -119,16 +119,15 @@ class AddEventViewModel @Inject constructor(application: Application,val useCase
             val eventAddress = EventAddressDto(
                 _city.value,
                 _street.value,
-                15.000,
-                20.000
+                eventPosition.longitude,
+                eventPosition.latitude
             )
-            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-            val currentDate = sdf.format(Date())
+
             val newEvent = EventDao(
                 AfterLoginActivity.userData.id,
                 _name.value,
                 _descripton.value,
-                currentDate,
+                _startDate.value+" 20:30:00",
                 eventAddress,
                 2,
                 1L,
