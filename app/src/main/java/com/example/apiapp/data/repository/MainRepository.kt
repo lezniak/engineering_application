@@ -6,6 +6,7 @@ import com.example.apiapp.data.objects.ServiceReturn
 import retrofit2.Call
 
 interface MainRepository {
+    suspend fun getUsersToAccept(eventId: Int)
     suspend fun getEvent(eventId: Int) : ServiceReturn<Event>
 
     suspend fun getEventsByRange(range: Int,LatUser : String,LonUser: String) : ServiceReturn<List<Event>>
