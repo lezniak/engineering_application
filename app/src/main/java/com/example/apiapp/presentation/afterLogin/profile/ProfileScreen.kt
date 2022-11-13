@@ -1,9 +1,9 @@
 package com.example.apiapp.presentation.afterLogin.profile
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,7 +35,7 @@ fun ProfileScreen(){
         Setting("Zmień hasło","Zmień hasło do swojego konta"),
         Setting("Wyloguj się",""))
 
-    Column(Modifier.fillMaxSize()) {
+    Column(Modifier.fillMaxSize().verticalScroll(ScrollState(0))) {
         Column(Modifier.fillMaxWidth().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             val painter = painterResource(id = R.drawable.missing_avatar)
             Image(
