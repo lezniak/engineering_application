@@ -10,11 +10,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -30,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
@@ -55,35 +60,57 @@ fun AddEvent(navHostController: NavHostController,viewModel: AddEventViewModel =
     val cameraPosition = rememberCameraPositionState{
         position = CameraPosition.fromLatLngZoom(myPosition.value,10f)
     }
-    Column(Modifier.fillMaxSize()) {
-        GoogleMap(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            cameraPositionState  = cameraPosition,
-            onMapClick = {
-                val locationData = viewModel.getCompleteAddressString(it.latitude,it.longitude,context)
-                viewModel.setCity(locationData[1])
-                viewModel.setStreet(locationData[0])
-                myPosition.value = LatLng(it.latitude,it.longitude)
-                viewModel.eventPosition = LatLng(it.latitude,it.longitude)
-            })
-        {
-            Marker(position = myPosition.value)
-        }
+    Scaffold(topBar = {
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+            title = {
+                Text(
+                    "Stwórz wydarzenie",
+                    maxLines = 1,
+                    fontSize = 18.sp
+                    //overflow = TextOverflow.Ellipsis
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = { navHostController.popBackStack() }) {
+                    androidx.compose.material3.Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back arrow"
+                    )
+                }
+            }
+        )
+    }) {
+        Column(Modifier.fillMaxSize()) {
+            GoogleMap(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                cameraPositionState  = cameraPosition,
+                onMapClick = {
+                    val locationData = viewModel.getCompleteAddressString(it.latitude,it.longitude,context)
+                    viewModel.setCity(locationData[1])
+                    viewModel.setStreet(locationData[0])
+                    myPosition.value = LatLng(it.latitude,it.longitude)
+                    viewModel.eventPosition = LatLng(it.latitude,it.longitude)
+                })
+            {
+                Marker(position = myPosition.value)
+            }
 
-        Column(
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp,Alignment.Top)) {
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                EventSection(focusManager = focusManager)
-                LocationSection(focusManager = focusManager)
-                AddionalSection(focusManager = focusManager)
-                EndSection(navHostController)
+                    .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp,Alignment.Top)) {
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    EventSection(focusManager = focusManager)
+                    LocationSection(focusManager = focusManager)
+                    AddionalSection(focusManager = focusManager)
+                    EndSection(navHostController)
+                }
             }
         }
     }

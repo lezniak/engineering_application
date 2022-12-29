@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -24,44 +26,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import com.example.apiapp.R
+import com.example.apiapp.common.CustomAppBar
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.navigation.BottomNavItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(),navController: NavController){
+fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(),navController: NavHostController){
     val state = viewModel.state.value
     var filterShow by remember {mutableStateOf(false)}
-    if (state.msg !=""){
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(4.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Row(Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Wydarzenia w Twojej okolicy!", fontSize = 20.sp)
-                Spacer(
-                    Modifier
-                        .weight(1f)
-                        .fillMaxWidth())
-                Icon(
-                    painterResource(id = R.drawable.filter),
-                    contentDescription = "Localized description",
-                    Modifier
-                        .size(AssistChipDefaults.IconSize)
-                        .clickable {
-                            filterShow = !filterShow
-                        }
+    androidx.compose.material.Scaffold(topBar = {
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+            title = {
+                Text(
+                    "Wydarzenia",
+                    maxLines = 1,
+                    fontSize = 18.sp
+                    //overflow = TextOverflow.Ellipsis
                 )
+            },
+            actions = {
+                    // RowScope here, so these icons will be placed horizontally
+                    IconButton(onClick = { filterShow = !filterShow }) {
+                        Icon(painterResource(id = R.drawable.filter), contentDescription = "Localized description")
+                    }
             }
-            if (filterShow){
-                FilterList()
+        )
+    }) {
+        if (state.msg !=""){
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(4.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                if (filterShow){
+                    FilterList()
+                }
+                list(list = state.events!!, navController = navController)
             }
-            list(list = state.events!!, navController = navController)
-        }
-    }else{
-        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleCircularProgressIndicator()
+        }else{
+            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
+                SimpleCircularProgressIndicator()
+            }
         }
     }
 }
@@ -78,8 +87,9 @@ fun CardEvent(item:Event,navController: NavController){
     Row(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
-        .padding(8.dp).clickable {
-            navController.navigate(BottomNavItem.Event.screen_route+"?eventId=${item.id}")
+        .padding(8.dp)
+        .clickable {
+            navController.navigate(BottomNavItem.Event.screen_route + "?eventId=${item.id}")
         }) {
         Column() {
             Text(text = item.name, fontWeight = FontWeight.Bold, fontSize = 14.sp)

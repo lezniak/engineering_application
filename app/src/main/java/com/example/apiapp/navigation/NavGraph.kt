@@ -51,7 +51,7 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController){
             GoogMap()
         }
         composable(BottomNavItem.Profile.screen_route){
-            ProfileScreen()
+            ProfileScreen(navHostController = navHostController)
         }
         composable(BottomNavItem.Events.screen_route){
             EventsScreen(navController = navHostController)

@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,23 +26,26 @@ import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.apiapp.common.CustomAppBar
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(navHostController: NavHostController,viewModel: HomeViewModel = hiltViewModel()) {
+    Scaffold(topBar = { CustomAppBar(title = "Strona główna", navHostController = navHostController,backBtn = false) }) {
+        if (AfterLoginActivity.ifNeedRefresh){
+            viewModel.getEvents()
+            AfterLoginActivity.ifNeedRefresh = false
+        }
 
-    if (AfterLoginActivity.ifNeedRefresh){
-        viewModel.getEvents()
-        AfterLoginActivity.ifNeedRefresh = false
+        Column {
+            InformationLineFirst()
+            InformationLineSecond(navHostController)
+            MyEvent()
+        }
     }
 
-    Column {
-        InformationLineFirst()
-        InformationLineSecond(navHostController)
-        MyEvent()
-    }
 }
 @Composable
 private fun MyEvent(){
