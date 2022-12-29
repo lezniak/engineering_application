@@ -16,30 +16,31 @@ import com.example.apiapp.R
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 
 
 @Composable
 fun GoogMap(viewModel: MapViewModel = hiltViewModel()){
     val state = viewModel.state.value
     val  cincinati = LatLng(viewModel.lat.toDouble(),viewModel.long.toDouble())
+    val uiSettings = remember {
+        MapUiSettings(myLocationButtonEnabled = true)
+    }
+    val properties by remember {
+        mutableStateOf(MapProperties(isMyLocationEnabled = true))
+    }
+
     val cameraPosition = rememberCameraPositionState{
         position = CameraPosition.fromLatLngZoom(cincinati,10f)
     }
     viewModel.getEventsByRange()
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
-        cameraPositionState  = cameraPosition)
+        cameraPositionState  = cameraPosition,
+        uiSettings = uiSettings,
+        properties = properties
+        )
     {
-
-        Marker(
-            position = cincinati,
-            title = "Test",
-            snippet = "Testowy marker")
-        val events = viewModel.events.observeAsState().value
-
         if (state.events?.isNotEmpty() == true){
             Log.d("Map_size",state.events?.size.toString())
             state.events?.forEach {

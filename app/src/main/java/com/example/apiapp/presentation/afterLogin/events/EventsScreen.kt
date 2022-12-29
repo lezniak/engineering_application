@@ -33,7 +33,6 @@ import com.example.apiapp.common.CustomAppBar
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.navigation.BottomNavItem
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(),navController: NavHostController){
     val state = viewModel.state.value
