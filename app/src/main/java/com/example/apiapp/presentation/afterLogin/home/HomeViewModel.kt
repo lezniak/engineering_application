@@ -63,7 +63,6 @@ class HomeViewModel @Inject constructor(private val getEventsUseCase: GetEventsU
 
          fusedLocationClient.lastLocation
              .addOnSuccessListener { location : Location? ->
-                 Log.d(TAG, "getEvents:"+location?.latitude+location?.longitude)
                  getEventsByLocation(location)
              }
              .addOnFailureListener {
@@ -73,10 +72,10 @@ class HomeViewModel @Inject constructor(private val getEventsUseCase: GetEventsU
 
     private fun getEventsByLocation(location: Location? = null){
         val range : Int = Preferences(application).getRange()
-        val lat = location?.latitude ?: preferences.getLat()
-        val lng = location?.longitude ?: preferences.getLong()
+        val lat = location?.latitude?.toString() ?: preferences.getLat()
+        val lng = location?.longitude?.toString() ?: preferences.getLong()
         CoroutineScope(Dispatchers.IO).launch {
-            getEventsUseCase(range, lat as String, lng as String).collect {
+            getEventsUseCase(range, lat, lng).collect {
                 try {
                     _state.value = EventsState(it.value, "correct",true)
                     Log.e("HOME", "Test")
