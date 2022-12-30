@@ -74,6 +74,7 @@ class HomeViewModel @Inject constructor(private val getEventsUseCase: GetEventsU
         val range : Int = Preferences(application).getRange()
         val lat = location?.latitude?.toString() ?: preferences.getLat()
         val lng = location?.longitude?.toString() ?: preferences.getLong()
+        saveLocation(lat,lng)
         CoroutineScope(Dispatchers.IO).launch {
             getEventsUseCase(range, lat, lng).collect {
                 try {
@@ -86,5 +87,8 @@ class HomeViewModel @Inject constructor(private val getEventsUseCase: GetEventsU
             }
         }
     }
-
+    private fun saveLocation(lat: String, lng: String) {
+        preferences.setLat(lat)
+        preferences.setLong(lng)
+    }
 }
