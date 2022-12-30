@@ -45,9 +45,7 @@ import com.example.apiapp.presentation.beforeLogin.register.BackButton
 import com.example.apiapp.presentation.beforeLogin.register.RegisterViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import com.squaredem.composecalendar.ComposeCalendar
 import java.time.LocalDate
 
@@ -82,11 +80,20 @@ fun AddEvent(navHostController: NavHostController,viewModel: AddEventViewModel =
         )
     }) {
         Column(Modifier.fillMaxSize()) {
+            val uiSettings = remember {
+                MapUiSettings(myLocationButtonEnabled = false, compassEnabled = false, mapToolbarEnabled = false, zoomControlsEnabled = false)
+            }
+            val properties by remember {
+                mutableStateOf(MapProperties(isMyLocationEnabled = true))
+            }
+
             GoogleMap(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
                 cameraPositionState  = cameraPosition,
+                uiSettings = uiSettings,
+                properties = properties,
                 onMapClick = {
                     val locationData = viewModel.getCompleteAddressString(it.latitude,it.longitude,context)
                     viewModel.setCity(locationData[1])

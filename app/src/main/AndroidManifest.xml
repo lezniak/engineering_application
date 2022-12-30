@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.ApiApp">
+
         <activity
             android:name=".presentation.activity.MainActivity"
             android:exported="true"

@@ -1,9 +1,6 @@
 package com.example.apiapp.presentation.afterLogin.map
 
 import android.app.Application
-import android.content.Context
-import android.location.Address
-import android.location.Geocoder
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +16,6 @@ import com.example.apiapp.presentation.activity.AfterLoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 
@@ -32,7 +28,7 @@ class MapViewModel @Inject constructor(private var application: Application,priv
     var lat = Preferences(application).getLat()
     var long = Preferences(application).getLong()
 
-    private val _state = mutableStateOf<EventsState>(EventsState())
+    private val _state = mutableStateOf(EventsState())
     val state: State<EventsState> = _state
 
     fun saveRangeMap(){
@@ -52,7 +48,7 @@ class MapViewModel @Inject constructor(private var application: Application,priv
                     Log.e("HOME", "Test")
                 } catch (ex: Exception) {
                     Log.e("HOME", ex.stackTraceToString())
-                    _state.value = EventsState(null, "false " + ex.toString())
+                    _state.value = EventsState(null, "false $ex")
                 }
             }
         }

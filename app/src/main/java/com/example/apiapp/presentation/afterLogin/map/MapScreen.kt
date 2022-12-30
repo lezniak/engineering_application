@@ -12,7 +12,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.apiapp.R
+import com.example.apiapp.common.CustomAppBar
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -20,11 +22,11 @@ import com.google.maps.android.compose.*
 
 
 @Composable
-fun GoogMap(viewModel: MapViewModel = hiltViewModel()){
+fun GoogMap(navHostController: NavHostController,viewModel: MapViewModel = hiltViewModel()){
     val state = viewModel.state.value
     val  cincinati = LatLng(viewModel.lat.toDouble(),viewModel.long.toDouble())
     val uiSettings = remember {
-        MapUiSettings(myLocationButtonEnabled = true)
+        MapUiSettings(myLocationButtonEnabled = false)
     }
     val properties by remember {
         mutableStateOf(MapProperties(isMyLocationEnabled = true))
@@ -34,46 +36,47 @@ fun GoogMap(viewModel: MapViewModel = hiltViewModel()){
         position = CameraPosition.fromLatLngZoom(cincinati,10f)
     }
     viewModel.getEventsByRange()
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        cameraPositionState  = cameraPosition,
-        uiSettings = uiSettings,
-        properties = properties
+
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState  = cameraPosition,
+            uiSettings = uiSettings,
+            properties = properties
         )
-    {
-        if (state.events?.isNotEmpty() == true){
-            Log.d("Map_size",state.events?.size.toString())
-            state.events?.forEach {
-                val info = it.eventAddressInformation
-                val eventPosition = LatLng(info.lat.toDouble(),info.lng.toDouble())
-                Marker(
-                    position = eventPosition,
-                    title = it.name,
-                    snippet = it.eventDescription
-                )
+        {
+            if (state.events?.isNotEmpty() == true){
+                Log.d("Map_size",state.events?.size.toString())
+                state.events?.forEach {
+                    val info = it.eventAddressInformation
+                    val eventPosition = LatLng(info.lat.toDouble(),info.lng.toDouble())
+                    Marker(
+                        position = eventPosition,
+                        title = it.name,
+                        snippet = it.eventDescription
+                    )
+                }
             }
         }
-    }
 
-    val showDialog = remember { mutableStateOf(false) }
-    if (showDialog.value) {
-        alert(showDialog = showDialog.value,
-            onDismiss = {showDialog.value = false})
-    }
+        val showDialog = remember { mutableStateOf(false) }
+        if (showDialog.value) {
+            alert(showDialog = showDialog.value,
+                onDismiss = {showDialog.value = false})
+        }
 
-    val painter = painterResource(id = R.drawable.distance)
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp),
-        horizontalArrangement = Arrangement.End) {
-        Icon(
-            painter,
-            contentDescription = null,
-            modifier = Modifier.clickable {
-                showDialog.value = true
-            }
-        )
-    }
+        val painter = painterResource(id = R.drawable.distance)
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+            horizontalArrangement = Arrangement.End) {
+            Icon(
+                painter,
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    showDialog.value = true
+                }
+            )
+        }
 }
 
 @Composable

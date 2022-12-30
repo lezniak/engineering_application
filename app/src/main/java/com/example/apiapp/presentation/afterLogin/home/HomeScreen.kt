@@ -7,12 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,16 +32,18 @@ import kotlinx.coroutines.delay
 @Composable
 fun HomeScreen(navHostController: NavHostController,viewModel: HomeViewModel = hiltViewModel()) {
     Scaffold(topBar = { CustomAppBar(title = "Strona główna", navHostController = navHostController,backBtn = false) }) {
+        val homeCountState by viewModel.state.collectAsState()
         if (AfterLoginActivity.ifNeedRefresh){
             viewModel.getEvents()
             AfterLoginActivity.ifNeedRefresh = false
         }
 
         Column {
-            InformationLineFirst()
+            InformationLineFirst(countCloseEvents = homeCountState.events?.size?:0)
             InformationLineSecond(navHostController)
             MyEvent()
         }
+
     }
 
 }
@@ -62,7 +62,7 @@ private fun MyEvent(){
     }
 }
 @Composable
-private fun InformationLineFirst(viewModel: HomeViewModel = hiltViewModel()){
+private fun InformationLineFirst(viewModel: HomeViewModel = hiltViewModel(),countCloseEvents: Int){
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)
@@ -91,7 +91,7 @@ private fun InformationLineFirst(viewModel: HomeViewModel = hiltViewModel()){
                     ),
                 contentAlignment = Alignment.Center
             ){
-                Text(text = "${viewModel.state.value.events?.size?:0}", color = Color.White, fontSize = 24.sp)
+                Text(text = countCloseEvents.toString(), color = Color.White, fontSize = 24.sp)
             }
         }
 
