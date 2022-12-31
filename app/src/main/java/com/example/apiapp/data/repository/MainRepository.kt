@@ -18,5 +18,7 @@ interface MainRepository {
 
     suspend fun getMyEventsOLld() : ServiceReturn<List<Event>>
 
-    suspend fun joinEvent(eventId: Long) : ServiceSimpleReturn?
+    suspend fun joinEvent(eventId: Long) : ServiceSimpleReturn
+
+    //suspend fun getListUsersToAccept() : ServiceReturn
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.apiapp.data.objects.Dao.EventDao
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.ServiceSimpleReturn
 import com.example.apiapp.data.repository.MainRepository
 import com.example.apiapp.data.repository.implementation.MainRepositoryImpl
 import com.example.apiapp.data.useCase.EventsState
@@ -39,6 +40,7 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
             }
         }
     }
+    //todo sprawdzneie status i wyprintowanie odpowiedniego toasta
     fun sendJoinRequest(eventId: Int){
         viewModelScope.launch {
             invoke(eventId).collect(FlowCollector {
@@ -47,13 +49,10 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
         }
     }
 
-    private fun invoke(eventId: Int): Flow<ServiceReturn<*>> = flow {
+    private fun invoke(eventId: Int): Flow<ServiceSimpleReturn> = flow {
         try {
-            val eventsList = repository.joinEvent(8)
-//            if (eventsList != null) {
-//                emit(eventsList)
-//            }
-
+            val eventsList = repository.joinEvent(eventId.toLong())
+            emit(eventsList)
         }catch (ex: Exception){
             Log.e("VIEWMODEL_EVENT_DETAIL",ex.toString())
         }

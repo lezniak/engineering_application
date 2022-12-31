@@ -40,13 +40,7 @@ class MainRepositoryImpl @Inject constructor(
         return api.getMyEventsOld()
     }
 
-    override suspend fun joinEvent(eventId: Long): ServiceSimpleReturn? {
-        try {
-            Log.e("TAG", "joinEvent:"+eventId.toString() )
-            return api.joinEvent(eventId)
-        }catch (Ex:Exception){
-            Log.e("TAG", "joinEvent: "+ Ex.stackTraceToString())
-            return null
-        }
+    override suspend fun joinEvent(eventId: Long): ServiceSimpleReturn {
+        return api.joinEvent(eventId)
     }
 }

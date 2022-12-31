@@ -27,5 +27,5 @@ interface MainApi {
     suspend fun getEvent(@Query("eventId") eventId : Int) : ServiceReturn<Event>
 
     @POST("event-member/join")
-    suspend fun joinEvent(@Body eventId: Long) : ServiceSimpleReturn?
+    suspend fun joinEvent(@Body eventId: Long) : ServiceSimpleReturn
 }

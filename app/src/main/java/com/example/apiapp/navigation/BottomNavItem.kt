@@ -11,4 +11,5 @@ sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:Stri
 
     object AddEvent : BottomNavItem("AddEvent",R.drawable.ic_baseline_person_24,"add_event")
     object Event: BottomNavItem("Event",R.drawable.ic_baseline_event_24,"event")
+    object EventAccept: BottomNavItem("EventAccept",R.drawable.ic_baseline_event_24,"event_accept")
 }

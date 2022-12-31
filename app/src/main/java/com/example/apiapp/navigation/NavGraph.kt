@@ -12,6 +12,7 @@ import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.navigation.Screen
 import com.example.apiapp.presentation.afterLogin.home.HomeScreen
 import com.example.apiapp.presentation.afterLogin.events.EventsScreen
+import com.example.apiapp.presentation.afterLogin.events.acceptUsers.AcceptScreen
 import com.example.apiapp.presentation.afterLogin.events.addEvent.AddEvent
 import com.example.apiapp.presentation.afterLogin.events.details.EventDetail
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
@@ -42,35 +43,51 @@ fun SetupNavGraph(navHostController: NavHostController){
 }
 
 @Composable
-fun SetupNavGraphAfterLogin(navHostController: NavHostController){
-    NavHost(navController = navHostController, startDestination = BottomNavItem.Home.screen_route){
-        composable(route = BottomNavItem.Home.screen_route){
+fun SetupNavGraphAfterLogin(navHostController: NavHostController) {
+    NavHost(navController = navHostController, startDestination = BottomNavItem.Home.screen_route) {
+        composable(route = BottomNavItem.Home.screen_route) {
             HomeScreen(navHostController)
         }
-        composable(BottomNavItem.Map.screen_route){
+        composable(BottomNavItem.Map.screen_route) {
             GoogMap(navHostController)
         }
-        composable(BottomNavItem.Profile.screen_route){
+        composable(BottomNavItem.Profile.screen_route) {
             ProfileScreen(navHostController = navHostController)
         }
-        composable(BottomNavItem.Events.screen_route){
+        composable(BottomNavItem.Events.screen_route) {
             EventsScreen(navController = navHostController)
         }
-        composable(BottomNavItem.AddEvent.screen_route){
+        composable(BottomNavItem.AddEvent.screen_route) {
             AddEvent(navHostController = navHostController)
         }
-        composable(BottomNavItem.Event.screen_route+"?eventId={eventId}",
+        composable(
+            BottomNavItem.Event.screen_route + "?eventId={eventId}",
             arguments = listOf(
-            navArgument("eventId") {
-                defaultValue = 0
-                type = NavType.IntType
-            })){
+                navArgument("eventId") {
+                    defaultValue = 0
+                    type = NavType.IntType
+                })
+        ) {
             val eventId = it.arguments?.getInt("eventId")
 
             eventId?.let { event ->
                 EventDetail(navHostController = navHostController)
             }
 
+        }
+
+        composable(
+            BottomNavItem.EventAccept.screen_route + "?eventId={eventId}", arguments = listOf(
+                navArgument("eventId") {
+                    defaultValue = 0
+                    type = NavType.IntType
+                })
+        ) {
+            val eventId = it.arguments?.getInt("eventId")
+
+            eventId?.let { event ->
+                AcceptScreen(navHostController = navHostController)
+            }
         }
     }
 }

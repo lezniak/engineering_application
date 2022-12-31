@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import com.example.apiapp.R
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.EventAddressInformation
+import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.example.apiapp.presentation.afterLogin.events.SimpleCircularProgressIndicator
 import com.google.android.gms.maps.model.CameraPosition
@@ -67,7 +68,9 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
             actions = {
                 if (event.ownerId.toLong() == AfterLoginActivity.userData.id){
                     val painter = painterResource(id = R.drawable.ic_baseline_group_add_24)
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = {
+                        navHostController.navigate(BottomNavItem.EventAccept.screen_route + "?eventId=${event.id}")
+                    }) {
                         Icon(
                             painter = painter,
                             contentDescription = "Accept users"

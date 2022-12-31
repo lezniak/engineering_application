@@ -15,7 +15,6 @@ class AddEventUseCase @Inject constructor(var repository: MainRepository) {
         try {
             val eventsList = repository.putEvent(newEventDao)
             emit(eventsList)
-
         }catch (ex: Exception){
             Log.e(TAG,ex.toString())
         }

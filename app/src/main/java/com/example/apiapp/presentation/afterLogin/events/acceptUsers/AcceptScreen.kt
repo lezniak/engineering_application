@@ -26,7 +26,7 @@ fun AcceptScreen(navHostController: NavHostController){
             colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
             title = {
                 Text(
-                    "Szczegóły wydarzenia",
+                    "Akceptacja uczestników",
                     maxLines = 1,
                     fontSize = 18.sp
                     //overflow = TextOverflow.Ellipsis
