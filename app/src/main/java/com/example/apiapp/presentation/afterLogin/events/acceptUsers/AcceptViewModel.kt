@@ -24,7 +24,7 @@ class AcceptViewModel @Inject constructor(private val repository: MainRepository
     private fun invokeFetchToAccept(eventId: Int): Flow<ServiceSimpleReturn> = flow {
         try {
             val eventsList = repository
-            emit(eventsList)
+           // emit(eventsList)
         }catch (ex: Exception){
             Log.e("VIEWMODEL_EVENT_DETAIL",ex.toString())
         }

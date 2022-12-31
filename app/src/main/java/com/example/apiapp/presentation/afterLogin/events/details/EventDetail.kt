@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import com.example.apiapp.R
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.EventAddressInformation
+import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.example.apiapp.presentation.afterLogin.events.SimpleCircularProgressIndicator
@@ -78,7 +79,7 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
                     }
                 }else{
                     Text(text = "Dołącz", modifier = Modifier.clickable {
-                        viewModel.sendJoinRequest(event.id)
+                        viewModel.sendJoinRequest(IdObject(event.id.toLong()))
                         Toast.makeText(context, "Udało się wysłać prośbę o dołączenie", Toast.LENGTH_SHORT).show()
                     })
                 }

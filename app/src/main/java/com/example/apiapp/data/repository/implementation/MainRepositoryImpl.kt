@@ -3,6 +3,7 @@ package com.example.apiapp.data.repository.implementation
 import android.util.Log
 import com.example.apiapp.data.objects.Dao.EventDao
 import com.example.apiapp.data.objects.Event
+import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.ServiceSimpleReturn
 import com.example.apiapp.data.remote.MainApi
@@ -40,7 +41,7 @@ class MainRepositoryImpl @Inject constructor(
         return api.getMyEventsOld()
     }
 
-    override suspend fun joinEvent(eventId: Long): ServiceSimpleReturn {
+    override suspend fun joinEvent(eventId: IdObject): ServiceSimpleReturn {
         return api.joinEvent(eventId)
     }
 }

@@ -2,6 +2,7 @@ package com.example.apiapp.data.remote
 
 import com.example.apiapp.data.objects.Dao.EventDao
 import com.example.apiapp.data.objects.Event
+import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.ServiceSimpleReturn
 import retrofit2.Call
@@ -27,5 +28,5 @@ interface MainApi {
     suspend fun getEvent(@Query("eventId") eventId : Int) : ServiceReturn<Event>
 
     @POST("event-member/join")
-    suspend fun joinEvent(@Body eventId: Long) : ServiceSimpleReturn
+    suspend fun joinEvent(@Body eventId: IdObject) : ServiceSimpleReturn
 }
