@@ -96,7 +96,7 @@ fun CardEvent(item:Event,navController: NavController){
         }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             Text(text = item.startDate.substring(0,10), textAlign = TextAlign.End, fontSize = 12.sp)
-            Text(text = item.eventAddressInformation.city)
+            Text(text = item.eventAddressInformation.city, fontSize = 12.sp)
 
         }
     }    
