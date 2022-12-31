@@ -14,11 +14,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Headers
 import javax.inject.Singleton
+import kotlin.math.log
 
 
 @Module
@@ -51,11 +53,13 @@ class AppModule {
     @Singleton
     @Headers("Content-Type: application/json")
     fun mainApi(): MainApi {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         val gson = GsonBuilder()
             .setLenient()
             .create()
         val request = Retrofit.Builder()
-            .client(OkHttpClient.Builder().addInterceptor { chain ->
+            .client(OkHttpClient.Builder().addInterceptor(logging).addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                  .addHeader("Authorization", "Bearer ${AfterLoginActivity.userData.token}").build()
                 chain.proceed(request)

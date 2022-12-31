@@ -1,12 +1,12 @@
 package com.example.apiapp.data.repository.implementation
 
+import android.util.Log
 import com.example.apiapp.data.objects.Dao.EventDao
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.ServiceSimpleReturn
 import com.example.apiapp.data.remote.MainApi
-import com.example.apiapp.data.remote.RegisterApi
 import com.example.apiapp.data.repository.MainRepository
-import retrofit2.Call
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -25,7 +25,7 @@ class MainRepositoryImpl @Inject constructor(
         LatUser: String,
         LonUser: String
     ): ServiceReturn<List<Event>> {
-        return api.getEventByRange(range.toString(),LatUser.toString(),LonUser.toString())
+        return api.getEventByRange(range.toString(), LatUser, LonUser)
     }
 
     override suspend fun putEvent(newEvent: EventDao): ServiceReturn<EventDao> {
@@ -38,5 +38,15 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getMyEventsOLld(): ServiceReturn<List<Event>> {
         return api.getMyEventsOld()
+    }
+
+    override suspend fun joinEvent(eventId: Long): ServiceSimpleReturn? {
+        try {
+            Log.e("TAG", "joinEvent:"+eventId.toString() )
+            return api.joinEvent(eventId)
+        }catch (Ex:Exception){
+            Log.e("TAG", "joinEvent: "+ Ex.stackTraceToString())
+            return null
+        }
     }
 }

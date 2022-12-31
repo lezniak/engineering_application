@@ -3,6 +3,7 @@ package com.example.apiapp.data.repository
 import com.example.apiapp.data.objects.Dao.EventDao
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.ServiceSimpleReturn
 import retrofit2.Call
 
 interface MainRepository {
@@ -16,4 +17,6 @@ interface MainRepository {
     suspend fun getMyEvents() : ServiceReturn<List<Event>>
 
     suspend fun getMyEventsOLld() : ServiceReturn<List<Event>>
+
+    suspend fun joinEvent(eventId: Long) : ServiceSimpleReturn?
 }

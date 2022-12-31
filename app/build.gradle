@@ -110,4 +110,6 @@ dependencies {
     //lottie
     implementation "com.airbnb.android:lottie-compose:5.2.0"
     implementation("com.airbnb.android:lottie:3.7.1-SNAPSHOT")
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 }

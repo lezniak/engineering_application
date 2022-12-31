@@ -1,6 +1,7 @@
 package com.example.apiapp.presentation.afterLogin.events.details
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -49,7 +51,8 @@ fun EventDetail(navHostController: NavHostController,viewModel: EventDetailViewM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EventDetailWithData(event : Event,navHostController: NavHostController){
+private fun EventDetailWithData(event : Event,navHostController: NavHostController,viewModel: EventDetailViewModel = hiltViewModel()){
+    val context = LocalContext.current
     Column() {
         CenterAlignedTopAppBar(
             colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
@@ -72,8 +75,8 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
                     }
                 }else{
                     Text(text = "Dołącz", modifier = Modifier.clickable {
-                        Log.d("test","join")
-                        //send request
+                        viewModel.sendJoinRequest(event.id)
+                        Toast.makeText(context, "Udało się wysłać prośbę o dołączenie", Toast.LENGTH_SHORT).show()
                     })
                 }
             },
@@ -177,7 +180,9 @@ fun EventDetailsCard(event: Event){
         }
 
         if (isAddressShow){
-            Column(modifier = Modifier.padding(8.dp).fillMaxWidth()) {
+            Column(modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()) {
 
                 Text(text = "Ulica: "+ event.eventAddressInformation.address)
                 Text(text = "Miasto: "+ event.eventAddressInformation.city)

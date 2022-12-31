@@ -1,20 +1,29 @@
 package com.example.apiapp.presentation.afterLogin.events.details
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.apiapp.data.objects.Dao.EventDao
 import com.example.apiapp.data.objects.Event
+import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.repository.MainRepository
+import com.example.apiapp.data.repository.implementation.MainRepositoryImpl
 import com.example.apiapp.data.useCase.EventsState
 import com.example.apiapp.data.useCase.GetEventUseCase
 import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
-class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetEventUseCase,savedStateHandle: SavedStateHandle) : ViewModel() {
+class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetEventUseCase,savedStateHandle: SavedStateHandle,private val repository: MainRepository) : ViewModel() {
 
     private val _state = mutableStateOf<Event?>(null)
     val state: State<Event?> = _state
@@ -30,5 +39,23 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
             }
         }
     }
+    fun sendJoinRequest(eventId: Int){
+        viewModelScope.launch {
+            invoke(eventId).collect(FlowCollector {
+                Log.d("test","test")
+            })
+        }
+    }
 
+    private fun invoke(eventId: Int): Flow<ServiceReturn<*>> = flow {
+        try {
+            val eventsList = repository.joinEvent(8)
+//            if (eventsList != null) {
+//                emit(eventsList)
+//            }
+
+        }catch (ex: Exception){
+            Log.e("VIEWMODEL_EVENT_DETAIL",ex.toString())
+        }
+    }
 }
