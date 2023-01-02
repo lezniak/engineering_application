@@ -21,4 +21,8 @@ interface MainRepository {
     suspend fun joinEvent(eventId: IdObject) : ServiceSimpleReturn
 
     suspend fun getListUsersToAccept(eventId: Int) : ServiceReturn<List<Any>>
+
+    suspend fun sendPost(eventId: Int,content:String)
+
+    suspend fun getPosts(eventId: Int) : ServiceSimpleReturn
 }

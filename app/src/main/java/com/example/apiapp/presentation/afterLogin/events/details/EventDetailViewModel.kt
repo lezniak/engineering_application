@@ -34,7 +34,9 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
     val stateMessgae: State<String> = _stateMessage
     init {
         savedStateHandle.get<Int>("eventId")?.let {
+            Log.d("VIEWMODEL_EVENT", it.toString())
             getEvent(it)
+            getPosts(it)
         }
     }
     fun getEvent(eventId : Int){
@@ -66,6 +68,23 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
             }else{
                 Log.e("VIEWMODEL_EVENT_DETAIL",ex.toString())
             }
+        }
+    }
+
+    fun sendPost(eventId:Int,postText:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository
+        }
+    }
+
+    fun getPosts(eventId: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.getPosts(eventId)
+            }catch (ex:Exception){
+                Log.e("TAG", "getPosts: "+ex.stackTraceToString())
+            }
+
         }
     }
 }

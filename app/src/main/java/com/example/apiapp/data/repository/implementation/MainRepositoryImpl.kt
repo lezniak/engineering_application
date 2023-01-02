@@ -45,5 +45,13 @@ class MainRepositoryImpl @Inject constructor(
         return api.getUsersToAccept(eventId)
     }
 
+    override suspend fun sendPost(eventId: Int, content: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPosts(eventId: Int): ServiceSimpleReturn {
+        return api.getPosts(eventId)
+    }
+
 
 }

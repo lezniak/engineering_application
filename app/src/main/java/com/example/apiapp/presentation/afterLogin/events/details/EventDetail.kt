@@ -107,7 +107,7 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
 @Composable
 fun TextFieldDemo() {
     var text by remember{ mutableStateOf("")}
-    Row {
+    Row(Modifier.fillMaxWidth().padding(8.dp)) {
         TextField(
             value = text,
             onValueChange = {text = it},

@@ -32,4 +32,7 @@ interface MainApi {
 
     @GET("event-member/members/to-accept")
     suspend fun getUsersToAccept(@Query("eventId") eventId : Int) : ServiceReturn<List<Any>>
+
+    @GET("event-post/posts")
+    suspend fun getPosts(@Query("eventId") eventId : Int): ServiceSimpleReturn
 }
