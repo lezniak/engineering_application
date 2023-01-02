@@ -8,7 +8,6 @@ import com.example.apiapp.data.objects.ServiceSimpleReturn
 import retrofit2.Call
 
 interface MainRepository {
-    suspend fun getUsersToAccept(eventId: Int)
     suspend fun getEvent(eventId: Int) : ServiceReturn<Event>
 
     suspend fun getEventsByRange(range: Int,LatUser : String,LonUser: String) : ServiceReturn<List<Event>>
@@ -21,5 +20,5 @@ interface MainRepository {
 
     suspend fun joinEvent(eventId: IdObject) : ServiceSimpleReturn
 
-    //suspend fun getListUsersToAccept() : ServiceReturn
+    suspend fun getListUsersToAccept(eventId: Int) : ServiceReturn<List<Any>>
 }

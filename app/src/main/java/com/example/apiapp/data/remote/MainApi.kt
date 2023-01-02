@@ -29,4 +29,7 @@ interface MainApi {
 
     @POST("event-member/join")
     suspend fun joinEvent(@Body eventId: IdObject) : ServiceSimpleReturn
+
+    @GET("event-member/members/to-accept")
+    suspend fun getUsersToAccept(@Query("eventId") eventId : Int) : ServiceReturn<List<Any>>
 }
