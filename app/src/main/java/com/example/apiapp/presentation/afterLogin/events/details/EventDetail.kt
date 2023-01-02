@@ -41,13 +41,19 @@ import com.google.maps.android.compose.*
 @Composable
 fun EventDetail(navHostController: NavHostController,viewModel: EventDetailViewModel = hiltViewModel()) {
     val event = viewModel.state.value
-
+    val messageState = viewModel.stateMessgae.value
+    val context = LocalContext.current
     if (event == null){
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
             SimpleCircularProgressIndicator()
         }
     }else{
         EventDetailWithData(event,navHostController)
+    }
+
+    if (messageState.isNotEmpty()){
+        Toast.makeText(context, messageState, Toast.LENGTH_SHORT).show()
+        viewModel.clearEvent()
     }
 }
 
@@ -80,7 +86,6 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
                 }else{
                     Text(text = "Dołącz", modifier = Modifier.clickable {
                         viewModel.sendJoinRequest(IdObject(event.id.toLong()))
-                        Toast.makeText(context, "Udało się wysłać prośbę o dołączenie", Toast.LENGTH_SHORT).show()
                     })
                 }
             },

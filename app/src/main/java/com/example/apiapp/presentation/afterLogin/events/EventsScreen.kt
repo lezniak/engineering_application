@@ -35,6 +35,7 @@ import com.example.apiapp.navigation.BottomNavItem
 
 @Composable
 fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(),navController: NavHostController){
+    viewModel.getEventsByRange()
     val state = viewModel.state.value
     var filterShow by remember {mutableStateOf(false)}
     androidx.compose.material.Scaffold(topBar = {

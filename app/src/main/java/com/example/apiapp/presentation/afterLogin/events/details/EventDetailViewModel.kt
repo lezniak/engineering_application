@@ -29,6 +29,9 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
 
     private val _state = mutableStateOf<Event?>(null)
     val state: State<Event?> = _state
+
+    private val _stateMessage = mutableStateOf<String>("")
+    val stateMessgae: State<String> = _stateMessage
     init {
         savedStateHandle.get<Int>("eventId")?.let {
             getEvent(it)
@@ -41,12 +44,15 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
             }
         }
     }
+    fun clearEvent(){
+        _stateMessage.value = ""
+    }
     //todo sprawdzneie status i wyprintowanie odpowiedniego toasta
     fun sendJoinRequest(eventId: IdObject){
         viewModelScope.launch {
-            invoke(eventId).collect(FlowCollector {
-                Log.d("test","test")
-            })
+            invoke(eventId).collect {
+                _stateMessage.value = it.message
+            }
         }
     }
 
@@ -55,7 +61,11 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
             val eventsList = repository.joinEvent(eventId)
             emit(eventsList)
         }catch (ex: Exception){
-            Log.e("VIEWMODEL_EVENT_DETAIL",ex.toString())
+            if (ex.stackTraceToString().contains("409")){
+                emit(ServiceSimpleReturn("Już dołączono do wydarzenia."))
+            }else{
+                Log.e("VIEWMODEL_EVENT_DETAIL",ex.toString())
+            }
         }
     }
 }
