@@ -1,5 +1,6 @@
 package com.example.apiapp.presentation.afterLogin.events.details
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -27,12 +28,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.apiapp.BottomNavigationEvent
 import com.example.apiapp.R
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.EventAddressInformation
 import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.activity.AfterLoginActivity
+import com.example.apiapp.presentation.activity.BottomNavigation
 import com.example.apiapp.presentation.afterLogin.events.SimpleCircularProgressIndicator
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -57,48 +60,56 @@ fun EventDetail(navHostController: NavHostController,viewModel: EventDetailViewM
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EventDetailWithData(event : Event,navHostController: NavHostController,viewModel: EventDetailViewModel = hiltViewModel()){
     val context = LocalContext.current
-    Column() {
-        CenterAlignedTopAppBar(
-            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
-            title = {
-                Text(
-                    "Szczegóły wydarzenia",
-                    maxLines = 1,
-                    fontSize = 18.sp
-                    //overflow = TextOverflow.Ellipsis
-                )
-            },
-            actions = {
-                if (event.ownerId.toLong() == AfterLoginActivity.userData.id){
-                    val painter = painterResource(id = R.drawable.ic_baseline_group_add_24)
-                    IconButton(onClick = {
-                        navHostController.navigate(BottomNavItem.EventAccept.screen_route + "?eventId=${event.id}")
-                    }) {
+
+        Scaffold(topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+                title = {
+                    Text(
+                        "Szczegóły wydarzenia",
+                        maxLines = 1,
+                        fontSize = 18.sp
+                        //overflow = TextOverflow.Ellipsis
+                    )
+                },
+                actions = {
+                    if (event.ownerId.toLong() == AfterLoginActivity.userData.id){
+                        val painter = painterResource(id = R.drawable.ic_baseline_group_add_24)
+                        IconButton(onClick = {
+                            navHostController.navigate(BottomNavItem.EventAccept.screen_route + "?eventId=${event.id}")
+                        }) {
+                            Icon(
+                                painter = painter,
+                                contentDescription = "Accept users"
+                            )
+                        }
+                    }else{
+                        Text(text = "Dołącz", modifier = Modifier.clickable {
+                            viewModel.sendJoinRequest(IdObject(event.id.toLong()))
+                        })
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navHostController.popBackStack() }) {
                         Icon(
-                            painter = painter,
-                            contentDescription = "Accept users"
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back arrow"
                         )
                     }
-                }else{
-                    Text(text = "Dołącz", modifier = Modifier.clickable {
-                        viewModel.sendJoinRequest(IdObject(event.id.toLong()))
-                    })
                 }
-            },
-            navigationIcon = {
-                IconButton(onClick = { navHostController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Back arrow"
-                    )
-                }
+            )
+        },
+        bottomBar = {
+            BottomNavigationEvent(navController = navHostController)
+        }) {
+            Column(modifier = Modifier.padding(paddingValues = it)) {
+                EventDetailsCard(event = event)
             }
-        )
-        EventDetailsCard(event = event)
     }
 }
 @Composable
