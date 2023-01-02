@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,22 +19,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.apiapp.BottomNavigationEvent
 import com.example.apiapp.R
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.EventAddressInformation
 import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.activity.AfterLoginActivity
-import com.example.apiapp.presentation.activity.BottomNavigation
 import com.example.apiapp.presentation.afterLogin.events.SimpleCircularProgressIndicator
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -60,12 +54,10 @@ fun EventDetail(navHostController: NavHostController,viewModel: EventDetailViewM
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EventDetailWithData(event : Event,navHostController: NavHostController,viewModel: EventDetailViewModel = hiltViewModel()){
-    val context = LocalContext.current
-
         Scaffold(topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
@@ -105,11 +97,33 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
             )
         },
         bottomBar = {
-            BottomNavigationEvent(navController = navHostController)
+            TextFieldDemo()
         }) {
             Column(modifier = Modifier.padding(paddingValues = it)) {
                 EventDetailsCard(event = event)
             }
+    }
+}
+@Composable
+fun TextFieldDemo() {
+    var text by remember{ mutableStateOf("")}
+    Row {
+        TextField(
+            value = text,
+            onValueChange = {text = it},
+            trailingIcon = {
+                androidx.compose.material.IconButton(onClick = {
+                    Log.d("TAG", "TextFieldDemo: SEND")
+                }) {
+                    val visibilityIcon = Icons.Filled.Send
+                    val description = "Send"
+                    androidx.compose.material.Icon(
+                        imageVector = visibilityIcon,
+                        contentDescription = description
+                    )
+                    }
+            }
+        )
     }
 }
 @Composable
