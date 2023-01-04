@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.afterLogin.events
+package com.example.apiapp.presentation.afterLogin.events.homeEvent
 
 import android.app.Application
 import android.util.Log

@@ -1,7 +1,6 @@
 package com.example.apiapp.presentation.afterLogin.events.addEvent
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -21,13 +20,11 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -39,10 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
 import com.example.apiapp.common.MyButton
-import com.example.apiapp.presentation.afterLogin.events.changeColors
-import com.example.apiapp.presentation.afterLogin.events.list
-import com.example.apiapp.presentation.beforeLogin.register.BackButton
-import com.example.apiapp.presentation.beforeLogin.register.RegisterViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -102,7 +95,6 @@ fun AddEvent(navHostController: NavHostController,viewModel: AddEventViewModel =
                     viewModel.eventPosition = LatLng(it.latitude,it.longitude)
                 })
             {
-                Marker(position = myPosition.value)
             }
 
             Column(

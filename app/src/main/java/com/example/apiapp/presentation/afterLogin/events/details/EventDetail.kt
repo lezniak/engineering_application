@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,7 +31,7 @@ import com.example.apiapp.data.objects.EventAddressInformation
 import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.activity.AfterLoginActivity
-import com.example.apiapp.presentation.afterLogin.events.SimpleCircularProgressIndicator
+import com.example.apiapp.presentation.afterLogin.events.homeEvent.SimpleCircularProgressIndicator
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -97,23 +98,51 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
             )
         },
         bottomBar = {
-            TextFieldDemo()
+            if (event.ownerId.toLong() == AfterLoginActivity.userData.id) {
+                TextFieldDemo()
+            }
         }) {
             Column(modifier = Modifier.padding(paddingValues = it)) {
                 EventDetailsCard(event = event)
+                Divider(color = Color.Black, thickness = 1.dp)
+                PostSegment()
             }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextFieldDemo() {
+fun PostSegment(viewModel: EventDetailViewModel = hiltViewModel()){
+    val postListState = viewModel.postList.value
+
+    Column(Modifier.verticalScroll(ScrollState(0)),verticalArrangement = Arrangement.spacedBy(0.dp)) {
+        if (!postListState.isNullOrEmpty()){
+            postListState.forEach {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Text(text = viewModel.convertMilis(it.createdAt))
+                    Text(text = it.content)
+                }
+            }
+        }
+    }
+}
+@Composable
+fun TextFieldDemo(viewModel: EventDetailViewModel = hiltViewModel()) {
     var text by remember{ mutableStateOf("")}
-    Row(Modifier.fillMaxWidth().padding(8.dp)) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(8.dp)) {
         TextField(
             value = text,
             onValueChange = {text = it},
             trailingIcon = {
                 androidx.compose.material.IconButton(onClick = {
-                    Log.d("TAG", "TextFieldDemo: SEND")
+                    viewModel.sendPost(text)
                 }) {
                     val visibilityIcon = Icons.Filled.Send
                     val description = "Send"

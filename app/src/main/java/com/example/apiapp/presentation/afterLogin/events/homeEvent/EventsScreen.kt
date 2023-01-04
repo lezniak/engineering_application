@@ -1,4 +1,4 @@
-package com.example.apiapp.presentation.afterLogin.events
+package com.example.apiapp.presentation.afterLogin.events.homeEvent
 
 
 import androidx.compose.foundation.ScrollState
@@ -11,8 +11,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -26,15 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
-import com.example.apiapp.common.CustomAppBar
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.navigation.BottomNavItem
 
 @Composable
-fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(),navController: NavHostController){
+fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(), navController: NavHostController){
     viewModel.getEventsByRange()
     val state = viewModel.state.value
     var filterShow by remember {mutableStateOf(false)}
@@ -115,11 +111,11 @@ fun FilterList(){
         }
 
         AssistChip(
-            onClick = {changeColors(listOfColor,0)},
+            onClick = { changeColors(listOfColor,0) },
             label = { Text("Data") },
             colors = AssistChipDefaults.assistChipColors(containerColor = if (listOfColor[0]) Color(0xFFF9AA33) else Color.White))
         AssistChip(
-            onClick = { changeColors(listOfColor,1)},
+            onClick = { changeColors(listOfColor,1) },
             label = { Text("Nazwa") },
             colors = AssistChipDefaults.assistChipColors(containerColor = if (listOfColor[1]) Color(0xFFF9AA33) else Color.White)
         )

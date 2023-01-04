@@ -8,10 +8,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.navigation.Screen
-import com.example.apiapp.presentation.afterLogin.events.EventsScreen
+import com.example.apiapp.presentation.afterLogin.events.homeEvent.EventsScreen
 import com.example.apiapp.presentation.afterLogin.events.acceptUsers.AcceptScreen
 import com.example.apiapp.presentation.afterLogin.events.addEvent.AddEvent
 import com.example.apiapp.presentation.afterLogin.events.details.EventDetail
+import com.example.apiapp.presentation.afterLogin.events.myEvents.MyEventScreen
 import com.example.apiapp.presentation.afterLogin.home.HomeScreen
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
 import com.example.apiapp.presentation.afterLogin.profile.ProfileScreen
@@ -57,6 +58,9 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController) {
         }
         composable(BottomNavItem.AddEvent.screen_route) {
             AddEvent(navHostController = navHostController)
+        }
+        composable(BottomNavItem.MyEvents.screen_route) {
+            MyEventScreen(navHostController)
         }
 
 
