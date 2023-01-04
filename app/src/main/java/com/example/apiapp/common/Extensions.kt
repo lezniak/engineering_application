@@ -3,7 +3,10 @@ package com.example.apiapp.common
 import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -11,10 +14,12 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.apiapp.presentation.afterLogin.events.homeEvent.SimpleCircularProgressIndicator
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -93,4 +98,10 @@ fun CustomAppBar(title: String,navHostController:NavHostController,backBtn : Boo
 fun Map<String,String>.hasError(){
     if (size>0)
         throw CustomException(values.first())
+}
+@Composable
+fun Loading(){
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
+        SimpleCircularProgressIndicator()
+    }
 }

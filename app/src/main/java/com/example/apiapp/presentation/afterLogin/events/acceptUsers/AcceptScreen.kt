@@ -22,13 +22,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
+import com.example.apiapp.common.Loading
 import com.example.apiapp.data.objects.Dao.UserAccept
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 
 @Composable
+@Suppress("UNCHECKED_CAST")
 fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel = hiltViewModel()){
     val scaffoldState: ScaffoldState = rememberScaffoldState()
-    val stateData = viewModel.state
     Scaffold(scaffoldState = scaffoldState,
     topBar = {
         CenterAlignedTopAppBar(
@@ -51,15 +52,19 @@ fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel
         )
     }) {
 
-        when(stateData.value){
+        when(val stateData = viewModel.state.value){
             is UIState.Loading -> {
-
+                Loading()
             }
             is UIState.Error ->{
 
             }
-            is UIState.Success ->{
-                UserList((stateData.value as UIState.Success).result)
+            is UIState.Success<*> ->{
+                val data = stateData.result as List<UserAccept>
+                UserList(data)
+                androidx.compose.material.Button(onClick = viewModel.test()) {
+                    Text("PUT")
+                }
             }
         }
     }
@@ -67,5 +72,5 @@ fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel
 
 @Composable
 fun UserList(result: List<UserAccept>) {
-    Log.d("test",result.toString())
+    Text(text = result.toString())
 }

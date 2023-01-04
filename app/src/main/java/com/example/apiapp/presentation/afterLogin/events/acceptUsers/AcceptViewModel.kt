@@ -40,10 +40,14 @@ class AcceptViewModel @Inject constructor(private val getUsersToAcceptUseCase: G
             }
         }
     }
+
+    fun test() {
+
+    }
 }
 
 sealed class UIState {
     object Loading : UIState()
-    data class Success(val result : List<UserAccept>) : UIState()
+    data class Success<T>(val result : T) : UIState()
     object Error : UIState()
 }

@@ -123,8 +123,10 @@ fun PostSegment(viewModel: EventDetailViewModel = hiltViewModel()){
                         .fillMaxWidth()
                         .padding(8.dp)
                 ) {
-                    Text(text = viewModel.convertMilis(it.createdAt))
-                    Text(text = it.content)
+                    Column(modifier = Modifier.padding(4.dp)) {
+                        Text(text = viewModel.convertMilis(it.createdAt))
+                        Text(text = it.content)
+                    }
                 }
             }
         }
