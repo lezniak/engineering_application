@@ -34,7 +34,7 @@ interface MainApi {
     suspend fun getUsersToAccept(@Query("eventId") eventId : Int) : ServiceReturn<ResultPagin<UserAccept>>
 
     @GET("event-post/posts")
-    suspend fun getPosts(@Query("eventId") eventId : Int): ServiceReturn<ArrayList<EventPostInformationDto>>
+    suspend fun getPosts(@Query("eventId") eventId : Int): ServiceReturn<ResultPagin<EventPostInformationDto>>
 
     @POST("event-post")
     suspend fun sendPost(@Body postPut : PostPutDao)

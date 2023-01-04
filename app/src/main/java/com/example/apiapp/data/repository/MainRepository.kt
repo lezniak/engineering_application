@@ -27,5 +27,5 @@ interface MainRepository {
 
     suspend fun sendPost(eventId: Int,content:String)
 
-    suspend fun getPosts(eventId: Int) : ServiceReturn<ArrayList<EventPostInformationDto>>
+    suspend fun getPosts(eventId: Int) : ServiceReturn<ResultPagin<EventPostInformationDto>>
 }

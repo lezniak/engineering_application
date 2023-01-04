@@ -91,7 +91,7 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
                 val postRestulDto = repository.getPosts(eventId)
 
                 if (postRestulDto.status == 1){
-                    _postList.value = postRestulDto.value!!.toPostList()
+                    _postList.value = postRestulDto.value!!.objectList.toPostList()
                 }
             }catch (ex:Exception){
                 Log.e("TAG", "getPosts: "+ex.stackTraceToString())

@@ -49,7 +49,7 @@ class MainRepositoryImpl @Inject constructor(
         api.sendPost(PostPutDao(eventId,content))
     }
 
-    override suspend fun getPosts(eventId: Int): ServiceReturn<ArrayList<EventPostInformationDto>> {
+    override suspend fun getPosts(eventId: Int): ServiceReturn<ResultPagin<EventPostInformationDto>> {
         return api.getPosts(eventId)
     }
 
