@@ -132,7 +132,7 @@ private fun InformationLineSecond(navHostController: NavHostController) {
             .height(125.dp)
             .weight(1f)
             .clickable {
-                Log.d("test", "test")
+                navHostController.navigate(BottomNavItem.MyEvents.screen_route)
             }
             .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))){
                 Text(text = "Edytuj swoje wydarzenia",modifier = Modifier.align(Alignment.Center), textAlign = TextAlign.Center)

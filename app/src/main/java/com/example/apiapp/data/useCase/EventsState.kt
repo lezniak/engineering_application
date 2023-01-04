@@ -4,6 +4,6 @@ import com.example.apiapp.data.objects.Event
 
 data class EventsState(
     var events : List<Event>? = null,
-    val msg : String = "",
-    val status : Boolean= false
+    var msg : String = "",
+    var status : Boolean= false
 )

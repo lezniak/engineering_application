@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 private const val TAG = "GET_MY_EVENTS_USE_CASE"
 
-class GetMyEvents @Inject constructor(var repository: MainRepository) {
+class GetMyEventsUseCase @Inject constructor(var repository: MainRepository) {
     operator fun invoke(): Flow<ServiceReturn<List<Event>>> = flow {
         try {
             val eventsList = repository.getMyEvents()
