@@ -22,11 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
+import com.example.apiapp.data.objects.Dao.UserAccept
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 
 @Composable
 fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel = hiltViewModel()){
     val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val stateData = viewModel.state
     Scaffold(scaffoldState = scaffoldState,
     topBar = {
         CenterAlignedTopAppBar(
@@ -48,17 +50,22 @@ fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel
             }
         )
     }) {
-        if (viewModel.state.value.status == 0){
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = viewModel.state.value.message,
-                    modifier = Modifier.padding(16.dp)
-                )
+
+        when(stateData.value){
+            is UIState.Loading -> {
+
+            }
+            is UIState.Error ->{
+
+            }
+            is UIState.Success ->{
+                UserList((stateData.value as UIState.Success).result)
             }
         }
     }
+}
+
+@Composable
+fun UserList(result: List<UserAccept>) {
+    Log.d("test",result.toString())
 }

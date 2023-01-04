@@ -1,8 +1,6 @@
 package com.example.apiapp.data.remote
 
-import com.example.apiapp.data.objects.Dao.EventDao
-import com.example.apiapp.data.objects.Dao.EventPostInformationDto
-import com.example.apiapp.data.objects.Dao.PostPutDao
+import com.example.apiapp.data.objects.Dao.*
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.ServiceReturn
@@ -33,7 +31,7 @@ interface MainApi {
     suspend fun joinEvent(@Body eventId: IdObject) : ServiceSimpleReturn
 
     @GET("event-member/members/to-accept")
-    suspend fun getUsersToAccept(@Query("eventId") eventId : Int) : ServiceReturn<List<Any>>
+    suspend fun getUsersToAccept(@Query("eventId") eventId : Int) : ServiceReturn<ResultPagin<UserAccept>>
 
     @GET("event-post/posts")
     suspend fun getPosts(@Query("eventId") eventId : Int): ServiceReturn<ArrayList<EventPostInformationDto>>

@@ -1,6 +1,7 @@
 package com.example.apiapp.presentation.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ class AfterLoginActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userData = intent.getParcelableExtra<LoginUser>("user")!!
+        Log.e("TOKEN NIGGA",userData.token.toString())
         setContent {
             ApiAppTheme {
                 MainScreenView()

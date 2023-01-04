@@ -44,7 +44,6 @@ fun Map<String,String>.errorList() : Map<String,String>{
             Log.e("ERROR_LIST",it.value)
         }
     }
-
     return this
 }
 
@@ -89,4 +88,9 @@ fun CustomAppBar(title: String,navHostController:NavHostController,backBtn : Boo
             }
         }
     )
+}
+
+fun Map<String,String>.hasError(){
+    if (size>0)
+        throw CustomException(values.first())
 }

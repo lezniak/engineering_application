@@ -7,16 +7,25 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +38,7 @@ import com.example.apiapp.presentation.activity.AfterLoginActivity
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileScreen(navHostController: NavHostController,viewModel: ProfileViewModel = hiltViewModel()){
+    //ChangePasswordDialog(onChange = {Log.d("TEST","TEST")})
     Scaffold(topBar = { CustomAppBar(title = "Ustawienia", navHostController = navHostController,false)}) {
         Column(
             Modifier
@@ -88,4 +98,55 @@ fun emptyCard(){
             Text(text = "")
         }
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun ChangePasswordDialog(onChange: (String) -> Unit) {
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordConfirmation by rememberSaveable { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
+
+    AlertDialog(
+        onDismissRequest = {},
+        title = { Text(text = "Zmień haslo") },
+        text = {
+            Column {
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = password,
+                    onValueChange = { password = it },
+                    singleLine = true,
+                    leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "pass") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password,imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(
+                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    )
+                )
+
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = passwordConfirmation,
+                    onValueChange = { passwordConfirmation = it },
+                    singleLine = true,
+                    leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "pass") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password,imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(
+                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    )
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                if (password == passwordConfirmation) {
+                    onChange(password)
+                } else {
+
+                }
+            }) {
+                Text(text = "Change")
+            }
+        }
+    )
 }
