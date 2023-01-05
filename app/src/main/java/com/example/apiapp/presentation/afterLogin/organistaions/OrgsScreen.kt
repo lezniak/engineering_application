@@ -49,6 +49,9 @@ fun OrgsScreen(navHostController: NavHostController){
             }
 
         }
+
+        if (dialogCreateNew)
+            PostDialog(onDismiss = { dialogCreateNew = !dialogCreateNew })
     }
 }
 

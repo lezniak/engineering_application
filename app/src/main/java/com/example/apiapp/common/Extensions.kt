@@ -113,7 +113,7 @@ fun NoElementList(){
         Text(text = "Sorry! Nic tutaj nie ma.")
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun AppBarWithArrow(navHostController: NavHostController,title: String){
     CenterAlignedTopAppBar(

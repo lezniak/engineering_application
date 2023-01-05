@@ -56,5 +56,9 @@ class MainRepositoryImpl @Inject constructor(
         return api.acceptUser(UserToAcceptDao(eventId,userId))
     }
 
+    override suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao) {
+        api.createOrganization(newOrganizaton)
+    }
+
 
 }

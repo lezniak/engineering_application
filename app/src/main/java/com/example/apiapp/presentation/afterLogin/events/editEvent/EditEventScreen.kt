@@ -32,7 +32,7 @@ fun EditEventScreen(navHostController: NavHostController,viewModel: EditEventVie
             verticalArrangement = Arrangement.spacedBy(8.dp,Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MyButton(onClick = { navHostController.navigate(BottomNavItem.Organizations.screen_route) }) {
+            MyButton(onClick = { navHostController.navigate(BottomNavItem.Organizations.screen_route+ "?eventId=${viewModel.eventId}") }) {
               Text(text = "Organizacje")
             }
             MyButton(onClick = { /*TODO*/ }) {

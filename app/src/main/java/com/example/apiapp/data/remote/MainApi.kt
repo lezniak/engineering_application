@@ -38,6 +38,9 @@ interface MainApi {
     @POST("event-post")
     suspend fun sendPost(@Body postPut : PostPutDao)
 
+    @POST("organization")
+    suspend fun createOrganization(@Body newOrganizationCreateDao: OrganizationCreateDao)
+
     @PUT("event-member/accept")
     suspend fun acceptUser(@Body userToAccept : UserToAcceptDao)
 }

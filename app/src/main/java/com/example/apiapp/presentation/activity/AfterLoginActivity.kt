@@ -41,7 +41,7 @@ class AfterLoginActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userData = intent.getParcelableExtra<LoginUser>("user")!!
-        Log.e("TOKEN NIGGA",userData.token.toString())
+
         setContent {
             ApiAppTheme {
                 MainScreenView()

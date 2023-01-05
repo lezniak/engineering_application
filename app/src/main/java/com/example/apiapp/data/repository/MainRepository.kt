@@ -1,9 +1,6 @@
 package com.example.apiapp.data.repository
 
-import com.example.apiapp.data.objects.Dao.EventDao
-import com.example.apiapp.data.objects.Dao.EventPostInformationDto
-import com.example.apiapp.data.objects.Dao.ResultPagin
-import com.example.apiapp.data.objects.Dao.UserAcceptList
+import com.example.apiapp.data.objects.Dao.*
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.ServiceReturn
@@ -29,4 +26,6 @@ interface MainRepository {
     suspend fun getPosts(eventId: Int) : ServiceReturn<ResultPagin<EventPostInformationDto>>
 
     suspend fun acceptUser(eventId: Int,userId: Int)
+
+    suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao)
 }
