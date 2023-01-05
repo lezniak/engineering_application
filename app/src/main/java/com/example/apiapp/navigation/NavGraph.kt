@@ -16,6 +16,7 @@ import com.example.apiapp.presentation.afterLogin.events.editEvent.EditEventScre
 import com.example.apiapp.presentation.afterLogin.events.myEvents.MyEventScreen
 import com.example.apiapp.presentation.afterLogin.home.HomeScreen
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
+import com.example.apiapp.presentation.afterLogin.organistaions.OrgsScreen
 import com.example.apiapp.presentation.afterLogin.profile.ProfileScreen
 import com.example.apiapp.presentation.beforeLogin.confirmEmail.ConfirmScreen
 import com.example.apiapp.presentation.beforeLogin.login.LoginScreen
@@ -76,6 +77,20 @@ fun SetupNavGraphAfterLogin(navHostController: NavHostController) {
             val eventId = it.arguments?.getInt("eventId")
             eventId?.let { event ->
                 EventDetail(navHostController = navHostController)
+            }
+        }
+
+        composable(
+            BottomNavItem.Organizations.screen_route + "?eventId={eventId}",
+            arguments = listOf(
+                navArgument("eventId") {
+                    defaultValue = 0
+                    type = NavType.IntType
+                })
+        ) {
+            val eventId = it.arguments?.getInt("eventId")
+            eventId?.let { event ->
+                OrgsScreen(navHostController = navHostController)
             }
         }
 

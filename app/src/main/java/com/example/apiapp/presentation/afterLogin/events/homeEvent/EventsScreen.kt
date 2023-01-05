@@ -29,6 +29,7 @@ import com.example.apiapp.R
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.navigation.BottomNavItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(), navController: NavHostController){
     viewModel.getEventsByRange()

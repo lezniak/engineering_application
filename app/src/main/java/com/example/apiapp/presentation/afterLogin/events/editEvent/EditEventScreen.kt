@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.common.AppBarWithArrow
 import com.example.apiapp.common.MyButton
+import com.example.apiapp.navigation.BottomNavItem
 
 @Composable
 fun EditEventScreen(navHostController: NavHostController,viewModel: EditEventViewModel = hiltViewModel()) {
@@ -31,7 +32,7 @@ fun EditEventScreen(navHostController: NavHostController,viewModel: EditEventVie
             verticalArrangement = Arrangement.spacedBy(8.dp,Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MyButton(onClick = { /*TODO*/ }) {
+            MyButton(onClick = { navHostController.navigate(BottomNavItem.Organizations.screen_route) }) {
               Text(text = "Organizacje")
             }
             MyButton(onClick = { /*TODO*/ }) {
@@ -50,14 +51,14 @@ fun EditEventScreen(navHostController: NavHostController,viewModel: EditEventVie
     }
 
     if (showPostDialog){
-        MessageComposer(onDismiss = {
+        PostDialog(onDismiss = {
             showPostDialog = !showPostDialog
         })
     }
 }
 
 @Composable
-fun MessageComposer(onDismiss : () -> Unit,viewModel: EditEventViewModel = hiltViewModel()) {
+fun PostDialog(onDismiss : () -> Unit,viewModel: EditEventViewModel = hiltViewModel()) {
     val context = LocalContext.current
     var message by rememberSaveable { mutableStateOf("") }
 

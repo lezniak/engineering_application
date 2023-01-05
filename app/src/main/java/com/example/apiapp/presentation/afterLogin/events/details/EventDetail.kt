@@ -132,6 +132,7 @@ fun PostSegment(viewModel: EventDetailViewModel = hiltViewModel()){
         }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldDemo(viewModel: EventDetailViewModel = hiltViewModel()) {
     var text by remember{ mutableStateOf("")}
