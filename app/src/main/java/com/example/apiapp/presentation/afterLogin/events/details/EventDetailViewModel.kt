@@ -85,7 +85,7 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
         }
     }
 
-    fun getPosts(eventId: Int){
+    private fun getPosts(eventId: Int){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val postRestulDto = repository.getPosts(eventId)
