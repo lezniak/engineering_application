@@ -1,28 +1,20 @@
 package com.example.apiapp.presentation.afterLogin.events.acceptUsers
 
-import android.provider.ContactsContract.Data
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apiapp.data.objects.*
-import com.example.apiapp.data.objects.Dao.ResultPagin
-import com.example.apiapp.data.objects.Dao.UserAccept
 import com.example.apiapp.data.repository.MainRepository
 import com.example.apiapp.data.useCase.GetUsersToAcceptUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AcceptViewModel @Inject constructor(private val getUsersToAcceptUseCase: GetUsersToAcceptUseCase,savedStateHandle: SavedStateHandle) : ViewModel() {
+class AcceptViewModel @Inject constructor(private val getUsersToAcceptUseCase: GetUsersToAcceptUseCase,savedStateHandle: SavedStateHandle,
+private val repository: MainRepository) : ViewModel() {
     private val _state = mutableStateOf<UIState>(UIState.Loading)
     val state: State<UIState>
         get() = _state
@@ -42,7 +34,9 @@ class AcceptViewModel @Inject constructor(private val getUsersToAcceptUseCase: G
     }
 
     fun test() {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.acceptUser(11,2)
+        }
     }
 }
 

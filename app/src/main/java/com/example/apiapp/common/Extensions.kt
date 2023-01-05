@@ -105,3 +105,31 @@ fun Loading(){
         SimpleCircularProgressIndicator()
     }
 }
+@Composable
+fun NoElementList(){
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Sorry! Nic tutaj nie ma.")
+    }
+}
+@Composable
+fun AppBarWithArrow(navHostController: NavHostController,title: String){
+    CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+        title = {
+            Text(
+                title,
+                maxLines = 1,
+                fontSize = 18.sp
+            )
+        },
+        navigationIcon = {
+                IconButton(onClick = { navHostController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back arrow"
+                    )
+                }
+        }
+    )
+}
+

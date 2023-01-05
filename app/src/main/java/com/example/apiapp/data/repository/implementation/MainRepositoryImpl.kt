@@ -1,6 +1,5 @@
 package com.example.apiapp.data.repository.implementation
 
-import android.util.Log
 import com.example.apiapp.data.objects.Dao.*
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.IdObject
@@ -41,7 +40,7 @@ class MainRepositoryImpl @Inject constructor(
         return api.joinEvent(eventId)
     }
 
-    override suspend fun getListUsersToAccept(eventId: Int): ServiceReturn<ResultPagin<UserAccept>> {
+    override suspend fun getListUsersToAccept(eventId: Int): ServiceReturn<ResultPagin<UserAcceptList>> {
         return api.getUsersToAccept(eventId)
     }
 
@@ -51,6 +50,10 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getPosts(eventId: Int): ServiceReturn<ResultPagin<EventPostInformationDto>> {
         return api.getPosts(eventId)
+    }
+
+    override suspend fun acceptUser(eventId: Int, userId: Int) {
+        return api.acceptUser(UserToAcceptDao(eventId,userId))
     }
 
 

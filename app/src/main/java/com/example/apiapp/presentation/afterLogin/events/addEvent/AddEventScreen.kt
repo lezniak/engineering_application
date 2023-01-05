@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
+import com.example.apiapp.common.AppBarWithArrow
 import com.example.apiapp.common.MyButton
 import com.example.apiapp.presentation.afterLogin.events.acceptUsers.UIState
 import com.google.android.gms.maps.model.CameraPosition
@@ -53,25 +54,7 @@ fun AddEvent(navHostController: NavHostController,viewModel: AddEventViewModel =
         position = CameraPosition.fromLatLngZoom(myPosition.value,10f)
     }
     Scaffold(topBar = {
-        CenterAlignedTopAppBar(
-            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
-            title = {
-                Text(
-                    "Stwórz wydarzenie",
-                    maxLines = 1,
-                    fontSize = 18.sp
-                    //overflow = TextOverflow.Ellipsis
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navHostController.popBackStack() }) {
-                    androidx.compose.material3.Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Back arrow"
-                    )
-                }
-            }
-        )
+        AppBarWithArrow(navHostController,"Stwórz wydarzenie")
     }) {
         Column(Modifier.fillMaxSize()) {
             val uiSettings = remember {

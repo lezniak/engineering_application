@@ -61,7 +61,7 @@ fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(), navController: Na
                 if (filterShow){
                     FilterList()
                 }
-                list(list = state.events!!, navController = navController)
+                List(list = state.events!!, navController = navController)
             }
         }else{
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
@@ -71,21 +71,23 @@ fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(), navController: Na
     }
 }
 @Composable
-fun list(list : List<Event>,navController: NavController){
+private fun List(list : List<Event>,navController: NavController){
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         itemsIndexed(list) { index, item ->
-            CardEvent(item,navController)
+            CardEvent(item) {
+                navController.navigate(BottomNavItem.Event.screen_route + "?eventId=${item.id}")
+            }
         }
     }
 }
 @Composable
-fun CardEvent(item:Event,navController: NavController){
+fun CardEvent(item:Event,onClick : () -> Unit){
     Row(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(10.dp))
         .padding(8.dp)
         .clickable {
-            navController.navigate(BottomNavItem.Event.screen_route + "?eventId=${item.id}")
+            onClick()
         }) {
         Column() {
             Text(text = item.name, fontWeight = FontWeight.Bold, fontSize = 14.sp)

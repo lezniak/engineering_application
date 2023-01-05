@@ -5,7 +5,6 @@ import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.objects.ServiceSimpleReturn
-import retrofit2.Call
 import retrofit2.http.*
 
 interface MainApi {
@@ -31,11 +30,14 @@ interface MainApi {
     suspend fun joinEvent(@Body eventId: IdObject) : ServiceSimpleReturn
 
     @GET("event-member/members/to-accept")
-    suspend fun getUsersToAccept(@Query("eventId") eventId : Int) : ServiceReturn<ResultPagin<UserAccept>>
+    suspend fun getUsersToAccept(@Query("eventId") eventId : Int) : ServiceReturn<ResultPagin<UserAcceptList>>
 
     @GET("event-post/posts")
     suspend fun getPosts(@Query("eventId") eventId : Int): ServiceReturn<ResultPagin<EventPostInformationDto>>
 
     @POST("event-post")
     suspend fun sendPost(@Body postPut : PostPutDao)
+
+    @PUT("event-member/accept")
+    suspend fun acceptUser(@Body userToAccept : UserToAcceptDao)
 }

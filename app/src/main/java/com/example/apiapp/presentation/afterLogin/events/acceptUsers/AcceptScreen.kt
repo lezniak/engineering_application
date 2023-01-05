@@ -1,11 +1,5 @@
 package com.example.apiapp.presentation.afterLogin.events.acceptUsers
 
-import android.util.Log
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
@@ -13,18 +7,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.apiapp.R
+import com.example.apiapp.common.AppBarWithArrow
 import com.example.apiapp.common.Loading
-import com.example.apiapp.data.objects.Dao.UserAccept
-import com.example.apiapp.presentation.activity.AfterLoginActivity
+import com.example.apiapp.common.NoElementList
+import com.example.apiapp.data.objects.Dao.UserAcceptList
 
 @Composable
 @Suppress("UNCHECKED_CAST")
@@ -32,24 +22,7 @@ fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(scaffoldState = scaffoldState,
     topBar = {
-        CenterAlignedTopAppBar(
-            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
-            title = {
-                Text(
-                    "Akceptacja uczestników",
-                    maxLines = 1,
-                    fontSize = 18.sp
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navHostController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Back arrow"
-                    )
-                }
-            }
-        )
+        AppBarWithArrow(navHostController,"Akceptacja użytkowników")
     }) {
 
         when(val stateData = viewModel.state.value){
@@ -60,10 +33,14 @@ fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel
 
             }
             is UIState.Success<*> ->{
-                val data = stateData.result as List<UserAccept>
-                UserList(data)
-                androidx.compose.material.Button(onClick = viewModel.test()) {
-                    Text("PUT")
+                val data = stateData.result as List<UserAcceptList>
+                if (data.isEmpty()){
+                    NoElementList()
+                }else{
+                    UserList(data)
+                    androidx.compose.material.Button(onClick = { viewModel.test() }) {
+                        Text("PUT")
+                    }
                 }
             }
         }
@@ -71,6 +48,6 @@ fun AcceptScreen(navHostController: NavHostController,viewModel: AcceptViewModel
 }
 
 @Composable
-fun UserList(result: List<UserAccept>) {
+fun UserList(result: List<UserAcceptList>) {
     Text(text = result.toString())
 }

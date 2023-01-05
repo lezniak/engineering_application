@@ -1,11 +1,6 @@
 package com.example.apiapp.data.useCase
 
 import android.util.Log
-import com.example.apiapp.common.hasError
-import com.example.apiapp.data.objects.Dao.ResultPagin
-import com.example.apiapp.data.objects.Dao.UserAccept
-import com.example.apiapp.data.objects.MyState
-import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.repository.MainRepository
 import com.example.apiapp.presentation.afterLogin.events.acceptUsers.UIState
 import kotlinx.coroutines.flow.Flow
