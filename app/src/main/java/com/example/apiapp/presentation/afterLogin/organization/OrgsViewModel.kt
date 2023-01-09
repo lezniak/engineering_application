@@ -25,11 +25,13 @@ class OrgsViewModel @Inject constructor(savedStateHandle: SavedStateHandle,priva
     init {
         savedStateHandle.get<Int>("eventId")?.let {
             eventId = it
-            getOrganizations(it)
+            getOrganizations()
         }
     }
 
-    fun getOrganizations(eventId: Int){
+    private fun getOrganizations(){
+        _state.value = UIState.Loading
+
         viewModelScope.launch(Dispatchers.IO) {
             getMyOrganizationEvent.invoke(eventId).collect {
                 _state.value = it
@@ -39,7 +41,10 @@ class OrgsViewModel @Inject constructor(savedStateHandle: SavedStateHandle,priva
 
     fun createOrganisation(organiztaionName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.createOrganiztarion(OrganizationCreateDao(eventId,organiztaionName))
+            val result = repository.createOrganiztarion(OrganizationCreateDao(eventId,organiztaionName)).await()
+
+            if (result.status == 1)
+                getOrganizations()
         }
 
     }

@@ -6,6 +6,7 @@ import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.Results.ResultPagin
 import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
+import kotlinx.coroutines.Deferred
 
 interface MainRepository {
     suspend fun getEvent(eventId: Int) : ServiceReturn<Event>
@@ -28,7 +29,7 @@ interface MainRepository {
 
     suspend fun acceptUser(eventId: Int,userId: Int)
 
-    suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao)
+    suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao) : Deferred<ServiceReturn<Any>>
 
     suspend fun getOrganizationEvent(eventId: Int) : ServiceReturn<ResultPagin<OrganizationItem>>
 }

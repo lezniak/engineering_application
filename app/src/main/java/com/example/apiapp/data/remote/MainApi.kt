@@ -40,7 +40,7 @@ interface MainApi {
     suspend fun sendPost(@Body postPut : PostPutDao)
 
     @POST("organization")
-    suspend fun createOrganization(@Body newOrganizationCreateDao: OrganizationCreateDao)
+    suspend fun createOrganization(@Body newOrganizationCreateDao: OrganizationCreateDao) : ServiceReturn<Any>
 
     @PUT("event-member/accept")
     suspend fun acceptUser(@Body userToAccept : UserToAcceptDao)

@@ -8,6 +8,10 @@ import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
 import com.example.apiapp.data.remote.MainApi
 import com.example.apiapp.data.repository.MainRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -57,8 +61,8 @@ class MainRepositoryImpl @Inject constructor(
         return api.acceptUser(UserToAcceptDao(eventId,userId))
     }
 
-    override suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao) {
-        api.createOrganization(newOrganizaton)
+    override suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao): Deferred<ServiceReturn<Any>> {
+        return CoroutineScope(Dispatchers.IO).async { api.createOrganization(newOrganizaton) }
     }
 
     override suspend fun getOrganizationEvent(eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>> {

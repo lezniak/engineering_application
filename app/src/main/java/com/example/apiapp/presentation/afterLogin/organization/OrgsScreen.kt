@@ -32,6 +32,9 @@ import com.example.apiapp.data.objects.Dao.UserOrganization
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.afterLogin.events.homeEvent.CardEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun OrgsScreen(navHostController: NavHostController,viewModel: OrgsViewModel = hiltViewModel()){
@@ -83,11 +86,11 @@ private fun ButtonRow(){
 
 
     if (dialogCreateNew)
-        PostDialog(onDismiss = { dialogCreateNew = !dialogCreateNew })
+        CreateNewOrganizationDialog(onDismiss = { dialogCreateNew = !dialogCreateNew })
 }
 
 @Composable
-fun PostDialog(onDismiss : () -> Unit,viewModel: OrgsViewModel = hiltViewModel()) {
+private fun CreateNewOrganizationDialog(onDismiss : () -> Unit,viewModel: OrgsViewModel = hiltViewModel()) {
     val context = LocalContext.current
     var message by rememberSaveable { mutableStateOf("") }
 
@@ -110,7 +113,7 @@ fun PostDialog(onDismiss : () -> Unit,viewModel: OrgsViewModel = hiltViewModel()
                 MyButton(onClick = {
                     if (message.length > 5){
                         viewModel.createOrganisation(message)
-                        Toast.makeText(context, "Udało się wysłać post!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Udało się utworzyć nową organizacje!", Toast.LENGTH_SHORT).show()
                         onDismiss()
                     }else{
                         Toast.makeText(context, "Post jest za krótki!", Toast.LENGTH_SHORT).show()
