@@ -1,11 +1,12 @@
 package com.example.apiapp.data.useCase
 
 import android.util.Log
+import com.example.apiapp.common.UIState
 import com.example.apiapp.data.repository.MainRepository
-import com.example.apiapp.presentation.afterLogin.events.acceptUsers.UIState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+
 private const val TAG="GetUsersToAcceptUseCase"
 
 class GetUsersToAcceptUseCase @Inject constructor(private val repository: MainRepository) {

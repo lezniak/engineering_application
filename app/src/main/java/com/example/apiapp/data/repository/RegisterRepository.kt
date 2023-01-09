@@ -1,10 +1,9 @@
 package com.example.apiapp.data.repository
 
 import com.example.apiapp.data.objects.LoginUser
-import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.User
 import retrofit2.Call
-import retrofit2.Response
 
 
 interface RegisterRepository {

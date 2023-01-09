@@ -1,7 +1,7 @@
 package com.example.apiapp.data.repository.implementation
 
 import com.example.apiapp.data.objects.LoginUser
-import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.User
 import com.example.apiapp.data.remote.RegisterApi
 import com.example.apiapp.data.repository.RegisterRepository

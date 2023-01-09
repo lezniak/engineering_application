@@ -1,10 +1,8 @@
 package com.example.apiapp.data.useCase
 
 import android.util.Log
-import com.example.apiapp.data.objects.Dao.EventAddressDto
 import com.example.apiapp.data.objects.Dao.EventDao
-import com.example.apiapp.data.objects.Event
-import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.repository.MainRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

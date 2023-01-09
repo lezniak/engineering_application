@@ -1,4 +1,4 @@
-package com.example.apiapp.data.objects.Dao
+package com.example.apiapp.data.objects.Results
 
 data class ResultPagin<T>(
     val last: Boolean,

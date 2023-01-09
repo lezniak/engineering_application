@@ -1,4 +1,4 @@
-package com.example.apiapp.data.objects
+package com.example.apiapp.data.objects.Results
 
 data class DataValidation<T>(
     var data : T,

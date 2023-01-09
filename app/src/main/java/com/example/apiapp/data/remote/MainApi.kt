@@ -3,8 +3,9 @@ package com.example.apiapp.data.remote
 import com.example.apiapp.data.objects.Dao.*
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.IdObject
-import com.example.apiapp.data.objects.ServiceReturn
-import com.example.apiapp.data.objects.ServiceSimpleReturn
+import com.example.apiapp.data.objects.Results.ResultPagin
+import com.example.apiapp.data.objects.Results.ServiceReturn
+import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
 import retrofit2.http.*
 
 interface MainApi {
@@ -43,4 +44,7 @@ interface MainApi {
 
     @PUT("event-member/accept")
     suspend fun acceptUser(@Body userToAccept : UserToAcceptDao)
+
+    @GET("organization/all-organizations")
+    suspend fun getOrganizationEvent(@Query("eventId") eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>>
 }

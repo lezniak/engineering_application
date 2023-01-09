@@ -16,7 +16,7 @@ import com.example.apiapp.presentation.afterLogin.events.editEvent.EditEventScre
 import com.example.apiapp.presentation.afterLogin.events.myEvents.MyEventScreen
 import com.example.apiapp.presentation.afterLogin.home.HomeScreen
 import com.example.apiapp.presentation.afterLogin.map.GoogMap
-import com.example.apiapp.presentation.afterLogin.organistaions.OrgsScreen
+import com.example.apiapp.presentation.afterLogin.organization.OrgsScreen
 import com.example.apiapp.presentation.afterLogin.profile.ProfileScreen
 import com.example.apiapp.presentation.beforeLogin.confirmEmail.ConfirmScreen
 import com.example.apiapp.presentation.beforeLogin.login.LoginScreen

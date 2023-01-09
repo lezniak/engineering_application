@@ -1,10 +1,9 @@
 package com.example.apiapp.data.remote
 
 import com.example.apiapp.data.objects.LoginUser
-import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.User
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers

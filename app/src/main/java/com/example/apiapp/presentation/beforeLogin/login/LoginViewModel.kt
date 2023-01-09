@@ -8,9 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apiapp.common.errorList
 import com.example.apiapp.data.objects.LoginUser
-import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.repository.RegisterRepository
-import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

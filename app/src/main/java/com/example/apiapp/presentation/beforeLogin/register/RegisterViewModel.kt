@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apiapp.common.errorList
-import com.example.apiapp.data.objects.DataValidation
-import com.example.apiapp.data.objects.ServiceReturn
+import com.example.apiapp.data.objects.Results.DataValidation
+import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.User
 import com.example.apiapp.data.repository.RegisterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.example.apiapp.data.objects
+package com.example.apiapp.data.objects.Results
 
 data class MyState<T>(
     var message: String = "",

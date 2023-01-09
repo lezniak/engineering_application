@@ -6,37 +6,21 @@ import android.app.Application
 import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.apiapp.data.Preferences
-import com.example.apiapp.data.objects.Dao.EventAddressDto
-import com.example.apiapp.data.objects.Dao.EventDao
-import com.example.apiapp.data.objects.ServiceReturn
 import com.example.apiapp.data.repository.MainRepository
 import com.example.apiapp.data.useCase.EventsState
 import com.example.apiapp.data.useCase.GetEventsUseCase
-import com.example.apiapp.presentation.activity.AfterLoginActivity
-import com.example.apiapp.presentation.afterLogin.map.SingleShotLocationProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.gson.GsonBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.adapter.rxjava2.Result.response
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 

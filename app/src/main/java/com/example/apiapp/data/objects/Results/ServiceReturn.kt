@@ -1,4 +1,6 @@
-package com.example.apiapp.data.objects
+package com.example.apiapp.data.objects.Results
+
+import com.example.apiapp.data.objects.RefreshToken
 
 data class ServiceReturn<T>(
     val message : String?,
