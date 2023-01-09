@@ -65,6 +65,13 @@ class MainRepositoryImpl @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async { api.createOrganization(newOrganizaton) }
     }
 
+    override suspend fun deleteOrganizationInEvent(
+        eventId: Int,
+        organizationId: Int
+    ): Deferred<ServiceReturn<Any>> {
+        return CoroutineScope(Dispatchers.IO).async { api.deleteOrganizationInEvent(eventId,organizationId) }
+    }
+
     override suspend fun getOrganizationEvent(eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>> {
         return api.getOrganizationEvent(eventId)
     }

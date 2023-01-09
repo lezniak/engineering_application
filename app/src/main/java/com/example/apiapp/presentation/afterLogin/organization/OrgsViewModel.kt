@@ -1,5 +1,6 @@
 package com.example.apiapp.presentation.afterLogin.organization
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -47,5 +48,18 @@ class OrgsViewModel @Inject constructor(savedStateHandle: SavedStateHandle,priva
                 getOrganizations()
         }
 
+    }
+
+    fun deleteOrganization(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = repository.deleteOrganizationInEvent(eventId,id).await()
+
+                if (result.status == 1)
+                    getOrganizations()
+            }catch (Ex: Exception){
+                Log.e("TAG",Ex.stackTraceToString())
+            }
+        }
     }
 }

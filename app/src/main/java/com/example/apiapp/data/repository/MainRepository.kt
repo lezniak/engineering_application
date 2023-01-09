@@ -29,7 +29,9 @@ interface MainRepository {
 
     suspend fun acceptUser(eventId: Int,userId: Int)
 
+    suspend fun getOrganizationEvent(eventId: Int) : ServiceReturn<ResultPagin<OrganizationItem>>
+
     suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao) : Deferred<ServiceReturn<Any>>
 
-    suspend fun getOrganizationEvent(eventId: Int) : ServiceReturn<ResultPagin<OrganizationItem>>
+    suspend fun deleteOrganizationInEvent(eventId: Int,organizationId:Int): Deferred<ServiceReturn<Any>>
 }

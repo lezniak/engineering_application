@@ -1,23 +1,30 @@
 package com.example.apiapp.presentation.afterLogin.organization
 
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +39,8 @@ import com.example.apiapp.data.objects.Dao.UserOrganization
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.afterLogin.events.homeEvent.CardEvent
+import com.example.apiapp.presentation.ui.theme.Purple200
+import com.example.apiapp.presentation.ui.theme.Teal200
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -74,13 +83,13 @@ private fun ButtonRow(){
                 onClick = { dialogCreateNew = true },
                 modifier = Modifier.weight(0.5f)
             ) {
-                Text(text = "Stwórz\norganizacje", fontSize = 10.sp, textAlign = TextAlign.Center)
+                Text(text = "Stwórz\norganizacje", fontSize = 10.sp, textAlign = TextAlign.Center, color = Color.White)
             }
             MyButton(
                 onClick = { dialogAddUserToOrg = true },
                 modifier = Modifier.weight(0.5f)
             ) {
-                Text(text = "Przypisz\nczłonka", fontSize = 10.sp, textAlign = TextAlign.Center)
+                Text(text = "Przypisz\nczłonka", fontSize = 10.sp, textAlign = TextAlign.Center, color = Color.White)
             }
         }
 
@@ -128,6 +137,7 @@ private fun CreateNewOrganizationDialog(onDismiss : () -> Unit,viewModel: OrgsVi
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ListOrganization(list : List<OrganizationItem>){
     list.forEach {
@@ -143,32 +153,78 @@ private fun ListUsers(list : List<UserOrganization>){
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-private fun CardOrganization(item : OrganizationItem) {
+private fun CardOrganization(item : OrganizationItem,viewModel: OrgsViewModel = hiltViewModel()) {
     var isShowUsers by rememberSaveable { mutableStateOf(false) }
+    val dismissState = rememberDismissState(initialValue = DismissValue.Default,confirmStateChange ={
+        viewModel.deleteOrganization(item.id)
+        true
+    })
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 8.dp, top = 2.dp, bottom = 2.dp, end = 8.dp)
-            .clickable {
-                isShowUsers = !isShowUsers
+    SwipeToDismiss(
+        state = dismissState,
+        background = {
+            val color = when (dismissState.dismissDirection) {
+                DismissDirection.EndToStart -> Color.Red
+                else -> {Color.Transparent}
             }
-    ) {
-        Row(
-            Modifier
-                .padding(8.dp)
-        ) {
-            val sizeUsers = item.userOrganizationList?.size?:0
+            val direction = dismissState.dismissDirection
 
-            Text(text = item.name)
-            Spacer(modifier = Modifier.weight(1f))
-            Text(text = sizeUsers.toString())
-        }
-        if (isShowUsers)
-            item.userOrganizationList?.let { ListUsers(it) }
-    }
+            if (direction == DismissDirection.EndToStart) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color)
+                        .padding(8.dp)
+                ) {
+                    Column(modifier = Modifier.align(Alignment.CenterEnd)) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        )
+                        Spacer(modifier = Modifier.heightIn(5.dp))
+                        Text(
+                            text = "Usuń",
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.LightGray
+                        )
+
+                    }
+                }
+            }
+        },
+
+        dismissContent = {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, top = 2.dp, bottom = 2.dp, end = 8.dp)
+                    .clickable {
+                        isShowUsers = !isShowUsers
+                    },
+                colors = CardDefaults.cardColors(containerColor = Teal200, contentColor = Teal200)
+            ) {
+                Row(
+                    Modifier
+                        .padding(8.dp)
+                ) {
+                    val sizeUsers = item.userOrganizationList?.size?:0
+
+                    Text(text = item.name, color = Color.White)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(text = sizeUsers.toString(), color = Color.White)
+                }
+                if (isShowUsers)
+                    item.userOrganizationList?.let { ListUsers(it) }
+            }
+        },
+        directions = setOf(DismissDirection.EndToStart),
+    )
+    
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -180,15 +236,16 @@ private fun CardUserOrganization(item : UserOrganization, viewModel: OrgsViewMod
             .padding(4.dp)
             .clickable {
                 //dialog with tasks
-            }
+            },
+        colors = CardDefaults.cardColors(contentColor = Purple200, containerColor = Purple200)
     ) {
         Row(
             Modifier
                 .padding(8.dp)
         ) {
-            Text(text = item.name)
+            Text(text = item.name, color = Color.White)
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = item.phoneNumber)
+            Text(text = item.phoneNumber, color = Color.White)
         }
     }
 }

@@ -47,4 +47,7 @@ interface MainApi {
 
     @GET("organization/all-organizations")
     suspend fun getOrganizationEvent(@Query("eventId") eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>>
+
+    @DELETE("organization")
+    suspend fun deleteOrganizationInEvent(@Query("eventId") eventId: Int,@Query("organizationId") organizationId : Int) : ServiceReturn<Any>
 }
