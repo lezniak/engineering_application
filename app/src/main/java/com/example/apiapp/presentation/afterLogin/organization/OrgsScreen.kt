@@ -6,6 +6,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -20,11 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.common.*
@@ -130,25 +133,26 @@ private fun CreateNewOrganizationDialog(onDismiss : () -> Unit,viewModel: OrgsVi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun DialogUserTaskList(user : UserOrganization, onDismiss : () -> Unit,viewModel: OrgsViewModel = hiltViewModel(),idOrganization: Int) {
-    val context = LocalContext.current
-    var message by rememberSaveable { mutableStateOf("") }
+    var isShowDialog by rememberSaveable { mutableStateOf(false) }
+
     viewModel.getTasksForMember(user.id,idOrganization)
-    AlertDialog(
+    Dialog(
         onDismissRequest = { onDismiss() },
-        title = { Text("Lista zadań dla "+ user.name) },
-        text = {
-            Column() {
-                Text(text = "Poniżej znajduje się lista zadań pracownika. Aby się z nim skontaktować kliknij numer telefonu.")
-                Text(text = user.phoneNumber, color = Teal200, modifier = Modifier.clickable {
-                    Log.d("ZADZWON","ZADZWON")
+        content = {
+            Column(Modifier.background(Color.White, RoundedCornerShape(4.dp)).padding(8.dp)) {
+                Text("Lista zadań dla "+ user.name+"\n", fontSize = 18.sp)
+                Text(text = "Poniżej znajduje się lista zadań pracownika. Aby się z nim skontaktować kliknij numer telefonu.", fontSize = 12.sp)
+                Text(text = user.phoneNumber,fontSize= 12.sp, color = Teal200, modifier = Modifier.clickable {
+                    Log.d("ZADZWON", "ZADZWON")
                 })
                 Text(text = "Lista zadań:")
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .border(border = BorderStroke(1.dp, Color.Black))
+                        //.border(border = BorderStroke(1.dp, Color.Black))
                         .height(200.dp)
-                        .verticalScroll(ScrollState(0))) {
+                        .verticalScroll(ScrollState(0))
+                ) {
                     when (val state = viewModel.tasksState.value) {
                         is UIState.Error -> {
                             NoElementList()
@@ -161,36 +165,46 @@ private fun DialogUserTaskList(user : UserOrganization, onDismiss : () -> Unit,v
                         }
                     }
                 }
-            }
-
-
-        },
-        buttons = {
-            Row(Modifier.padding(16.dp)) {
-                MyButton(onClick = { onDismiss() }) {
-                    Text(text = "Wyjdz", color = Color.White)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                MyButton(onClick = {
-                    Log.d("Dodaj zadanie","test")
-                }) {
-                    Text(text = "+", color = Color.White)
+                Row(Modifier.padding(16.dp)) {
+                    MyButton(onClick = { onDismiss() }) {
+                        Text(text = "Wyjdz", color = Color.White)
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    MyButton(onClick = {
+                        isShowDialog = true
+                    }) {
+                        Text(text = "+", color = Color.White)
+                    }
                 }
             }
         }
     )
+
+    if (isShowDialog)
+        AddTask(onDismiss = { isShowDialog = false }, idOrganization = idOrganization, idMember = user.id)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ListTasks(list:List<TaskItem>){
         list.forEach { item ->
-            Column() {
-                Text(text = item.content)
-                Row() {
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(text = item.status)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 4.dp, top = 2.dp, bottom = 2.dp, end = 4.dp)
+                    .clickable {
+
+                    },
+                colors = CardDefaults.cardColors(containerColor = Purple200, contentColor = Purple200)
+            ) {
+                Column(Modifier.padding(5.dp)) {
+                    Text(text = item.content, color = Teal200)
+                    Row() {
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(text = item.status, color = Teal200)
+                    }
                 }
-        }
+            }
     }
 }
 
@@ -311,36 +325,36 @@ private fun CardUserOrganization(item : UserOrganization, id: Int ,viewModel: Or
 }
 
 @Composable
-fun AddTask(onDismiss : () -> Unit,viewModel: EditEventViewModel = hiltViewModel()) {
+fun AddTask(onDismiss : () -> Unit,viewModel: OrgsViewModel = hiltViewModel(),idOrganization: Int,idMember:Int) {
     val context = LocalContext.current
     var message by rememberSaveable { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = { onDismiss() },
-        title = { androidx.compose.material3.Text("Treść zadania") },
+        title = { Text("Treść zadania", color = Color.Black) },
         text = {
             TextField(
                 value = message,
                 onValueChange = { message = it },
-                label = { androidx.compose.material3.Text("Wpisz treść zadania") }
+                label = { Text("Wpisz treść zadania", color = Color.Black) }
             )
         },
         buttons = {
             Row(Modifier.padding(16.dp)) {
                 MyButton(onClick = { onDismiss() }) {
-                    androidx.compose.material3.Text(text = "Anuluj")
+                    Text(text = "Anuluj", color = Color.White)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 MyButton(onClick = {
                     if (message.length > 5){
-                        viewModel.sendPost(message)
-                        Toast.makeText(context, "Udało się wysłać post!", Toast.LENGTH_SHORT).show()
+                        viewModel.putTask(idMember,idOrganization,message)
+                        Toast.makeText(context, "Udało się utworzyć zadanie!", Toast.LENGTH_SHORT).show()
                         onDismiss()
                     }else{
-                        Toast.makeText(context, "Post jest za krótki!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Treść zadania za krótka!", Toast.LENGTH_SHORT).show()
                     }
                 }) {
-                    androidx.compose.material3.Text(text = "Wyślij")
+                    Text(text = "Wyślij", color = Color.White)
 
                 }
             }

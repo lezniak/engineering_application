@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apiapp.common.UIState
 import com.example.apiapp.data.objects.Dao.OrganizationCreateDao
+import com.example.apiapp.data.objects.Dao.TaskPutDao
 import com.example.apiapp.data.repository.MainRepository
 import com.example.apiapp.data.useCase.GetMyOrganizationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,6 +68,7 @@ class OrgsViewModel @Inject constructor(savedStateHandle: SavedStateHandle,priva
     }
 
     fun getTasksForMember(memberId: Int, idOrganization: Int){
+        _tasksState.value = UIState.Loading
         viewModelScope.launch {
             try {
                 val resultList = repository.getTasksForMember(memberId,idOrganization)
@@ -77,6 +79,17 @@ class OrgsViewModel @Inject constructor(savedStateHandle: SavedStateHandle,priva
             }catch (ex:Exception){
                 _tasksState.value = UIState.Error
                 Log.d("Test",ex.stackTraceToString())
+            }
+        }
+    }
+
+    fun putTask(memberId: Int,organizationId: Int,content:String){
+        viewModelScope.launch {
+            val putTast = TaskPutDao(content,memberId, organizationId)
+            val result = repository.putTask(putTast).await()
+
+            if (result.status == 1){
+                getTasksForMember(memberId,organizationId)
             }
         }
     }

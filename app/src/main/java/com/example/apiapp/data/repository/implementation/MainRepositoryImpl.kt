@@ -76,6 +76,10 @@ class MainRepositoryImpl @Inject constructor(
         return api.getMemberTasks(user,organizationId)
     }
 
+    override suspend fun putTask(putTask: TaskPutDao): Deferred<ServiceReturn<Any>> {
+        return CoroutineScope(Dispatchers.IO).async { api.putTask(putTask) }
+    }
+
     override suspend fun getOrganizationEvent(eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>> {
         return api.getOrganizationEvent(eventId)
     }

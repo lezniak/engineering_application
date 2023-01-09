@@ -37,4 +37,6 @@ interface MainRepository {
     suspend fun deleteOrganizationInEvent(eventId: Int,organizationId:Int): Deferred<ServiceReturn<Any>>
 
     suspend fun getTasksForMember(user: Int, organizationId: Int) : ServiceReturn<ResultPagin<TaskItem>>
+
+    suspend fun putTask(putTask: TaskPutDao) : Deferred<ServiceReturn<Any>>
 }

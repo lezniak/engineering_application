@@ -53,4 +53,7 @@ interface MainApi {
 
     @GET("task/user-organization")
     suspend fun getMemberTasks(@Query("user") userId: Int,@Query("organization") organizationId : Int) : ServiceReturn<ResultPagin<TaskItem>>
+
+    @POST("task")
+    suspend fun putTask(@Body task : TaskPutDao) : ServiceReturn<Any>
 }
