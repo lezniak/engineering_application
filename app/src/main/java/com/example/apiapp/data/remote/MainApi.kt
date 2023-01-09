@@ -50,4 +50,7 @@ interface MainApi {
 
     @DELETE("organization")
     suspend fun deleteOrganizationInEvent(@Query("eventId") eventId: Int,@Query("organizationId") organizationId : Int) : ServiceReturn<Any>
+
+    @GET("task/user-organization")
+    suspend fun getMemberTasks(@Query("user") userId: Int,@Query("organization") organizationId : Int) : ServiceReturn<ResultPagin<TaskItem>>
 }

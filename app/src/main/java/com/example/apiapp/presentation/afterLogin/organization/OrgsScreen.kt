@@ -2,17 +2,14 @@ package com.example.apiapp.presentation.afterLogin.organization
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -26,24 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.apiapp.common.*
 import com.example.apiapp.data.objects.Dao.OrganizationItem
+import com.example.apiapp.data.objects.Dao.TaskItem
 import com.example.apiapp.data.objects.Dao.UserOrganization
-import com.example.apiapp.data.objects.Event
-import com.example.apiapp.navigation.BottomNavItem
-import com.example.apiapp.presentation.afterLogin.events.homeEvent.CardEvent
+import com.example.apiapp.presentation.afterLogin.events.editEvent.EditEventViewModel
 import com.example.apiapp.presentation.ui.theme.Purple200
 import com.example.apiapp.presentation.ui.theme.Teal200
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun OrgsScreen(navHostController: NavHostController,viewModel: OrgsViewModel = hiltViewModel()){
@@ -139,6 +129,73 @@ private fun CreateNewOrganizationDialog(onDismiss : () -> Unit,viewModel: OrgsVi
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+private fun DialogUserTaskList(user : UserOrganization, onDismiss : () -> Unit,viewModel: OrgsViewModel = hiltViewModel(),idOrganization: Int) {
+    val context = LocalContext.current
+    var message by rememberSaveable { mutableStateOf("") }
+    viewModel.getTasksForMember(user.id,idOrganization)
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { Text("Lista zadań dla "+ user.name) },
+        text = {
+            Column() {
+                Text(text = "Poniżej znajduje się lista zadań pracownika. Aby się z nim skontaktować kliknij numer telefonu.")
+                Text(text = user.phoneNumber, color = Teal200, modifier = Modifier.clickable {
+                    Log.d("ZADZWON","ZADZWON")
+                })
+                Text(text = "Lista zadań:")
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .border(border = BorderStroke(1.dp, Color.Black))
+                        .height(200.dp)
+                        .verticalScroll(ScrollState(0))) {
+                    when (val state = viewModel.tasksState.value) {
+                        is UIState.Error -> {
+                            NoElementList()
+                        }
+                        is UIState.Loading -> {
+                            Loading()
+                        }
+                        is UIState.Success<*> -> {
+                            ListTasks(list = state.result as List<TaskItem>)
+                        }
+                    }
+                }
+            }
+
+
+        },
+        buttons = {
+            Row(Modifier.padding(16.dp)) {
+                MyButton(onClick = { onDismiss() }) {
+                    Text(text = "Wyjdz", color = Color.White)
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                MyButton(onClick = {
+                    Log.d("Dodaj zadanie","test")
+                }) {
+                    Text(text = "+", color = Color.White)
+                }
+            }
+        }
+    )
+}
+
+@Composable
+private fun ListTasks(list:List<TaskItem>){
+        list.forEach { item ->
+            Column() {
+                Text(text = item.content)
+                Row() {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(text = item.status)
+                }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
 private fun ListOrganization(list : List<OrganizationItem>){
     list.forEach {
         CardOrganization(item = it)
@@ -146,10 +203,10 @@ private fun ListOrganization(list : List<OrganizationItem>){
 }
 
 @Composable
-private fun ListUsers(list : List<UserOrganization>){
+private fun ListUsers(list: List<UserOrganization>, id: Int){
     LazyColumn() {
         itemsIndexed(list) { index, item ->
-            CardUserOrganization(item)
+            CardUserOrganization(item,id)
         }
     }
 }
@@ -219,7 +276,7 @@ private fun CardOrganization(item : OrganizationItem,viewModel: OrgsViewModel = 
                     Text(text = sizeUsers.toString(), color = Color.White)
                 }
                 if (isShowUsers)
-                    item.userOrganizationList?.let { ListUsers(it) }
+                    item.userOrganizationList?.let { ListUsers(it,item.id) }
             }
         },
         directions = setOf(DismissDirection.EndToStart),
@@ -229,13 +286,14 @@ private fun CardOrganization(item : OrganizationItem,viewModel: OrgsViewModel = 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CardUserOrganization(item : UserOrganization, viewModel: OrgsViewModel = hiltViewModel()) {
+private fun CardUserOrganization(item : UserOrganization, id: Int ,viewModel: OrgsViewModel = hiltViewModel()) {
+    var isDialogShow by rememberSaveable { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
             .clickable {
-                //dialog with tasks
+                isDialogShow = !isDialogShow
             },
         colors = CardDefaults.cardColors(contentColor = Purple200, containerColor = Purple200)
     ) {
@@ -248,4 +306,45 @@ private fun CardUserOrganization(item : UserOrganization, viewModel: OrgsViewMod
             Text(text = item.phoneNumber, color = Color.White)
         }
     }
+    if (isDialogShow)
+        DialogUserTaskList(onDismiss = { isDialogShow = false }, user = item, idOrganization = id)
+}
+
+@Composable
+fun AddTask(onDismiss : () -> Unit,viewModel: EditEventViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    var message by rememberSaveable { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { androidx.compose.material3.Text("Treść zadania") },
+        text = {
+            TextField(
+                value = message,
+                onValueChange = { message = it },
+                label = { androidx.compose.material3.Text("Wpisz treść zadania") }
+            )
+        },
+        buttons = {
+            Row(Modifier.padding(16.dp)) {
+                MyButton(onClick = { onDismiss() }) {
+                    androidx.compose.material3.Text(text = "Anuluj")
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                MyButton(onClick = {
+                    if (message.length > 5){
+                        viewModel.sendPost(message)
+                        Toast.makeText(context, "Udało się wysłać post!", Toast.LENGTH_SHORT).show()
+                        onDismiss()
+                    }else{
+                        Toast.makeText(context, "Post jest za krótki!", Toast.LENGTH_SHORT).show()
+                    }
+                }) {
+                    androidx.compose.material3.Text(text = "Wyślij")
+
+                }
+            }
+
+        }
+    )
 }

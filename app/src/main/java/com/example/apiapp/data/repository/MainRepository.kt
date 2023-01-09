@@ -6,6 +6,7 @@ import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.Results.ResultPagin
 import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Deferred
 
 interface MainRepository {
@@ -34,4 +35,6 @@ interface MainRepository {
     suspend fun createOrganiztarion(newOrganizaton: OrganizationCreateDao) : Deferred<ServiceReturn<Any>>
 
     suspend fun deleteOrganizationInEvent(eventId: Int,organizationId:Int): Deferred<ServiceReturn<Any>>
+
+    suspend fun getTasksForMember(user: Int, organizationId: Int) : ServiceReturn<ResultPagin<TaskItem>>
 }

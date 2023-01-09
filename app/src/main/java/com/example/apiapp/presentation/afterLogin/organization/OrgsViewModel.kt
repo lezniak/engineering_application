@@ -22,6 +22,9 @@ class OrgsViewModel @Inject constructor(savedStateHandle: SavedStateHandle,priva
     val state: State<UIState>
         get() = _state
 
+    private val _tasksState = mutableStateOf<UIState>(UIState.Loading)
+    val tasksState: State<UIState>
+        get() = _tasksState
 
     init {
         savedStateHandle.get<Int>("eventId")?.let {
@@ -59,6 +62,21 @@ class OrgsViewModel @Inject constructor(savedStateHandle: SavedStateHandle,priva
                     getOrganizations()
             }catch (Ex: Exception){
                 Log.e("TAG",Ex.stackTraceToString())
+            }
+        }
+    }
+
+    fun getTasksForMember(memberId: Int, idOrganization: Int){
+        viewModelScope.launch {
+            try {
+                val resultList = repository.getTasksForMember(memberId,idOrganization)
+                if (resultList.value?.objectList.isNullOrEmpty())
+                    throw NoSuchElementException()
+
+                _tasksState.value = UIState.Success(resultList.value?.objectList)
+            }catch (ex:Exception){
+                _tasksState.value = UIState.Error
+                Log.d("Test",ex.stackTraceToString())
             }
         }
     }
