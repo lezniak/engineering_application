@@ -80,6 +80,10 @@ class MainRepositoryImpl @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async { api.putTask(putTask) }
     }
 
+    override suspend fun getEventMembers(eventId: Int): ServiceReturn<ResultPagin<UserAcceptList>> {
+        return api.getEventMembers(eventId)
+    }
+
     override suspend fun getOrganizationEvent(eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>> {
         return api.getOrganizationEvent(eventId)
     }

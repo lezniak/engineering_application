@@ -56,4 +56,7 @@ interface MainApi {
 
     @POST("task")
     suspend fun putTask(@Body task : TaskPutDao) : ServiceReturn<Any>
+
+    @GET("event-member/members/accepted")
+    suspend fun getEventMembers(@Query("eventId") eventId: Int) : ServiceReturn<ResultPagin<UserAcceptList>>
 }

@@ -35,7 +35,7 @@ fun EditEventScreen(navHostController: NavHostController,viewModel: EditEventVie
             MyButton(onClick = { navHostController.navigate(BottomNavItem.Organizations.screen_route+ "?eventId=${viewModel.eventId}") }) {
               Text(text = "Organizacje")
             }
-            MyButton(onClick = { /*TODO*/ }) {
+            MyButton(onClick = { navHostController.navigate(BottomNavItem.UsersEvent.screen_route+ "?eventId=${viewModel.eventId}") }) {
                 Text(text = "Użytkownicy")
             }
             MyButton(onClick = { /*TODO*/ }) {

@@ -39,4 +39,6 @@ interface MainRepository {
     suspend fun getTasksForMember(user: Int, organizationId: Int) : ServiceReturn<ResultPagin<TaskItem>>
 
     suspend fun putTask(putTask: TaskPutDao) : Deferred<ServiceReturn<Any>>
+
+    suspend fun getEventMembers(eventId:Int) : ServiceReturn<ResultPagin<UserAcceptList>>
 }

@@ -300,7 +300,7 @@ private fun CardOrganization(item : OrganizationItem,viewModel: OrgsViewModel = 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CardUserOrganization(item : UserOrganization, id: Int ,viewModel: OrgsViewModel = hiltViewModel()) {
+fun CardUserOrganization(item : UserOrganization, id: Int ,viewModel: OrgsViewModel = hiltViewModel()) {
     var isDialogShow by rememberSaveable { mutableStateOf(false) }
     Card(
         modifier = Modifier
