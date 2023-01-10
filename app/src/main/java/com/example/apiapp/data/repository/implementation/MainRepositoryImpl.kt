@@ -6,6 +6,7 @@ import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.Results.ResultPagin
 import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
+import com.example.apiapp.data.objects.Ticket
 import com.example.apiapp.data.remote.MainApi
 import com.example.apiapp.data.repository.MainRepository
 import kotlinx.coroutines.CoroutineScope
@@ -88,7 +89,7 @@ class MainRepositoryImpl @Inject constructor(
         return api.getEventQrCode(eventId)
     }
 
-    override suspend fun putAndGetUserTicket(idObject: IdObject): ServiceReturn<Any> {
+    override suspend fun putAndGetUserTicket(idObject: IdObject): ServiceReturn<Ticket> {
         return api.putAndGetUserTicket(idObject)
     }
 

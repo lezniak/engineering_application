@@ -6,6 +6,7 @@ import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.Results.ResultPagin
 import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
+import com.example.apiapp.data.objects.Ticket
 import retrofit2.http.*
 
 interface MainApi {
@@ -64,7 +65,7 @@ interface MainApi {
     suspend fun getEventQrCode(@Query("eventId") eventId: Int) : Any
 
     @POST("ticket")
-    suspend fun putAndGetUserTicket(@Body idObject : IdObject) : ServiceReturn<Any>
+    suspend fun putAndGetUserTicket(@Body idObject : IdObject) : ServiceReturn<Ticket>
 
     @GET("ticket/my-tickets")
     suspend fun getAllUserTickets() : ServiceReturn<ResultPagin<Any>>

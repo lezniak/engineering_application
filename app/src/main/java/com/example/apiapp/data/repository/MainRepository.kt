@@ -6,6 +6,7 @@ import com.example.apiapp.data.objects.IdObject
 import com.example.apiapp.data.objects.Results.ResultPagin
 import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
+import com.example.apiapp.data.objects.Ticket
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Deferred
 import retrofit2.http.Body
@@ -45,7 +46,7 @@ interface MainRepository {
 
     suspend fun getQrCodeForEvent(eventId: Int) : Any
 
-    suspend fun putAndGetUserTicket(idObject : IdObject) : ServiceReturn<Any>
+    suspend fun putAndGetUserTicket(idObject : IdObject) : ServiceReturn<Ticket>
 
     suspend fun getAllTicketsForUser(): ServiceReturn<ResultPagin<Any>>
 }

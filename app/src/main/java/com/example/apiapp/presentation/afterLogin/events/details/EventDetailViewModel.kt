@@ -1,8 +1,14 @@
 package com.example.apiapp.presentation.afterLogin.events.details
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.util.Base64.decode
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import java.lang.Byte.decode
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -29,6 +36,9 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
     private val _stateMessage = mutableStateOf<String>("")
     val stateMessgae: State<String> = _stateMessage
 
+    private val _stateTicket = mutableStateOf<Ticket>(Ticket())
+    val stateTicket: State<Ticket> = _stateTicket
+
     private val _postList = mutableStateOf<List<Post>?>(null)
     val postList: State<List<Post>?> = _postList
 
@@ -38,6 +48,7 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
             Log.d("VIEWMODEL_EVENT", it.toString())
             getEvent(it)
             getPosts(it)
+            getTicket()
         }
     }
     fun getEvent(eventId : Int){
@@ -72,13 +83,6 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
         }
     }
 
-    fun sendPost(postText:String){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.sendPost(eventId,postText)
-            delay(1000)
-            repository.getPosts(eventId)
-        }
-    }
 
     private fun getPosts(eventId: Int){
         viewModelScope.launch(Dispatchers.IO) {
@@ -104,10 +108,16 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
     fun getTicket(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.putAndGetUserTicket(IdObject(eventId.toLong()))
+                _stateTicket.value = repository.putAndGetUserTicket(IdObject(eventId.toLong())).value!!
             }catch (ex:Exception){
                 Log.d("EVENTDETAILVIEWMODEL",ex.stackTraceToString())
             }
         }
+    }
+
+    fun getImageTicket(content: String): ImageBitmap {
+        val imageBytes = decode(content, 0)
+        val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        return image.asImageBitmap()
     }
 }

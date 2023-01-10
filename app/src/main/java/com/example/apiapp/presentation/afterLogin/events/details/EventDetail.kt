@@ -1,19 +1,18 @@
 package com.example.apiapp.presentation.afterLogin.events.details
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
@@ -30,9 +30,11 @@ import com.example.apiapp.common.MyButton
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.EventAddressInformation
 import com.example.apiapp.data.objects.IdObject
+import com.example.apiapp.data.objects.Ticket
 import com.example.apiapp.navigation.BottomNavItem
 import com.example.apiapp.presentation.activity.AfterLoginActivity
 import com.example.apiapp.presentation.afterLogin.events.homeEvent.SimpleCircularProgressIndicator
+import com.example.apiapp.presentation.afterLogin.organization.OrgsViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -106,14 +108,17 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
                 Divider(color = Color.Black, thickness = 1.dp)
                 PostSegment()
             }
+
     }
 }
 
 @Composable
 fun OptionsForUser(viewModel: EventDetailViewModel = hiltViewModel()) {
+    var isDialogShow by remember { mutableStateOf(false) }
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         MyButton(onClick = {
-            viewModel.getTicket()
+            if(viewModel.stateTicket.value.ticketContent != "")
+                isDialogShow = true
         }) {
             Text(text = "Bilet", color = Color.White)
         }
@@ -122,6 +127,9 @@ fun OptionsForUser(viewModel: EventDetailViewModel = hiltViewModel()) {
             Text(text = "Zadania", color = Color.White)
         }
     }
+
+    if (isDialogShow)
+        TicketDialog({ isDialogShow = false}, item = viewModel.stateTicket.value)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -246,6 +254,28 @@ fun EventDetailsCard(event: Event){
         }
     }
 }
+
+@Composable
+private fun TicketDialog(onDismiss : () -> Unit,viewModel: EventDetailViewModel = hiltViewModel(),item: Ticket) {
+    Dialog(
+        onDismissRequest = { onDismiss() },
+        content = {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp,Alignment.CenterVertically), horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(8.dp).background(Color.White)) {Text("Bilet na \n"+item.eventName)
+                Image(bitmap = viewModel.getImageTicket(item.ticketContent),
+                contentDescription = "ticketQr",
+                modifier = Modifier
+                    .height(200.dp)
+                    .width(200.dp))
+            MyButton(onClick = { onDismiss() }) {
+                Text(text = "Anuluj")
+            }
+            }
+        })
+
+        }
+
+
+
 @Composable
 @Preview
 fun preview(){
