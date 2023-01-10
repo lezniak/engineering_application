@@ -100,4 +100,14 @@ class EventDetailViewModel @Inject constructor(private val getEventUseCase: GetE
         val dateString = formatter.format(Date(milis))
         return dateString
     }
+
+    fun getTicket(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.putAndGetUserTicket(IdObject(eventId.toLong()))
+            }catch (ex:Exception){
+                Log.d("EVENTDETAILVIEWMODEL",ex.stackTraceToString())
+            }
+        }
+    }
 }

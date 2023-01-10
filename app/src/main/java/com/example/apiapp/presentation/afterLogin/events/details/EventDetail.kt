@@ -110,9 +110,11 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
 }
 
 @Composable
-fun OptionsForUser() {
+fun OptionsForUser(viewModel: EventDetailViewModel = hiltViewModel()) {
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
-        MyButton(onClick = { /*TODO*/ }) {
+        MyButton(onClick = {
+            viewModel.getTicket()
+        }) {
             Text(text = "Bilet", color = Color.White)
         }
 

@@ -8,6 +8,7 @@ import com.example.apiapp.data.objects.Results.ServiceReturn
 import com.example.apiapp.data.objects.Results.ServiceSimpleReturn
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Deferred
+import retrofit2.http.Body
 
 interface MainRepository {
     suspend fun getEvent(eventId: Int) : ServiceReturn<Event>
@@ -43,4 +44,8 @@ interface MainRepository {
     suspend fun getEventMembers(eventId:Int) : ServiceReturn<ResultPagin<UserAcceptList>>
 
     suspend fun getQrCodeForEvent(eventId: Int) : Any
+
+    suspend fun putAndGetUserTicket(idObject : IdObject) : ServiceReturn<Any>
+
+    suspend fun getAllTicketsForUser(): ServiceReturn<ResultPagin<Any>>
 }

@@ -62,4 +62,7 @@ interface MainApi {
 
     @GET("event/qr-code")
     suspend fun getEventQrCode(@Query("eventId") eventId: Int) : Any
+
+    @POST("ticket")
+    suspend fun putAndGetUserTicket(@Body idObject : IdObject) : ServiceReturn<Any>
 }

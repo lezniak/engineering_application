@@ -88,6 +88,10 @@ class MainRepositoryImpl @Inject constructor(
         return api.getEventQrCode(eventId)
     }
 
+    override suspend fun putAndGetUserTicket(idObject: IdObject): ServiceReturn<Any> {
+        return api.putAndGetUserTicket(idObject)
+    }
+
     override suspend fun getOrganizationEvent(eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>> {
         return api.getOrganizationEvent(eventId)
     }
