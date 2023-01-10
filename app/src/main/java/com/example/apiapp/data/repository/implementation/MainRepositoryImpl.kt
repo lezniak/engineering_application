@@ -92,6 +92,10 @@ class MainRepositoryImpl @Inject constructor(
         return api.putAndGetUserTicket(idObject)
     }
 
+    override suspend fun getAllTicketsForUser(): ServiceReturn<ResultPagin<Any>> {
+        return api.getAllUserTickets()
+    }
+
     override suspend fun getOrganizationEvent(eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>> {
         return api.getOrganizationEvent(eventId)
     }

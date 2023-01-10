@@ -65,4 +65,7 @@ interface MainApi {
 
     @POST("ticket")
     suspend fun putAndGetUserTicket(@Body idObject : IdObject) : ServiceReturn<Any>
+
+    @GET("ticket/my-tickets")
+    suspend fun getAllUserTickets() : ServiceReturn<ResultPagin<Any>>
 }
