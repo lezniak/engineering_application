@@ -59,4 +59,7 @@ interface MainApi {
 
     @GET("event-member/members/accepted")
     suspend fun getEventMembers(@Query("eventId") eventId: Int) : ServiceReturn<ResultPagin<UserAcceptList>>
+
+    @GET("event/qr-code")
+    suspend fun getEventQrCode(@Query("eventId") eventId: Int) : Any
 }

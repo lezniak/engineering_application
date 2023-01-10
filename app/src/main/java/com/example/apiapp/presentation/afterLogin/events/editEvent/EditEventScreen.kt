@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,19 +34,19 @@ fun EditEventScreen(navHostController: NavHostController,viewModel: EditEventVie
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MyButton(onClick = { navHostController.navigate(BottomNavItem.Organizations.screen_route+ "?eventId=${viewModel.eventId}") }) {
-              Text(text = "Organizacje")
+              Text(text = "Organizacje", color = Color.White)
             }
             MyButton(onClick = { navHostController.navigate(BottomNavItem.UsersEvent.screen_route+ "?eventId=${viewModel.eventId}") }) {
-                Text(text = "Użytkownicy")
+                Text(text = "Użytkownicy", color = Color.White)
             }
             MyButton(onClick = { /*TODO*/ }) {
-                Text(text = "Edycja wydarzenia")
+                Text(text = "Edycja wydarzenia", color = Color.White)
             }
             MyButton(onClick = { showPostDialog = true }) {
-                Text(text = "Napisz post")
+                Text(text = "Napisz post", color = Color.White)
             }
-            MyButton(onClick = { /*TODO*/ }) {
-                Text(text = "QR wydarzenia")
+            MyButton(onClick = { viewModel.getQrCode() }) {
+                Text(text = "QR wydarzenia", color = Color.White)
             }
         }
     }

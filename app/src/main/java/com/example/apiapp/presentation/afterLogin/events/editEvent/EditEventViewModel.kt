@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.apiapp.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,16 @@ class EditEventViewModel @Inject constructor(savedStateHandle: SavedStateHandle,
                 repository.sendPost(eventId,postText)
             }catch (ex:Exception){
                 Log.d(TAG,ex.stackTraceToString())
+            }
+        }
+    }
+
+    fun getQrCode(){
+        viewModelScope.launch {
+            try {
+                repository.getQrCodeForEvent(eventId)
+            }catch (ex:Exception){
+                Log.d("TAG",ex.stackTraceToString())
             }
         }
     }

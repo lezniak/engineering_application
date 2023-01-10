@@ -84,6 +84,10 @@ class MainRepositoryImpl @Inject constructor(
         return api.getEventMembers(eventId)
     }
 
+    override suspend fun getQrCodeForEvent(eventId: Int): Any {
+        return api.getEventQrCode(eventId)
+    }
+
     override suspend fun getOrganizationEvent(eventId: Int): ServiceReturn<ResultPagin<OrganizationItem>> {
         return api.getOrganizationEvent(eventId)
     }

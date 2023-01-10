@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.apiapp.R
+import com.example.apiapp.common.MyButton
 import com.example.apiapp.data.objects.Event
 import com.example.apiapp.data.objects.EventAddressInformation
 import com.example.apiapp.data.objects.IdObject
@@ -98,15 +99,26 @@ private fun EventDetailWithData(event : Event,navHostController: NavHostControll
             )
         },
         bottomBar = {
-            if (event.ownerId.toLong() == AfterLoginActivity.userData.id) {
-                TextFieldDemo()
-            }
+            OptionsForUser()
         }) {
             Column(modifier = Modifier.padding(paddingValues = it)) {
                 EventDetailsCard(event = event)
                 Divider(color = Color.Black, thickness = 1.dp)
                 PostSegment()
             }
+    }
+}
+
+@Composable
+fun OptionsForUser() {
+    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+        MyButton(onClick = { /*TODO*/ }) {
+            Text(text = "Bilet", color = Color.White)
+        }
+
+        MyButton(onClick = { /*TODO*/ }) {
+            Text(text = "Zadania", color = Color.White)
+        }
     }
 }
 
@@ -132,32 +144,7 @@ fun PostSegment(viewModel: EventDetailViewModel = hiltViewModel()){
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TextFieldDemo(viewModel: EventDetailViewModel = hiltViewModel()) {
-    var text by remember{ mutableStateOf("")}
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(8.dp)) {
-        TextField(
-            value = text,
-            onValueChange = {text = it},
-            trailingIcon = {
-                androidx.compose.material.IconButton(onClick = {
-                    viewModel.sendPost(text)
-                }) {
-                    val visibilityIcon = Icons.Filled.Send
-                    val description = "Send"
-                    androidx.compose.material.Icon(
-                        imageVector = visibilityIcon,
-                        contentDescription = description
-                    )
-                    }
-            }
-        )
-    }
-}
+
 @Composable
 fun ImageWithText(text: String){
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {

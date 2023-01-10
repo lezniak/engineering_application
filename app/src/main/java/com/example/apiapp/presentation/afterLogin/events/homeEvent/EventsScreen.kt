@@ -47,10 +47,12 @@ fun EventsScreen(viewModel: EventsViewModel = hiltViewModel(), navController: Na
                 )
             },
             actions = {
-                    // RowScope here, so these icons will be placed horizontally
                     IconButton(onClick = { filterShow = !filterShow }) {
                         Icon(painterResource(id = R.drawable.filter), contentDescription = "Localized description")
                     }
+            },
+            navigationIcon = {
+                Icon(painterResource(id = R.drawable.ic_baseline_qr_code_scanner_24), contentDescription = "Localized description")
             }
         )
     }) {

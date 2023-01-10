@@ -41,4 +41,6 @@ interface MainRepository {
     suspend fun putTask(putTask: TaskPutDao) : Deferred<ServiceReturn<Any>>
 
     suspend fun getEventMembers(eventId:Int) : ServiceReturn<ResultPagin<UserAcceptList>>
+
+    suspend fun getQrCodeForEvent(eventId: Int) : Any
 }
